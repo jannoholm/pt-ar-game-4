@@ -1,0 +1,92 @@
+package com.playtech.ptargame4.test.step;
+
+
+import com.playtech.ptargame4.api.general.JoinServerRequest;
+import com.playtech.ptargame4.api.general.JoinServerResponse;
+import com.playtech.ptargame.common.callback.CallbackHandler;
+import com.playtech.ptargame.common.io.NioServerConnector;
+import com.playtech.ptargame.common.task.LogicResources;
+import com.playtech.ptargame.common.task.Task;
+import com.playtech.ptargame.common.task.TaskState;
+import com.playtech.ptargame.common.task.state.TwoStepState;
+import com.playtech.ptargame4.server.exception.SystemException;
+import com.playtech.ptargame4.server.util.ClientTypeConverter;
+import com.playtech.ptargame4.test.ConnectorSession;
+import com.playtech.ptargame4.test.ContextConstants;
+import com.playtech.ptargame4.test.step.common.AbstractStep;
+
+import java.net.InetSocketAddress;
+import java.util.UUID;
+
+public class JoinServerStep extends AbstractStep {
+
+    private final JoinServerRequest.ClientType clientType;
+
+    public JoinServerStep(LogicResources logicResources, JoinServerRequest.ClientType clientType) {
+        super(logicResources);
+        this.clientType = clientType;
+    }
+
+    @Override
+    public TaskState initialState() {
+        return TwoStepState.INITIAL;
+    }
+
+    @Override
+    public boolean canExecute(Task task) {
+        if (task.getCurrentState() == TwoStepState.FINAL) {
+            JoinServerRequest joinServerRequest = task.getContext().get(ContextConstants.CALLBACK_REQUEST, JoinServerRequest.class);
+            if (joinServerRequest == null) {
+                throw new SystemException("join request not set. Unable to proceed");
+            } else {
+                CallbackHandler.ResponseStatus status = getLogicResources().getCallbackHandler().getResponseStatus(task, joinServerRequest);
+                return status != CallbackHandler.ResponseStatus.PENDING;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void execute(Task task) {
+        if (task.getCurrentState() == TwoStepState.MIDDLE) {
+            // create a new connection
+            NioServerConnector connector = task.getContext().get(ContextConstants.CONNECTOR, NioServerConnector.class);
+            ConnectorSession session = (ConnectorSession) connector.connect(getServerAddress());
+            task.getContext().put(ContextConstants.SESSION, session);
+
+            // generate data
+            String clientName = "testing " + UUID.randomUUID().toString();
+            task.getContext().put(ContextConstants.CLIENT_NAME, clientName);
+
+            // join
+            JoinServerRequest joinServerRequest = createMessage(task, JoinServerRequest.class);
+            joinServerRequest.setName(clientName);
+            joinServerRequest.setEmail("test@playtech.com");
+            joinServerRequest.setClientType(clientType);
+            getLogicResources().getCallbackHandler().sendCallback(task, joinServerRequest, session);
+            task.getContext().put(ContextConstants.CALLBACK_REQUEST, joinServerRequest);
+        } else if (task.getCurrentState() == TwoStepState.FINAL) {
+            JoinServerRequest joinServerRequest = task.getContext().get(ContextConstants.CALLBACK_REQUEST, JoinServerRequest.class);
+            CallbackHandler.ResponseStatus status = getLogicResources().getCallbackHandler().getResponseStatus(task, joinServerRequest);
+            if (status == CallbackHandler.ResponseStatus.SUCCESS) {
+                JoinServerResponse joinServerResponse = (JoinServerResponse)getLogicResources().getCallbackHandler().getResponse(task, joinServerRequest);
+                ConnectorSession session = task.getContext().get(ContextConstants.SESSION, ConnectorSession.class);
+                String clientId = joinServerResponse.getHeader().getClientId();
+                session.setClientId(clientId);
+                task.getContext().put(ContextConstants.CLIENT_ID, clientId);
+                getLogicResources().getClientRegistry().addClientConnection(
+                        session,
+                        joinServerRequest.getName(),
+                        joinServerRequest.getEmail(),
+                        ClientTypeConverter.convert(joinServerRequest.getClientType())
+                );
+            } else {
+                throw new SystemException("Join failed with response status: " + status);
+            }
+        }
+    }
+
+    private InetSocketAddress getServerAddress() {
+        return new InetSocketAddress("127.0.0.1", 8100);
+    }
+}

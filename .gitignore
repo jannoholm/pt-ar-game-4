@@ -1,0 +1,8 @@
+**/target/**
+**/.idea/**
+**/*.iml
+TowerServer/run/log/**
+TowerServer/run2/log/**
+TowerServer/**/.classpath
+TowerServer/**/.project
+TowerServer/**/.settings
