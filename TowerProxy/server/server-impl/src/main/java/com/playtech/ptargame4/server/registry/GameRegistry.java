@@ -12,8 +12,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 public class GameRegistry implements ClientListener {
+	
+    private static final Logger logger = Logger.getLogger(GameRegistry.class.getName());
 
     private final ScheduledExecutorService executor;
     private ScheduledFuture maintenanceFuture;
@@ -55,6 +58,7 @@ public class GameRegistry implements ClientListener {
     public synchronized String createGame(String clientId, String gameName, int players, boolean joinAsPlayer, String aiType, boolean tableGame) {
         GameRegistryGame game = hosting.get(clientId);
         if (game != null) {
+            logger.info("Existing game for clientId=" + clientId + ", gameId=" + game.getGameId());
             return game.getGameId();
         }
 
@@ -67,6 +71,9 @@ public class GameRegistry implements ClientListener {
         // store
         hosting.put(clientId, newGame);
         games.put(newGame.getGameId(), newGame);
+        
+        logger.info("Created new game with clientId=" + clientId + ", gameId=" + newGame.getGameId());
+        
         return newGame.getGameId();
     }
 

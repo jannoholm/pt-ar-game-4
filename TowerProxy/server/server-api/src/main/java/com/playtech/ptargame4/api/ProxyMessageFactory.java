@@ -12,6 +12,9 @@ import com.playtech.ptargame4.api.game.GameUpdateBroadcastMessage;
 import com.playtech.ptargame4.api.lobby.PushGameLobbyUpdateMessage;
 import com.playtech.ptargame4.api.table.SetUserInCarRequest;
 import com.playtech.ptargame4.api.table.SetUserInCarResponse;
+import com.playtech.ptargame4.api.table.SetUserOnMapRequest;
+import com.playtech.ptargame4.api.table.SetUserOnMapResponse;
+import com.playtech.ptargame4.api.token.TokenLocationUpdateMessage;
 import com.playtech.ptargame.common.message.Message;
 import com.playtech.ptargame.common.message.MessageFactory;
 import com.playtech.ptargame.common.message.MessageHeader;
@@ -25,6 +28,8 @@ import com.playtech.ptargame4.api.lobby.GetGamesRequest;
 import com.playtech.ptargame4.api.lobby.GetGamesResponse;
 import com.playtech.ptargame4.api.lobby.HostGameRequest;
 import com.playtech.ptargame4.api.lobby.HostGameResponse;
+import com.playtech.ptargame4.api.lobby.HostTableGameRequest;
+import com.playtech.ptargame4.api.lobby.HostTableGameResponse;
 import com.playtech.ptargame4.api.lobby.JoinGameRequest;
 import com.playtech.ptargame4.api.lobby.JoinGameResponse;
 import com.playtech.ptargame4.api.general.JoinServerRequest;
@@ -55,6 +60,8 @@ public class ProxyMessageFactory implements MessageFactory {
         addMessage(2008, HostGameRequest.class);
         addMessage(2009, HostGameResponse.class);
         addMessage(2010, PushGameLobbyUpdateMessage.class);
+        addMessage(2011, HostTableGameRequest.class);
+        addMessage(2012, HostTableGameResponse.class);
 
         // game-play
         addMessage(3000, GameControlMessage.class);
@@ -68,10 +75,15 @@ public class ProxyMessageFactory implements MessageFactory {
         addMessage(3013, SetUserInCarResponse.class);
         addMessage(3014, GameResultStoreRequest.class);
         addMessage(3015, GameResultStoreResponse.class);
-
+        addMessage(3100, SetUserOnMapRequest.class);
+        addMessage(3101, SetUserOnMapResponse.class);
+        
         // leaderboard
         addMessage(4000, GetLeaderboardRequest.class);
         addMessage(4001, GetLeaderboardResponse.class);
+        
+        // AR tokens
+        addMessage(5000, TokenLocationUpdateMessage.class);
     }
 
     private void addMessage(int messageType, Class<? extends Message> messageClass) {
