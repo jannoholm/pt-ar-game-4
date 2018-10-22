@@ -6,7 +6,7 @@ with( obj_spawn ) {
 	if( other.activatedSpawnLocation != self && place_meeting( x, y, other) ){
 		
 		// Switch the active location
-		if( other.player.actionPoints >= 3 ) {
+		if( other.team.actionPoints >= 3 ) {
 			
 			if( other.activatedSpawnLocation != noone ){
 				// Reduce the activation level of previous location
@@ -14,7 +14,7 @@ with( obj_spawn ) {
 			}
 			
 			// Decrease action points
-			other.player.actionPoints -= 3;
+			other.team.actionPoints -= 3;
 			// Replace new location
 			other.activatedSpawnLocation = self;
 			// Increase activation level of new loaction

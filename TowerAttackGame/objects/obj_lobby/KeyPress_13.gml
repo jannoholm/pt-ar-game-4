@@ -1,22 +1,22 @@
-/// @description Add a default user to empty spots
+/// @description Add a default player to empty spots
 
-if( userRedOne == noone ){
-	userRedOne = instance_create_layer( 0, 0, "lyr_lobby", obj_lobby_user );
-	userRedOne.userId = 0;
-	userRedOne.userName = "TABLE";
+if( playerRedOne == noone ){
+	playerRedOne = instance_create_layer( 0, 0, "lyr_lobby", obj_lobby_player );
+	playerRedOne.playerId = 0;
+	playerRedOne.playerName = "TABLE";
 }
-if( userRedTwo == noone ){
-	userRedTwo = instance_create_layer( 0, 0, "lyr_lobby", obj_lobby_user );
-	userRedTwo.userId = 0;
-	userRedTwo.userName = "TABLE";
+if( playerRedTwo == noone ){
+	playerRedTwo = instance_create_layer( 0, 0, "lyr_lobby", obj_lobby_player );
+	playerRedTwo.playerId = 0;
+	playerRedTwo.playerName = "TABLE";
 }
-if( userBlueOne == noone ){
-	userBlueOne = instance_create_layer( 0, 0, "lyr_lobby", obj_lobby_user );
-	userBlueOne.userId = 0;
-	userBlueOne.userName = "TABLE";
+if( playerBlueOne == noone ){
+	playerBlueOne = instance_create_layer( 0, 0, "lyr_lobby", obj_lobby_player );
+	playerBlueOne.playerId = 0;
+	playerBlueOne.playerName = "TABLE";
 }
-if( userBlueTwo == noone ){
-	userBlueTwo = instance_create_layer( 0, 0, "lyr_lobby", obj_lobby_user );
-	userBlueTwo.userId = 0;
-	userBlueTwo.userName = "TABLE";
+if( playerBlueTwo == noone ){
+	playerBlueTwo = instance_create_layer( 0, 0, "lyr_lobby", obj_lobby_player );
+	playerBlueTwo.playerId = 0;
+	playerBlueTwo.playerName = "TABLE";
 }

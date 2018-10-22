@@ -14,8 +14,8 @@ switch( currentPhase ){
 		break;
 	case MainPhase.GO_TO_LOBBY:
 	
-		room_goto_next();
 		currentPhase = MainPhase.LOBBY
+		room_goto_next();
 		
 		break;
 	case MainPhase.LOBBY:

@@ -18,8 +18,8 @@ previousPhase = LobbyPhase.INIT;
 currentPhase = LobbyPhase.INIT;
 
 
-userRedOne = noone;
-userRedTwo = noone;
+playerRedOne = noone;
+playerRedTwo = noone;
 
-userBlueOne = noone;
-userBlueTwo = noone;
+playerBlueOne = noone;
+playerBlueTwo = noone;

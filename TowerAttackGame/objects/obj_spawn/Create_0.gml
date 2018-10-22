@@ -1,6 +1,6 @@
 /// @description Insert description here
 
-player = noone;
+team = noone;
 soldierToSpawn = noone;
 
 activationLevel = 0;

@@ -1,14 +1,23 @@
 {
-    "id": "1940a4d4-51db-406c-a406-fc1275131538",
+    "id": "3749178b-c6e3-48a7-8a39-829f0e2fd0a4",
     "modelName": "GMObject",
     "mvc": "1.0",
-    "name": "obj_player_red",
+    "name": "obj_lobby_player",
     "eventList": [
-        
+        {
+            "id": "f1bd4287-fed9-4c24-917f-e2f53c0f017e",
+            "modelName": "GMEvent",
+            "mvc": "1.0",
+            "IsDnD": false,
+            "collisionObjectId": "00000000-0000-0000-0000-000000000000",
+            "enumb": 0,
+            "eventtype": 0,
+            "m_owner": "3749178b-c6e3-48a7-8a39-829f0e2fd0a4"
+        }
     ],
     "maskSpriteId": "00000000-0000-0000-0000-000000000000",
     "overriddenProperties": null,
-    "parentObjectId": "7dcde94a-d67f-4493-a5c1-e6f3281a9ae6",
+    "parentObjectId": "00000000-0000-0000-0000-000000000000",
     "persistent": false,
     "physicsAngularDamping": 0.1,
     "physicsDensity": 0.5,

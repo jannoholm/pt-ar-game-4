@@ -1,25 +1,25 @@
-/// @description Draw joined users
+/// @description Draw joined players
 
-if( userRedOne == noone ){
-	draw_text( 10, 50, "Scan QR code or press enter to  add defualt user" );
+if( playerRedOne == noone ){
+	draw_text( 10, 50, "Scan QR code or press enter to  add defualt player" );
 } else {
-	draw_text( 10, 50, "Current user: " + userRedOne.userName );
+	draw_text( 10, 50, "Current player: " + playerRedOne.playerName );
 }
 
-if( userRedTwo == noone ){
-	draw_text( 10, room_height - 50, "Scan QR code or press enter to  add defualt user" );
+if( playerRedTwo == noone ){
+	draw_text( 10, room_height - 50, "Scan QR code or press enter to  add defualt player" );
 } else {
-	draw_text( 10, room_height - 50, "Current user: " + userRedTwo.userName );
+	draw_text( 10, room_height - 50, "Current player: " + playerRedTwo.playerName );
 }
 
-if( userBlueOne == noone ){
-	draw_text( room_width - 100, 50, "Scan QR code or press enter to  add defualt user" );
+if( playerBlueOne == noone ){
+	draw_text( room_width - 100, 50, "Scan QR code or press enter to  add defualt player" );
 } else {
-	draw_text( room_width - 100, 50, "Current user: " + userBlueOne.userName );
+	draw_text( room_width - 100, 50, "Current player: " + playerBlueOne.playerName );
 }
 
-if( userBlueTwo == noone ){
-	draw_text( room_width - 100, room_height - 50, "Scan QR code or press enter to  add defualt user" );
+if( playerBlueTwo == noone ){
+	draw_text( room_width - 100, room_height - 50, "Scan QR code or press enter to  add defualt player" );
 } else {
-	draw_text( room_width - 100, room_height - 50, "Current user: " + userBlueTwo.userName );
+	draw_text( room_width - 100, room_height - 50, "Current player: " + playerBlueTwo.playerName );
 }

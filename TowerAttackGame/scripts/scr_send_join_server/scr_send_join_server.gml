@@ -7,7 +7,7 @@ obj_server_client.client_email=email;
 
 show_debug_message("Sending join: " + obj_server_client.client_name + " " + obj_server_client.client_email + " " + obj_server_client.client_id);
 
-// #TODO In future in case of remote players
+// #TODO In future in case of remote teams
 // store to disk first
 // scr_write_player_details();
 

@@ -17,10 +17,10 @@ switch( currentPhase ){
 	case LobbyPhase.WAITING_PLAYERS:
 	
 		if( 
-			userRedOne != noone && 
-			userRedTwo != noone && 
-			userBlueOne != noone && 
-			userBlueTwo != noone ){
+			playerRedOne != noone && 
+			playerRedTwo != noone && 
+			playerBlueOne != noone && 
+			playerBlueTwo != noone ){
 			
 			trace( "All players filled" );
 			currentPhase = LobbyPhase.PLAYERS_FULL;
