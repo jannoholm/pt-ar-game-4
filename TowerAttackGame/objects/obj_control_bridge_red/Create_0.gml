@@ -4,4 +4,4 @@
 // Inherit the parent event
 event_inherited();
 
-player = obj_game.redPlayer;
+team = obj_game.redTeam;

@@ -82,7 +82,7 @@
             "Key": "1940a4d4-51db-406c-a406-fc1275131538",
             "Value": {
                 "id": "bab9df9b-9aef-4baa-af18-1728fd31fc3e",
-                "resourcePath": "objects\\obj_player_red\\obj_player_red.yy",
+                "resourcePath": "objects\\obj_team_red\\obj_team_red.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -194,7 +194,7 @@
             "Key": "3749178b-c6e3-48a7-8a39-829f0e2fd0a4",
             "Value": {
                 "id": "c8822e9d-341d-4340-8fb0-1e9183e17fd7",
-                "resourcePath": "objects\\obj_lobby_user\\obj_lobby_user.yy",
+                "resourcePath": "objects\\obj_lobby_player\\obj_lobby_player.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -482,7 +482,7 @@
             "Key": "7dcde94a-d67f-4493-a5c1-e6f3281a9ae6",
             "Value": {
                 "id": "9660dbaf-891c-43f9-af45-40be147eca0c",
-                "resourcePath": "objects\\obj_player\\obj_player.yy",
+                "resourcePath": "objects\\obj_team\\obj_team.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -546,7 +546,7 @@
             "Key": "96b79ef1-4c76-4a03-816b-8f58b936a994",
             "Value": {
                 "id": "cfb02a64-61f4-4170-8ee4-abba64af87d1",
-                "resourcePath": "objects\\obj_player_blue\\obj_player_blue.yy",
+                "resourcePath": "objects\\obj_team_blue\\obj_team_blue.yy",
                 "resourceType": "GMObject"
             }
         },

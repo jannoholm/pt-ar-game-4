@@ -1,7 +1,7 @@
 /// @description Parent for draggable objects
 depth = 1;
 
-player = noone;
+team = noone;
 
 enum TokenType {
 	BRIDGE = 0,

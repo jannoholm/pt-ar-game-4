@@ -8,18 +8,18 @@ var positionInTeam = buffer_read( buffer, buffer_s32 );
 trace( "Received SetUserOnMapRequest: ", userId, userName, team, positionInTeam );
 
 if( instance_exists( obj_lobby ) && obj_lobby.currentPhase == LobbyPhase.WAITING_PLAYERS ){
-	var lobbyUser = instance_create_layer( 0, 0, "lyr_lobby", obj_lobby_user );
-	lobbyUser.userId = userId;
-	lobbyUser.userName = userName;
+	var lobbyPlayer = instance_create_layer( 0, 0, "lyr_lobby", obj_lobby_player );
+	lobbyPlayer.playerId = userId;
+	lobbyPlayer.playerName = userName;
 
 	if( team == Team.RED && positionInTeam == Position.TOP ){
-		obj_lobby.userRedOne = lobbyUser;
+		obj_lobby.playerRedOne = lobbyPlayer;
 	} else if( team == Team.RED && positionInTeam == Position.BOTTOM ){
-		obj_lobby.userRedTwo = lobbyUser;
+		obj_lobby.playerRedTwo = lobbyPlayer;
 	} else if( team == Team.BLUE && positionInTeam == Position.TOP ){
-		obj_lobby.userBlueOne = lobbyUser;
+		obj_lobby.playerBlueOne = lobbyPlayer;
 	} else if( team == Team.BLUE && positionInTeam == Position.BOTTOM ){
-		obj_lobby.userBlueTwo = lobbyUser;
+		obj_lobby.playerBlueTwo = lobbyPlayer;
 	} else {
 		trace( "Unknown team/position combination" );	
 	}

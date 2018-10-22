@@ -9,7 +9,7 @@ if( obj_game.currentPhase != GamePhase.GAME ){
 }
 
 // #TODO: Take into account the points to be recieved during charge
-if( targetBridge.shield <= 0 && player.actionPoints > 10 ) {
+if( targetBridge.shield <= 0 && team.actionPoints > 10 ) {
 	// Shield is down start counting
 	if( colliding ){
 		chargeUp++;	
@@ -19,14 +19,14 @@ if( targetBridge.shield <= 0 && player.actionPoints > 10 ) {
 	
 	if( chargeUp > 2 * room_speed ) {
 		show_debug_message("CHARGE COMPLETE!");
-		player.actionPoints -= 10;
+		team.actionPoints -= 10;
 		chargeUp = 0;
 		with( targetBridge ) {
 			alarm_set( fixOrBreakAlarmIndx, 1 );
 		}
 	}
 } else {
-	// If bridge went under protection by another player action
+	// If bridge went under protection by another team action
 	chargeUp = 0;
 }
 
