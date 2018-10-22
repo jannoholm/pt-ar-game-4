@@ -211,7 +211,7 @@ public final class WebListener {
         try {
             if (METHOD_POST.equals(httpExchange.getRequestMethod()) && path.trim().length() == 0) {
                 Map<String, String> params = parsePostParameters(httpExchange);
-                String qr = params.get("QR");
+                String qr = params.get("qrCode");
                 if (qr != null) qr = qr.trim().toUpperCase();
                 int position = Integer.parseInt(params.get("position"));
 
