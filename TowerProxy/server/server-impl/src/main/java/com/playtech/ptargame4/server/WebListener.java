@@ -207,22 +207,44 @@ public final class WebListener {
     }
 
     private void processControlUser(HttpExchange httpExchange, String path) throws IOException {
-        logger.info("processControlUser do");
         try {
             if (METHOD_POST.equals(httpExchange.getRequestMethod()) && path.trim().length() == 0) {
                 Map<String, String> params = parsePostParameters(httpExchange);
-                String qr = params.get("qrCode");
-                if (qr != null) qr = qr.trim().toUpperCase();
+                String qrCode = params.get("qrCode");
+                if (qrCode != null) qrCode = qrCode.trim();
                 int position = Integer.parseInt(params.get("position"));
 
-                // TODO: resolve QR to user and
+                // find user
+                User user = databaseAccess.getUserDatabase().getUser(qrCode);
+                if (user == null) {
+                    throw new HTTPException(HttpURLConnection.HTTP_NOT_FOUND);
+                }
 
                 for (Session session : clientRegistry.getTableSessions() ) {
                     SetUserOnMapRequest request = messageParser.createMessage(SetUserOnMapRequest.class);
-                    request.setPositionInTeam(1);
-                    request.setTeam(Team.RED);
-                    request.setUserId(1);
-                    request.setUserName("test");
+                    request.setUserId(user.getId());
+                    request.setUserName(user.getName());
+                    switch (position) {
+                        case 0:
+                            request.setPositionInTeam(0);
+                            request.setTeam(Team.RED);
+                            break;
+                        case 1:
+                            request.setPositionInTeam(1);
+                            request.setTeam(Team.RED);
+                            break;
+                        case 2:
+                            request.setPositionInTeam(0);
+                            request.setTeam(Team.BLUE);
+                            break;
+                        case 3:
+                            request.setPositionInTeam(1);
+                            request.setTeam(Team.BLUE);
+                            break;
+                        default:
+                            throw new HTTPException(HttpURLConnection.HTTP_BAD_REQUEST);
+
+                    }
                     session.sendMessage(request);
                 }
 
@@ -243,7 +265,7 @@ public final class WebListener {
             if (METHOD_POST.equals(httpExchange.getRequestMethod()) && path.trim().length() == 0) {
                 Map<String, String> params = parsePostParameters(httpExchange);
                 String qrCode = params.get("qrCode");
-                if (qrCode != null) qrCode = qrCode.trim().toUpperCase();
+                if (qrCode != null) qrCode = qrCode.trim();
                 int x = Integer.parseInt(params.get("x"));
                 int y = Integer.parseInt(params.get("y"));
 
@@ -326,10 +348,8 @@ public final class WebListener {
             Map<String, String> params = parsePostParameters(httpExchange);
             String name = params.get("name");
             String email = params.get("email");
-            String qrCode = params.get("qrCode");
             if (name != null) name = name.trim().toUpperCase();
             if (email != null) email = email.trim();
-            if (qrCode != null) qrCode = qrCode.trim();
 
             // validate
             if (StringUtil.isNull(name)) throw new NullPointerException("Name cannot be null.");
@@ -340,7 +360,7 @@ public final class WebListener {
                 }
             }
 
-            User user = databaseAccess.getUserDatabase().addUser(name, email, User.UserType.REGULAR, qrCode);
+            User user = databaseAccess.getUserDatabase().addUser(name, email, User.UserType.REGULAR, QrGenerator.generateQr());
             writeResponse(httpExchange, HttpURLConnection.HTTP_OK, new UserWrapper(user));
         } catch (HTTPException e) {
             logger.log(Level.INFO, "Error processing request", e);
@@ -609,10 +629,12 @@ public final class WebListener {
         private final int id;
         private final String name;
         private final String email;
+        private final String qrCode;
         UserWrapper(User user) {
             this.id = user.getId();
             this.name = user.getName();
             this.email = user.getEmail();
+            this.qrCode = user.getQrCode();
         }
 
         public int getId() {
@@ -625,6 +647,10 @@ public final class WebListener {
 
         public String getEmail() {
             return email;
+        }
+
+        public String getQrCode() {
+            return qrCode;
         }
     }
 

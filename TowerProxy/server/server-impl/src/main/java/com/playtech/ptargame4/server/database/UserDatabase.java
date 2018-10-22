@@ -11,6 +11,8 @@ public interface UserDatabase {
 
     User getUser(int id);
 
+    User getUser(String qrCode);
+
     void updateUser(User user);
 
     Collection<User> getUsers();

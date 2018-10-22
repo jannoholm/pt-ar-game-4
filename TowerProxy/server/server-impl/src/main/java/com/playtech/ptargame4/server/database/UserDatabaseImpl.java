@@ -156,6 +156,7 @@ public class UserDatabaseImpl implements UserDatabase {
 
     public User addUser(String name, String email, User.UserType userType, String qrCode) {
         if (StringUtil.isNull(name)) throw new NullPointerException("Name cannot be null.");
+        if (StringUtil.isNull(qrCode)) throw new NullPointerException("qrCode cannot be null.");
         User user = new User(idGenerator.incrementAndGet(), name.toUpperCase().trim(), email, false, userType, qrCode);
         synchronized (this) {
             pendingWrites.add(user);
@@ -172,8 +173,20 @@ public class UserDatabaseImpl implements UserDatabase {
     }
 
     @Override
+    public User getUser(String qrCode) {
+        ArrayList<User> match = new ArrayList<>();
+        for (User user : getUsers()) {
+            if (user.getQrCode().equals(qrCode)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public void updateUser(User user) {
         if (StringUtil.isNull(user.getName())) throw new NullPointerException("Name cannot be null.");
+        if (StringUtil.isNull(user.getQrCode())) throw new NullPointerException("QrCode cannot be null.");
         synchronized (this) {
             User existing = userMap.get(user.getId());
             if (existing != null) {
