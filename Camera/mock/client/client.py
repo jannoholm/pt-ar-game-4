@@ -67,7 +67,7 @@ class FieldCanvas (Frame):
         ob = self.get_object_coordinates()
         for obj in ob:
             new_x = float(new_x_size) / self.width * ob[obj][0]
-            new_y = float(new_y_size) / self.height * ob[obj][0]
+            new_y = float(new_y_size) / self.height * ob[obj][1]
             res[obj] = (int(new_x), int(new_y))
         return res
 
