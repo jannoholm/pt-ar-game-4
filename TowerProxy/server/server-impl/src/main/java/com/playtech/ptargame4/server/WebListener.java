@@ -30,11 +30,23 @@ import java.util.logging.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.playtech.ptargame.common.callback.ClientRegistry;
+import com.playtech.ptargame.common.message.MessageParser;
+import com.playtech.ptargame.common.session.Session;
 import com.playtech.ptargame.common.util.StringUtil;
+import com.playtech.ptargame4.api.lobby.Team;
+import com.playtech.ptargame4.api.table.SetUserOnMapRequest;
+import com.playtech.ptargame4.api.token.TokenLocationUpdateMessage;
+import com.playtech.ptargame4.api.token.TokenType;
 import com.playtech.ptargame4.server.database.DatabaseAccess;
+import com.playtech.ptargame4.server.database.model.ActionToken;
 import com.playtech.ptargame4.server.database.model.EloRating;
 import com.playtech.ptargame4.server.database.model.User;
 import com.playtech.ptargame4.server.exception.SystemException;
+import com.playtech.ptargame4.server.session.ClientSession;
+import com.playtech.ptargame4.server.util.ActionTokenTypeConverter;
+import com.playtech.ptargame4.server.util.QrGenerator;
+import com.playtech.ptargame4.server.util.TeamConverter;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
@@ -52,6 +64,8 @@ public final class WebListener {
     private static final String CTX_USER = "/player";
     private static final String CTX_HTML = "/html";
     private static final String CTX_SERVER = "/server";
+    private static final String CTX_CONTROL_USER = "/control/user";
+    private static final String CTX_CONTROL_POSITION = "/control/position";
     private static final String METHOD_GET = "GET";
     private static final String METHOD_POST = "POST";
     private static final String METHOD_DELETE = "DELETE";
@@ -62,10 +76,14 @@ public final class WebListener {
     private final int port;
     private final HttpServer s;
     private final DatabaseAccess databaseAccess;
+    private final ClientRegistry clientRegistry;
+    private final MessageParser messageParser;
 
-    public WebListener(int port, DatabaseAccess databaseAccess) throws IOException {
+    public WebListener(int port, DatabaseAccess databaseAccess, ClientRegistry clientRegistry, MessageParser messageParser) throws IOException {
         this.port = port;
         this.databaseAccess = databaseAccess;
+        this.clientRegistry = clientRegistry;
+        this.messageParser = messageParser;
         s = HttpServer.create(new InetSocketAddress(getPort()), 0);
     }
 
@@ -82,6 +100,12 @@ public final class WebListener {
 
         HttpContext ctxCompetitor = s.createContext(CTX_USER);
         ctxCompetitor.setHandler(this::handleExchange);
+
+        HttpContext ctxControlUser= s.createContext(CTX_CONTROL_USER);
+        ctxControlUser.setHandler(this::handleExchange);
+
+        HttpContext ctxControlPosition = s.createContext(CTX_CONTROL_POSITION);
+        ctxControlPosition.setHandler(this::handleExchange);
 
         HttpContext ctxHtml = s.createContext(CTX_HTML);
         ctxHtml.setHandler(this::handleExchange);
@@ -113,6 +137,12 @@ public final class WebListener {
                     break;
                 case CTX_USER:
                     processUser(httpExchange, path);
+                    break;
+                case CTX_CONTROL_POSITION:
+                    processControlPosition(httpExchange, path);
+                    break;
+                case CTX_CONTROL_USER:
+                    processControlUser(httpExchange, path);
                     break;
                 case CTX_HTML:
                     processHtml(httpExchange, path);
@@ -176,6 +206,72 @@ public final class WebListener {
         }
     }
 
+    private void processControlUser(HttpExchange httpExchange, String path) throws IOException {
+        logger.info("processControlUser do");
+        try {
+            if (METHOD_POST.equals(httpExchange.getRequestMethod()) && path.trim().length() == 0) {
+                Map<String, String> params = parsePostParameters(httpExchange);
+                String qr = params.get("QR");
+                if (qr != null) qr = qr.trim().toUpperCase();
+                int position = Integer.parseInt(params.get("position"));
+
+                // TODO: resolve QR to user and
+
+                for (Session session : clientRegistry.getTableSessions() ) {
+                    SetUserOnMapRequest request = messageParser.createMessage(SetUserOnMapRequest.class);
+                    request.setPositionInTeam(1);
+                    request.setTeam(Team.RED);
+                    request.setUserId(1);
+                    request.setUserName("test");
+                    session.sendMessage(request);
+                }
+
+                writeResponse(httpExchange, HttpURLConnection.HTTP_OK, "OK");
+            }
+        } catch (HTTPException e) {
+            logger.log(Level.INFO, "Invalid request", e);
+            writeResponse(httpExchange, e.getStatusCode());
+        } catch (Exception e) {
+            logger.log(Level.INFO, "Invalid request", e);
+            writeResponse(httpExchange, HttpURLConnection.HTTP_BAD_REQUEST);
+        }
+    }
+
+
+    private void processControlPosition(HttpExchange httpExchange, String path) throws IOException {
+        try {
+            if (METHOD_POST.equals(httpExchange.getRequestMethod()) && path.trim().length() == 0) {
+                Map<String, String> params = parsePostParameters(httpExchange);
+                String qrCode = params.get("qrCode");
+                if (qrCode != null) qrCode = qrCode.trim().toUpperCase();
+                int x = Integer.parseInt(params.get("x"));
+                int y = Integer.parseInt(params.get("y"));
+
+                ActionToken actionToken = databaseAccess.getActionTokenDatabase().getActionToken(qrCode);
+                if (actionToken == null) {
+                    throw new HTTPException(HttpURLConnection.HTTP_NOT_FOUND);
+                }
+                for (Session session : clientRegistry.getTableSessions() ) {
+                    TokenLocationUpdateMessage message = messageParser.createMessage(TokenLocationUpdateMessage.class);
+                    message.setTokenType(ActionTokenTypeConverter.convert(actionToken.getTokenType()));
+                    message.setTokenIndex(actionToken.getIndex());
+                    message.setTokenId(actionToken.getQrCode());
+                    message.setTeam(TeamConverter.convert(actionToken.getTeam()));
+                    message.setLocationX(x);
+                    message.setLocationY(y);
+                    session.sendMessage(message);
+                }
+
+                writeResponse(httpExchange, HttpURLConnection.HTTP_OK, "OK");
+            }
+        } catch (HTTPException e) {
+            logger.log(Level.INFO, "Invalid request", e);
+            writeResponse(httpExchange, e.getStatusCode());
+        } catch (Exception e) {
+            logger.log(Level.INFO, "Invalid request", e);
+            writeResponse(httpExchange, HttpURLConnection.HTTP_BAD_REQUEST);
+        }
+    }
     private void processHtml(HttpExchange httpExchange, String path) throws IOException {
         File file = new File(HTML_DIR + File.separator + path);
         if (file.exists()) {
@@ -230,8 +326,10 @@ public final class WebListener {
             Map<String, String> params = parsePostParameters(httpExchange);
             String name = params.get("name");
             String email = params.get("email");
+            String qrCode = params.get("qrCode");
             if (name != null) name = name.trim().toUpperCase();
             if (email != null) email = email.trim();
+            if (qrCode != null) qrCode = qrCode.trim();
 
             // validate
             if (StringUtil.isNull(name)) throw new NullPointerException("Name cannot be null.");
@@ -242,7 +340,7 @@ public final class WebListener {
                 }
             }
 
-            User user = databaseAccess.getUserDatabase().addUser(name, email, User.UserType.REGULAR);
+            User user = databaseAccess.getUserDatabase().addUser(name, email, User.UserType.REGULAR, qrCode);
             writeResponse(httpExchange, HttpURLConnection.HTTP_OK, new UserWrapper(user));
         } catch (HTTPException e) {
             logger.log(Level.INFO, "Error processing request", e);
@@ -273,7 +371,8 @@ public final class WebListener {
                     name == null ? user.getName() : name,
                     email == null ? user.getEmail() : email,
                     user.isHidden(),
-                    internal == null ? user.getUserType() : User.UserType.getUserType(Integer.valueOf(internal))
+                    internal == null ? user.getUserType() : User.UserType.getUserType(Integer.valueOf(internal)),
+                    user.getQrCode()
             );
 
             // update
@@ -299,7 +398,7 @@ public final class WebListener {
             if (user == null || user.isHidden()) throw new HTTPException(HttpURLConnection.HTTP_NOT_FOUND);
 
             // update hidden
-            user = new User(user.getId(), user.getName(), user.getEmail(), true, user.getUserType());
+            user = new User(user.getId(), user.getName(), user.getEmail(), true, user.getUserType(), QrGenerator.generateQr());
 
             // update
             databaseAccess.getUserDatabase().updateUser(user);

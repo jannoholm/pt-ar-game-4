@@ -55,44 +55,11 @@ public class UserDatabaseImpl implements UserDatabase {
                     "CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " " +
                             "(ID INT PRIMARY KEY     NOT NULL, " +
                             " NAME           TEXT    NOT NULL, " +
-                            " EMAIL          TEXT    NOT NULL)";
+                            " EMAIL          TEXT    NOT NULL, " +
+                            " HIDDEN         INT     NOT NULL DEFAULT 0, " +
+                            " INTERNAL       INT     NOT NULL DEFAULT 0, " +
+                            " QR_CODE        TEXT    NOT NULL)";
             stmt.executeUpdate(sql);
-
-            // check if hidden field already exists
-            boolean alterNeeded = true;
-            sql = "PRAGMA table_info( " + TABLE_USERS + " )";
-            try (ResultSet result = stmt.executeQuery(sql)) {
-                while (result.next()) {
-                    if (result.getString("NAME").equals("HIDDEN")) {
-                        alterNeeded = false;
-                        break;
-                    }
-                }
-            }
-
-            // add hidden field. needed for backward compatibility
-            if (alterNeeded) {
-                sql = "ALTER TABLE " + TABLE_USERS + " ADD COLUMN HIDDEN INT NOT NULL DEFAULT 0";
-                stmt.executeUpdate(sql);
-            }
-
-            // check if hidden field already exists
-            alterNeeded = true;
-            sql = "PRAGMA table_info( " + TABLE_USERS + " )";
-            try (ResultSet result = stmt.executeQuery(sql)) {
-                while (result.next()) {
-                    if (result.getString("NAME").equals("INTERNAL")) {
-                        alterNeeded = false;
-                        break;
-                    }
-                }
-            }
-
-            // add hidden field. needed for backward compatibility
-            if (alterNeeded) {
-                sql = "ALTER TABLE " + TABLE_USERS + " ADD COLUMN INTERNAL INT NOT NULL DEFAULT 0";
-                stmt.executeUpdate(sql);
-            }
 
             logger.info("Users database created!");
         } catch (Exception e) {
@@ -105,7 +72,7 @@ public class UserDatabaseImpl implements UserDatabase {
     private void readTables() {
         Connection connection = dbInit.allocateConnection();
         try (Statement stmt = connection.createStatement()) {
-            String sql = "select ID, NAME, EMAIL, HIDDEN, INTERNAL from " + TABLE_USERS + " order by id";
+            String sql = "select ID, NAME, EMAIL, HIDDEN, INTERNAL, QR_CODE from " + TABLE_USERS + " order by id";
             ResultSet result = stmt.executeQuery(sql);
             while (result.next()) {
                 int id = result.getInt("ID");
@@ -113,7 +80,8 @@ public class UserDatabaseImpl implements UserDatabase {
                 String email = result.getString("EMAIL");
                 int hidden = result.getInt("HIDDEN");
                 int internal = result.getInt("INTERNAL");
-                User user = new User(id, name.toUpperCase(), email, hidden > 0, User.UserType.getUserType(internal));
+                String qrCode = result.getString("QR_CODE");
+                User user = new User(id, name.toUpperCase(), email, hidden > 0, User.UserType.getUserType(internal), qrCode);
                 userMap.put(user.getId(), user);
                 logger.info("User read from database: " + user);
                 if (idGenerator.get() < id) {
@@ -137,8 +105,8 @@ public class UserDatabaseImpl implements UserDatabase {
                 }
                 if (todo.size() > 0) {
                     String selectSql = "select count(1) from " + TABLE_USERS + " where ID=?";
-                    String insertSql = "insert into " + TABLE_USERS + " (ID, NAME, EMAIL, HIDDEN, INTERNAL) values (?, ?, ?, ?, ?)";
-                    String updateSql = "update " + TABLE_USERS + " set NAME=?, EMAIL=?, HIDDEN=?, INTERNAL=? where ID=?";
+                    String insertSql = "insert into " + TABLE_USERS + " (ID, NAME, EMAIL, HIDDEN, INTERNAL, QR_CODE) values (?, ?, ?, ?, ?, ?)";
+                    String updateSql = "update " + TABLE_USERS + " set NAME=?, EMAIL=?, HIDDEN=?, INTERNAL=?, QR_CODE=? where ID=?";
                     Connection connection = dbInit.allocateConnection();
                     try (
                             PreparedStatement selectStmt = connection.prepareStatement(selectSql);
@@ -155,7 +123,8 @@ public class UserDatabaseImpl implements UserDatabase {
                                 updateStmt.setString(2, user.getEmail());
                                 updateStmt.setInt(3, user.isHidden() ? 1 : 0);
                                 updateStmt.setInt(4, user.getUserType().ordinal());
-                                updateStmt.setInt(5, user.getId());
+                                updateStmt.setString(5, user.getQrCode());
+                                updateStmt.setInt(6, user.getId());
                                 updateStmt.executeUpdate();
                             } else {
                                 // insert
@@ -164,6 +133,7 @@ public class UserDatabaseImpl implements UserDatabase {
                                 insertStmt.setString(3, user.getEmail());
                                 insertStmt.setInt(4, user.isHidden() ? 1 : 0);
                                 insertStmt.setInt(5, user.getUserType().ordinal());
+                                insertStmt.setString(6, user.getQrCode());
                                 insertStmt.executeUpdate();
                             }
                             logger.info("User written to database: " + user);
@@ -184,9 +154,9 @@ public class UserDatabaseImpl implements UserDatabase {
         }
     }
 
-    public User addUser(String name, String email, User.UserType userType) {
+    public User addUser(String name, String email, User.UserType userType, String qrCode) {
         if (StringUtil.isNull(name)) throw new NullPointerException("Name cannot be null.");
-        User user = new User(idGenerator.incrementAndGet(), name.toUpperCase().trim(), email, false, userType);
+        User user = new User(idGenerator.incrementAndGet(), name.toUpperCase().trim(), email, false, userType, qrCode);
         synchronized (this) {
             pendingWrites.add(user);
             userMap.put(user.getId(), user);
@@ -207,7 +177,7 @@ public class UserDatabaseImpl implements UserDatabase {
         synchronized (this) {
             User existing = userMap.get(user.getId());
             if (existing != null) {
-                user = new User(user.getId(), user.getName().toUpperCase(), user.getEmail(), user.isHidden(), user.getUserType());
+                user = new User(user.getId(), user.getName().toUpperCase(), user.getEmail(), user.isHidden(), user.getUserType(), user.getQrCode());
                 userMap.put(user.getId(), user);
                 pendingWrites.add(user);
                 logger.info("Adding to pending writes");

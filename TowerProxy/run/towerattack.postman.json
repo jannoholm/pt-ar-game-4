@@ -1,8 +1,8 @@
 {
 	"variables": [],
 	"info": {
-		"name": "soccar",
-		"_postman_id": "d5af990c-6007-f03a-c434-bc77cdf21318",
+		"name": "towerattack",
+		"_postman_id": "7243fb37-ba39-5ead-6bc6-c5b776ea5147",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -31,6 +31,78 @@
 						{
 							"key": "email",
 							"value": "email1@somewhere.com",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Create user in soccar"
+			},
+			"response": []
+		},
+		{
+			"name": "set user in game",
+			"request": {
+				"url": "http://localhost:8101/user",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "name-djdsfsfd",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "email1@somewhere.com",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Create user in soccar"
+			},
+			"response": []
+		},
+		{
+			"name": "set actiontoken position",
+			"request": {
+				"url": "http://localhost:8101/control/position",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "qrCode",
+							"value": "3",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "x",
+							"value": "600",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "y",
+							"value": "300",
 							"description": "",
 							"type": "text"
 						}
@@ -145,7 +217,10 @@
 						"description": ""
 					}
 				],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": "Create user in soccar"
 			},
 			"response": []
@@ -162,7 +237,10 @@
 						"description": ""
 					}
 				],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": "Create user in soccar"
 			},
 			"response": []

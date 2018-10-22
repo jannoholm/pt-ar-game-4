@@ -58,7 +58,7 @@ public class Starter {
         proxyListener = new NioServerListener(connectionFactory, 8100);
         new Thread(proxyListener.start(), "proxyListener").start();
 
-        webListener = new WebListener(8101, databaseAccess);
+        webListener = new WebListener(8101, databaseAccess, clientRegistry, messageParser);
         webListener.start();
     }
 
