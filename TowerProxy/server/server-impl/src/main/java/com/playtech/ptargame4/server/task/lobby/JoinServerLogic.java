@@ -13,6 +13,7 @@ import com.playtech.ptargame4.server.exception.SystemException;
 import com.playtech.ptargame4.server.session.ClientSession;
 import com.playtech.ptargame4.server.task.AbstractLogic;
 import com.playtech.ptargame4.server.util.ClientTypeConverter;
+import com.playtech.ptargame4.server.util.QrGenerator;
 
 import java.util.Collection;
 
@@ -48,7 +49,7 @@ public class JoinServerLogic extends AbstractLogic {
         if (users.size() == 0) {
             // register user
             User.UserType userType = request.getClientType() == JoinServerRequest.ClientType.BOT ? User.UserType.BOT : User.UserType.REGULAR;
-            user = getLogicResources().getDatabaseAccess().getUserDatabase().addUser(request.getName(), request.getEmail(), userType);
+            user = getLogicResources().getDatabaseAccess().getUserDatabase().addUser(request.getName(), request.getEmail(), userType, QrGenerator.generateQr());
         } else {
             // user first user
             user = users.iterator().next();

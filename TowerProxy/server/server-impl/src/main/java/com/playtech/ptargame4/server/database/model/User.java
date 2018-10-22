@@ -18,13 +18,15 @@ public class User {
     private final String email;
     private final boolean hidden;
     private final UserType userType;
+    private final String qrCode;
 
-    public User(int id, String name, String email, boolean hidden, UserType userType) {
+    public User(int id, String name, String email, boolean hidden, UserType userType, String qrCode) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.hidden = hidden;
         this.userType = userType;
+        this.qrCode = qrCode;
     }
 
     public int getId() {
@@ -47,6 +49,10 @@ public class User {
         return userType;
     }
 
+    public String getQrCode() {
+        return qrCode;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -55,6 +61,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", hidden='" + hidden + '\'' +
                 ", userType='" + userType + '\'' +
+                ", qrCode='" + qrCode + '\'' +
                 '}';
     }
 }

@@ -8,4 +8,5 @@ import java.util.Collection;
 public interface ClientRegistry {
     Collection<Session> getClientSession(String clientId);
     String getName(String clientId);
+    Collection<Session> getTableSessions();
 }
