@@ -23,7 +23,7 @@ currentPhase = LobbyPhase.INIT;
 
 
 redTeam = instance_create_layer(20, 20, "lyr_gameplay", obj_team_red);
-blueTeam = instance_create_layer(920, 20, "lyr_gameplay", obj_team_blue);
+blueTeam = instance_create_layer(750, 20, "lyr_gameplay", obj_team_blue);
 
 redTower = instance_create_layer(60, 320, "lyr_elements", obj_tower_red);
 blueTower = instance_create_layer(980, 320, "lyr_elements", obj_tower_blue);

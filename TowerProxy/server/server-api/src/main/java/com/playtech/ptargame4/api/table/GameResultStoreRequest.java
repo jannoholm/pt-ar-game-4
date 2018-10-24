@@ -19,7 +19,6 @@ public class GameResultStoreRequest extends AbstractRequest {
 
     private String gameId;
     private WinnerTeam winnerTeam;
-    private boolean suddenDeath;
     private int gameTime;
     private Collection<GameResultPlayerActivity> playerResults = new ArrayList<>();
 
@@ -31,11 +30,10 @@ public class GameResultStoreRequest extends AbstractRequest {
         super.parse(messageData);
         gameId = StringUtil.readUTF8String(messageData);
         winnerTeam = WinnerTeam.values()[messageData.get()];
-        suddenDeath = messageData.get() > 0;
         gameTime = messageData.getInt();
         int size = messageData.getInt();
         for (int i = 0; i < size; ++i) {
-            GameResultPlayerActivity playerInfo = new GameResultPlayerActivity();
+            GameResultPlayerActivity playerInfo = new GameResultPlayerActivity(getHeader());
             playerInfo.parse(messageData);
             playerResults.add(playerInfo);
         }
@@ -46,7 +44,6 @@ public class GameResultStoreRequest extends AbstractRequest {
         super.format(messageData);
         StringUtil.writeUTF8String(gameId, messageData);
         messageData.put((byte)winnerTeam.ordinal());
-        messageData.put((byte)(suddenDeath ? 1 : 0));
         messageData.putInt(gameTime);
         messageData.putInt(playerResults.size());
         for (GameResultPlayerActivity playerInfo : playerResults) {
@@ -59,7 +56,6 @@ public class GameResultStoreRequest extends AbstractRequest {
         super.toStringImpl(s);
         s.append(", gameId=").append(gameId);
         s.append(", winnerTeam=").append(winnerTeam);
-        s.append(", suddenDeath=").append(suddenDeath);
         s.append(", gameTime=").append(gameTime);
         s.append(", players={");
         for (GameResultPlayerActivity playerInfo : playerResults) {
@@ -80,14 +76,6 @@ public class GameResultStoreRequest extends AbstractRequest {
 
     public WinnerTeam getWinnerTeam() {
         return winnerTeam;
-    }
-
-    public boolean isSuddenDeath() {
-        return suddenDeath;
-    }
-
-    public void setSuddenDeath(boolean suddenDeath) {
-        this.suddenDeath = suddenDeath;
     }
 
     public int getGameTime() {

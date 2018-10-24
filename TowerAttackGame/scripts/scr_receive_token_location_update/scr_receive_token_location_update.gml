@@ -14,9 +14,9 @@ var token = noone;
 
 if( instance_exists( obj_game ) && obj_game.currentPhase == GamePhase.GAME ){
 
-	if( team == Team.RED && tokenType == TokenType.BRIDGE ){
+	if( team == TeamId.RED && tokenType == TokenType.BRIDGE ){
 		var token = instance_find( obj_action_bridge_red, tokenIndex );
-	} else if( team == Team.BLUE && tokenType == TokenType.BRIDGE ){
+	} else if( team == TeamId.BLUE && tokenType == TokenType.BRIDGE ){
 		var token = instance_find( obj_action_bridge_blue, tokenIndex );
 	} else {
 		trace( "Unknown team/token combination" );	

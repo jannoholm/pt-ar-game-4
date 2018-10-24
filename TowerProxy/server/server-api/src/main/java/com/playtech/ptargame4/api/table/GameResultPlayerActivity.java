@@ -1,120 +1,228 @@
 package com.playtech.ptargame4.api.table;
 
 
+import com.playtech.ptargame.common.message.MessageHeader;
+import com.playtech.ptargame4.api.AbstractRequest;
 import com.playtech.ptargame4.api.lobby.Team;
 
 import java.nio.ByteBuffer;
 
-public class GameResultPlayerActivity {
+public class GameResultPlayerActivity extends AbstractRequest {
 
     private int userId;
     private Team team;
     private byte positionInTeam;
-    private int goals;
-    private int bulletHits;
-    private int ballTouches;
-    private int boostTouches;
+    private int towerHealth;
+    private int towerEnemeyHealth;
+    private int bridgesBuilt;
+    private int bridgesBuiltPoints;
+    private int bridgesDestroyed;
+    private int bridgesDestroyedPoints;
+    private int bridgeSoldierSaves;
+    private int bridgeSoldierDeaths;
+    private int bridgeSoldierEnemySaves;
+    private int bridgeSoldierEnemyKills;
+    
+
+    public GameResultPlayerActivity(MessageHeader header) {
+        super(header);
+    }
+
 
     public void parse(ByteBuffer messageData) {
-        // make sure we read our needed bytes and all our expected bytes
-        int byteCount = messageData.getInt();
-        byte[] bytes = new byte[byteCount];
-        messageData.get(bytes);
-        messageData = ByteBuffer.wrap(bytes).order(messageData.order());
-
+        super.parse(messageData);
+        
         // message data
         userId = messageData.getInt();
         team = Team.values()[messageData.get()];
         positionInTeam = messageData.get();
-        goals = messageData.getInt();
-        bulletHits = messageData.getInt();
-        ballTouches = messageData.getInt();
-        boostTouches = messageData.getInt();
+        towerHealth = messageData.getInt();
+        towerEnemeyHealth = messageData.getInt();
+        bridgesBuilt = messageData.getInt();
+        bridgesBuiltPoints = messageData.getInt();
+        bridgesDestroyed = messageData.getInt();
+        bridgesDestroyedPoints = messageData.getInt();
+        bridgeSoldierSaves = messageData.getInt();
+        bridgeSoldierDeaths = messageData.getInt();
+        bridgeSoldierEnemySaves = messageData.getInt();
+        bridgeSoldierEnemyKills = messageData.getInt();
     }
 
     public void format(ByteBuffer messageData) {
-        // remember old positionInTeam
-        int position = messageData.position();
-        // reserve space, but set some arbitrary value
-        messageData.putInt(0);
+		super.format(messageData);
 
         // data
         messageData.putInt(userId);
         messageData.put((byte)team.ordinal());
         messageData.put(positionInTeam);
-        messageData.putInt(goals);
-        messageData.putInt(bulletHits);
-        messageData.putInt(ballTouches);
-        messageData.putInt(boostTouches);
-
-        // fix length
-        messageData.putInt(position, messageData.position()-position-4);
+        messageData.putInt(towerHealth);
+        messageData.putInt(towerEnemeyHealth);
+        messageData.putInt(bridgesBuilt);
+        messageData.putInt(bridgesBuiltPoints);
+        messageData.putInt(bridgesDestroyed);
+        messageData.putInt(bridgesDestroyedPoints);
+        messageData.putInt(bridgeSoldierSaves);
+        messageData.putInt(bridgeSoldierDeaths);
+        messageData.putInt(bridgeSoldierEnemySaves);
+        messageData.putInt(bridgeSoldierEnemyKills);
     }
 
-    protected void toStringImpl(StringBuilder s) {
-        s.append("userId=").append(getUserId());
-        s.append(", team=").append(getTeam());
-        s.append(", pos=").append(getPositionInTeam());
-        s.append(", results=(").append(getGoals());
-        s.append(", ").append(getBulletHits());
-        s.append(", ").append(getBallTouches());
-        s.append(", ").append(getBoostTouches());
-        s.append(")");
-    }
+    protected void toStringImpl(StringBuilder builder) {
+		builder.append("userId=");
+		builder.append(userId);
+		builder.append(", team=");
+		builder.append(team);
+		builder.append(", positionInTeam=");
+		builder.append(positionInTeam);
+		builder.append(", towerHealth=");
+		builder.append(towerHealth);
+		builder.append(", towerEnemeyHealth=");
+		builder.append(towerEnemeyHealth);
+		builder.append(", bridgesBuilt=");
+		builder.append(bridgesBuilt);
+		builder.append(", bridgesBuiltPoints=");
+		builder.append(bridgesBuiltPoints);
+		builder.append(", bridgesDestroyed=");
+		builder.append(bridgesDestroyed);
+		builder.append(", bridgesDestroyedPoints=");
+		builder.append(bridgesDestroyedPoints);
+		builder.append(", bridgeSoldierSaves=");
+		builder.append(bridgeSoldierSaves);
+		builder.append(", bridgeSoldierDeaths=");
+		builder.append(bridgeSoldierDeaths);
+		builder.append(", bridgeSoldierEnemySaves=");
+		builder.append(bridgeSoldierEnemySaves);
+		builder.append(", bridgeSoldierEnemyKills=");
+		builder.append(bridgeSoldierEnemyKills);
+	}
 
-    public int getUserId() {
-        return userId;
-    }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+	public int getUserId() {
+		return userId;
+	}
 
-    public Team getTeam() {
-        return team;
-    }
 
-    public void setTeam(Team team) {
-        this.team = team;
-    }
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 
-    public byte getPositionInTeam() {
-        return positionInTeam;
-    }
 
-    public void setPositionInTeam(byte positionInTeam) {
-        this.positionInTeam = positionInTeam;
-    }
+	public Team getTeam() {
+		return team;
+	}
 
-    public int getGoals() {
-        return goals;
-    }
 
-    public void setGoals(int goals) {
-        this.goals = goals;
-    }
+	public void setTeam(Team team) {
+		this.team = team;
+	}
 
-    public int getBulletHits() {
-        return bulletHits;
-    }
 
-    public void setBulletHits(int bulletHits) {
-        this.bulletHits = bulletHits;
-    }
+	public byte getPositionInTeam() {
+		return positionInTeam;
+	}
 
-    public int getBallTouches() {
-        return ballTouches;
-    }
 
-    public void setBallTouches(int ballTouches) {
-        this.ballTouches = ballTouches;
-    }
+	public void setPositionInTeam(byte positionInTeam) {
+		this.positionInTeam = positionInTeam;
+	}
 
-    public int getBoostTouches() {
-        return boostTouches;
-    }
 
-    public void setBoostTouches(int boostTouches) {
-        this.boostTouches = boostTouches;
-    }
+	public int getTowerHealth() {
+		return towerHealth;
+	}
+
+
+	public void setTowerHealth(int towerHealth) {
+		this.towerHealth = towerHealth;
+	}
+
+
+	public int getTowerEnemeyHealth() {
+		return towerEnemeyHealth;
+	}
+
+
+	public void setTowerEnemeyHealth(int towerEnemeyHealth) {
+		this.towerEnemeyHealth = towerEnemeyHealth;
+	}
+
+
+	public int getBridgesBuilt() {
+		return bridgesBuilt;
+	}
+
+
+	public void setBridgesBuilt(int bridgesBuilt) {
+		this.bridgesBuilt = bridgesBuilt;
+	}
+
+
+	public int getBridgesBuiltPoints() {
+		return bridgesBuiltPoints;
+	}
+
+
+	public void setBridgesBuiltPoints(int bridgesBuiltPoints) {
+		this.bridgesBuiltPoints = bridgesBuiltPoints;
+	}
+
+
+	public int getBridgesDestroyed() {
+		return bridgesDestroyed;
+	}
+
+
+	public void setBridgesDestroyed(int bridgesDestroyed) {
+		this.bridgesDestroyed = bridgesDestroyed;
+	}
+
+
+	public int getBridgesDestroyedPoints() {
+		return bridgesDestroyedPoints;
+	}
+
+
+	public void setBridgesDestroyedPoints(int bridgesDestroyedPoints) {
+		this.bridgesDestroyedPoints = bridgesDestroyedPoints;
+	}
+
+
+	public int getBridgeSoldierSaves() {
+		return bridgeSoldierSaves;
+	}
+
+
+	public void setBridgeSoldierSaves(int bridgeSoldierSaves) {
+		this.bridgeSoldierSaves = bridgeSoldierSaves;
+	}
+
+
+	public int getBridgeSoldierDeaths() {
+		return bridgeSoldierDeaths;
+	}
+
+
+	public void setBridgeSoldierDeaths(int bridgeSoldierDeaths) {
+		this.bridgeSoldierDeaths = bridgeSoldierDeaths;
+	}
+
+
+	public int getBridgeSoldierEnemySaves() {
+		return bridgeSoldierEnemySaves;
+	}
+
+
+	public void setBridgeSoldierEnemySaves(int bridgeSoldierEnemySaves) {
+		this.bridgeSoldierEnemySaves = bridgeSoldierEnemySaves;
+	}
+
+
+	public int getBridgeSoldierEnemyKills() {
+		return bridgeSoldierEnemyKills;
+	}
+
+
+	public void setBridgeSoldierEnemyKills(int bridgeSoldierEnemyKills) {
+		this.bridgeSoldierEnemyKills = bridgeSoldierEnemyKills;
+	}
 }

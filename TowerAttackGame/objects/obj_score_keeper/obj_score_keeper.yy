@@ -1,24 +1,24 @@
 {
-    "id": "96b79ef1-4c76-4a03-816b-8f58b936a994",
+    "id": "fd00927a-796e-4071-b4d4-6d090e019f13",
     "modelName": "GMObject",
     "mvc": "1.0",
-    "name": "obj_team_blue",
+    "name": "obj_score_keeper",
     "eventList": [
         {
-            "id": "3bcae2a9-1985-4757-9d66-d7f81a986d79",
+            "id": "18fb0adf-25e1-40a5-bb2d-a5a6cee5168c",
             "modelName": "GMEvent",
             "mvc": "1.0",
             "IsDnD": false,
             "collisionObjectId": "00000000-0000-0000-0000-000000000000",
             "enumb": 0,
             "eventtype": 0,
-            "m_owner": "96b79ef1-4c76-4a03-816b-8f58b936a994"
+            "m_owner": "fd00927a-796e-4071-b4d4-6d090e019f13"
         }
     ],
     "maskSpriteId": "00000000-0000-0000-0000-000000000000",
     "overriddenProperties": null,
-    "parentObjectId": "7dcde94a-d67f-4493-a5c1-e6f3281a9ae6",
-    "persistent": false,
+    "parentObjectId": "00000000-0000-0000-0000-000000000000",
+    "persistent": true,
     "physicsAngularDamping": 0.1,
     "physicsDensity": 0.5,
     "physicsFriction": 0.2,

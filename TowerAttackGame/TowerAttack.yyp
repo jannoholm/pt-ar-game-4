@@ -95,6 +95,14 @@
             }
         },
         {
+            "Key": "1adaf646-093c-49e6-9720-7385720650f0",
+            "Value": {
+                "id": "022a7510-2883-45d4-95cf-2f3d260a7d85",
+                "resourcePath": "views\\1adaf646-093c-49e6-9720-7385720650f0.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "1ec23db5-b1a1-4f84-a446-4c8579495765",
             "Value": {
                 "id": "13deda1e-4d8c-44e9-9eb0-ba0b089b211e",
@@ -220,6 +228,14 @@
                 "id": "3d3bac9e-8524-45aa-86e7-52a72a3d303e",
                 "resourcePath": "views\\3f756373-680c-45fa-84ad-85ff705b19b5.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "45152d97-e2bd-4cab-a191-757b552e7639",
+            "Value": {
+                "id": "be277b30-639f-4072-864c-26b052c8b973",
+                "resourcePath": "scripts\\scr_receive_game_results_store_response\\scr_receive_game_results_store_response.yy",
+                "resourceType": "GMScript"
             }
         },
         {
@@ -364,6 +380,14 @@
                 "id": "43116817-fac5-41e6-9dcf-71472215545a",
                 "resourcePath": "sprites\\spr_action_bridge_blue\\spr_action_bridge_blue.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "60501c92-7e24-4bb4-9f7d-6771b81a9196",
+            "Value": {
+                "id": "935a7764-31c2-41a7-a4e4-f672d1f52342",
+                "resourcePath": "objects\\obj_team_player\\obj_team_player.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -767,6 +791,14 @@
             }
         },
         {
+            "Key": "c9fb4438-4ef9-447b-a50f-4c85555c4e3b",
+            "Value": {
+                "id": "29b24b04-b994-4d72-a37a-68e79b4deebe",
+                "resourcePath": "objects\\obj_score_team\\obj_score_team.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "cc148c7b-f631-4cda-a9ad-796a76060871",
             "Value": {
                 "id": "be2a2490-b388-4308-a68c-585f0c442547",
@@ -983,6 +1015,14 @@
             }
         },
         {
+            "Key": "f306716a-8a72-4987-b4b5-3d6f8cd9313a",
+            "Value": {
+                "id": "80b5273e-7b9f-4aae-a237-008677a654a0",
+                "resourcePath": "scripts\\scr_send_game_results_store_request\\scr_send_game_results_store_request.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "f418569b-3bdd-4706-a0e4-364317f54032",
             "Value": {
                 "id": "e463814a-18ec-4045-b512-de3b3428e17c",
@@ -1005,10 +1045,20 @@
                 "resourcePath": "scripts\\scr_send_host_table_game\\scr_send_host_table_game.yy",
                 "resourceType": "GMScript"
             }
+        },
+        {
+            "Key": "fd00927a-796e-4071-b4d4-6d090e019f13",
+            "Value": {
+                "id": "d49dac4d-2e0c-4702-8cf4-61ce1997a52f",
+                "resourcePath": "objects\\obj_score_keeper\\obj_score_keeper.yy",
+                "resourceType": "GMObject"
+            }
         }
     ],
     "script_order": [
         "c5716c61-e130-48ce-badd-1e6fe58e6a72",
+        "f306716a-8a72-4987-b4b5-3d6f8cd9313a",
+        "45152d97-e2bd-4cab-a191-757b552e7639",
         "fbb98d3d-2a7b-4a50-aae6-17b1cd472bc1",
         "5a9ece27-5abf-4801-a9c5-ea148b4a26ba",
         "c4677404-c8c9-4165-9e64-a6b225679630",

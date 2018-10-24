@@ -37,10 +37,11 @@ public class GameResultStoreLogic extends AbstractLogic {
 		ArrayList<Holder> allScores = new ArrayList<>();
 		for (GameResultPlayerActivity requestPlayer : request.getPlayerResults()) {
 			Map<ScoreCriteria, Integer> scoreMap = new HashMap<>();
-			scoreMap.put(ScoreCriteria.GOAL, requestPlayer.getGoals());
-			scoreMap.put(ScoreCriteria.BALL_HIT, requestPlayer.getBallTouches());
-			scoreMap.put(ScoreCriteria.BULLET_HIT, requestPlayer.getBulletHits());
-			scoreMap.put(ScoreCriteria.BOOST_HIT, requestPlayer.getBoostTouches());
+			// TODO: Update to tower attack, random examples here
+			scoreMap.put(ScoreCriteria.GOAL, requestPlayer.getTowerHealth());
+			scoreMap.put(ScoreCriteria.BALL_HIT, requestPlayer.getBridgesBuilt());
+			scoreMap.put(ScoreCriteria.BULLET_HIT, requestPlayer.getBridgesDestroyed());
+			scoreMap.put(ScoreCriteria.BOOST_HIT, requestPlayer.getBridgeSoldierEnemyKills());
 
 			EloRating rating = getLogicResources().getDatabaseAccess().getRatingDatabase()
 					.getRating(requestPlayer.getUserId());
@@ -55,11 +56,12 @@ public class GameResultStoreLogic extends AbstractLogic {
 			}
 		}
 
-        // calculate leaderboard position
-        calculateLeaderboardPosition(allScores);
+		// calculate leaderboard position
+		calculateLeaderboardPosition(allScores);
 
 		// do calculations
-		EloCalculatorImpl calculator = new EloCalculatorImpl(EloCalculatorImpl.DEFAULT_K_64, EloCalculatorImpl.DEFAULT_WEIGHT);
+		EloCalculatorImpl calculator = new EloCalculatorImpl(EloCalculatorImpl.DEFAULT_K_64,
+				EloCalculatorImpl.DEFAULT_WEIGHT);
 		calculator.calculatePlayerPoints(teamRed, teamBlue);
 
 		// update elo rating
@@ -80,8 +82,10 @@ public class GameResultStoreLogic extends AbstractLogic {
 			score.setScore(holder.getScore().getUserScore());
 			score.setEloRating(holder.getCurrentEloRating().getEloRating());
 			score.setLeaderboardPosition(holder.getCurrentLeaderboardPosition());
-			score.setEloRatingChange(holder.getCurrentEloRating().getEloRating()-holder.getPreviousEloRating().getEloRating());
-			score.setLeaderboardPositionChange(holder.getCurrentLeaderboardPosition()-holder.getPreviousLeaderboardPosition());
+			score.setEloRatingChange(
+					holder.getCurrentEloRating().getEloRating() - holder.getPreviousEloRating().getEloRating());
+			score.setLeaderboardPositionChange(
+					holder.getCurrentLeaderboardPosition() - holder.getPreviousLeaderboardPosition());
 			response.addPlayerResult(score);
 		}
 		task.getContext().put(ContextConstants.RESPONSE, response);
@@ -108,25 +112,28 @@ public class GameResultStoreLogic extends AbstractLogic {
 		ArrayList<GamePlayerScore> playerResults = new ArrayList<>();
 		for (Holder holder : allScores) {
 			if (holder.getRequestData().getTeam() == Team.RED) {
-				goalsRed += holder.getRequestData().getGoals();
+				// TODO: Update to tower attack
+				// goalsRed += holder.getRequestData().getGoals();
 			} else if (holder.getRequestData().getTeam() == Team.BLUE) {
-				goalsBlue += holder.getRequestData().getGoals();
+				// TODO: Update to tower attack
+				// goalsBlue += holder.getRequestData().getGoals();
 			}
+			// TODO: Update to tower attack
 			GamePlayerScore playerScore = new GamePlayerScore(holder.getRequestData().getUserId(),
-					TeamConverter.convert(holder.getRequestData().getTeam()), holder.getRequestData().getGoals(),
-					holder.getRequestData().getBulletHits(), holder.getRequestData().getBallTouches(),
-					holder.getRequestData().getBoostTouches(), holder.getScore().getUserScore(),
+					TeamConverter.convert(holder.getRequestData().getTeam()), 0, 0, 0, 0, holder.getScore().getUserScore(),
 					holder.getCurrentEloRating().getEloRating(), holder.getCurrentLeaderboardPosition());
 			playerResults.add(playerScore);
 		}
 		int round = getLogicResources().getGameRegistry().getGame(request.getGameId()).updateRound();
-		Game game = new Game(request.getGameId() + "+" + round, goalsRed, goalsBlue, request.isSuddenDeath(),
+		// TODO: Update to Tower Attack 
+		Game game = new Game(request.getGameId() + "+" + round, goalsRed, goalsBlue, false,
 				request.getGameTime(), playerResults);
 		getLogicResources().getDatabaseAccess().getGameDatabase().addGame(game);
 	}
 
 	private void calculateLeaderboardPosition(ArrayList<Holder> allScores) {
-		Collection<EloRating> leaderboard = getLogicResources().getDatabaseAccess().getRatingDatabase().getLeaderboard();
+		Collection<EloRating> leaderboard = getLogicResources().getDatabaseAccess().getRatingDatabase()
+				.getLeaderboard();
 		int pos = 0;
 		for (EloRating lb : leaderboard) {
 			pos++;
@@ -140,16 +147,17 @@ public class GameResultStoreLogic extends AbstractLogic {
 
 	private void updateEloRating(GameResultStoreRequest request, ArrayList<Holder> allScores) {
 		for (Holder holder : allScores) {
-			holder.newEloRating(new EloRating(
-					holder.getRequestData().getUserId(), holder.getScore().getElo(),
+			holder.newEloRating(new EloRating(holder.getRequestData().getUserId(), holder.getScore().getElo(),
+
+					// TODO: Update to tower attack
 					holder.getCurrentEloRating().getMatches() + 1,
-					holder.getCurrentEloRating().getGoals() + holder.getRequestData().getGoals(),
-					holder.getCurrentEloRating().getBulletHits() + holder.getRequestData().getBulletHits(),
+					holder.getCurrentEloRating().getGoals() + 0,
+					holder.getCurrentEloRating().getBulletHits() + 0,
 					holder.getCurrentEloRating().getTotalScore() + holder.getScore().getUserScore(),
-					holder.getCurrentEloRating().getBallTouches() + holder.getRequestData().getBallTouches(),
-					holder.getCurrentEloRating().getBoostTouches() + holder.getRequestData().getBoostTouches(),
-					holder.getCurrentEloRating().getWins() + (isWinner(request.getWinnerTeam(), holder.getRequestData().getTeam()) ? 1 : 0))
-			);
+					holder.getCurrentEloRating().getBallTouches() + 0,
+					holder.getCurrentEloRating().getBoostTouches() + 0,
+					holder.getCurrentEloRating().getWins()
+							+ (isWinner(request.getWinnerTeam(), holder.getRequestData().getTeam()) ? 1 : 0)));
 			getLogicResources().getDatabaseAccess().getRatingDatabase().updateRating(holder.getCurrentEloRating());
 		}
 	}

@@ -18,6 +18,8 @@ currentState = STATE_SOLDIER.SPAWN;
 // Global parameter to track "age" of the soldier
 spawnIndex = global.soldierSpawnIndex++;
 
+team = noone;
+
 unitDeadAlarmIndx = 0;
 
 pathMoveSpeed = 2; // Same for all soldiers

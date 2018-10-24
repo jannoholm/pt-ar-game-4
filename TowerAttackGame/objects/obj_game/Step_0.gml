@@ -21,12 +21,12 @@ switch( currentPhase ){
 		}
 		
 		break;
-	case GamePhase.GAME_START:	
+	case GamePhase.GAME_START:
 	
 		instance_create_layer( 0, 0, "lyr_gameplay", obj_game_timer );
 		instance_create_layer(0, 0, "lyr_gameplay", obj_spawner);
 
-		currentPhase = GamePhase.GAME;			
+		currentPhase = GamePhase.GAME;
 	
 		break;
 	case GamePhase.GAME:
@@ -52,9 +52,12 @@ switch( currentPhase ){
 	
 		break;
 	case GamePhase.GAME_END:
-	
-		if( !instance_exists( obj_soldier ) ){
-			room_goto_previous();
+		
+		with( obj_tower_attack ){
+			// Switch to next phase only once
+			if( currentPhase == MainPhase.GAME ){
+				currentPhase = MainPhase.GAME_END;
+			}
 		}
 	
 		break;

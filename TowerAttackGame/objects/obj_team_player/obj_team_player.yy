@@ -1,23 +1,23 @@
 {
-    "id": "96b79ef1-4c76-4a03-816b-8f58b936a994",
+    "id": "60501c92-7e24-4bb4-9f7d-6771b81a9196",
     "modelName": "GMObject",
     "mvc": "1.0",
-    "name": "obj_team_blue",
+    "name": "obj_team_player",
     "eventList": [
         {
-            "id": "3bcae2a9-1985-4757-9d66-d7f81a986d79",
+            "id": "c521b19a-50c7-4c85-a59d-429e9436e0d4",
             "modelName": "GMEvent",
             "mvc": "1.0",
             "IsDnD": false,
             "collisionObjectId": "00000000-0000-0000-0000-000000000000",
             "enumb": 0,
             "eventtype": 0,
-            "m_owner": "96b79ef1-4c76-4a03-816b-8f58b936a994"
+            "m_owner": "60501c92-7e24-4bb4-9f7d-6771b81a9196"
         }
     ],
     "maskSpriteId": "00000000-0000-0000-0000-000000000000",
     "overriddenProperties": null,
-    "parentObjectId": "7dcde94a-d67f-4493-a5c1-e6f3281a9ae6",
+    "parentObjectId": "00000000-0000-0000-0000-000000000000",
     "persistent": false,
     "physicsAngularDamping": 0.1,
     "physicsDensity": 0.5,

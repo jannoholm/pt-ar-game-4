@@ -26,7 +26,7 @@ client_name="not set";
 client_email="not set";
 client_type=conf.client_type;
 reuse_clientid=conf.reuse_clientid;
-gameid="";
+gameId="";
 
 // Names from server
 user_name_list=ds_list_create();

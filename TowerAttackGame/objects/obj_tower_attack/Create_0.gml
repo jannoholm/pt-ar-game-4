@@ -30,3 +30,5 @@ clientId = "TABLE";
 email = "info@playtech.com";
 
 scr_send_join_server(clientId, email);
+
+lastGameScore = noone;
