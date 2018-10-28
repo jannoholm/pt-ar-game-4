@@ -59,7 +59,7 @@ for( var i = 0; i < size; i++ ) {
 		with( soldierToRemove ) {
 			show_debug_message ("Found soldier to spawn, id=" + string( soldierToRemove ) );
 			ds_map_delete( other.soldiersInTavern, self );
-			currentState = STATE_SOLDIER.SPAWN_FROM_TAVERN;
+			currentPhase = SoldierPhase.SPAWN_FROM_TAVERN;
 		}
 		
 		

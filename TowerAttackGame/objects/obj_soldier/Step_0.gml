@@ -1,92 +1,121 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Soldier phases
 
-// GameMaker sprite orientation is assumed to be towrds left, but our sprites are towards top
-image_angle = direction - 90;
+if( previousPhase != currentPhase ){
+	var previous = ds_list_find_value( phases, previousPhase );
+	var current = ds_list_find_value( phases, currentPhase );
+	trace( "Switch SoldierPhase from " + previous + " -> " + current, self );
+	previousPhase = currentPhase;
+}
 
-switch( currentState ){
-	case STATE_SOLDIER.SPAWN:
+switch( currentPhase ){
+	case SoldierPhase.SPAWN:
 		
 		path_start(path, pathDirection * pathMoveSpeed, path_action_stop, true);
 		path_position = pathStartPosition;
-		currentState = STATE_SOLDIER.FOLLOW_PATH;
+		currentPhase = SoldierPhase.FOLLOW_PATH;
 		
 		break;
-	case STATE_SOLDIER.FOLLOW_PATH:
+	case SoldierPhase.FOLLOW_PATH:
 	
-		var currentPath = path_index;
-		var soldiersInFront = noone;
+		if( soldierInFront == noone || !instance_exists( soldierInFront ) || soldierInFront.currentPhase != SoldierPhase.FOLLOW_PATH ){
+			
+			soldierInFront = noone; // Reset in case there is no soldier in front
+			var nrOfSoldiers = instance_number(obj_soldier);
+			var minimumDistance = 1;			
 
-		for ( var i = 0; i < instance_number(obj_soldier); i++ ) {
-			var tempSoldier = instance_find(obj_soldier, i);
-			// #TODO Tavern check and age check after tavern
-			if ( tempSoldier.path_index == path_index && tempSoldier.pathDirection == pathDirection && tempSoldier.spawnIndex < spawnIndex ) {
-				// Non-enemy soldier on same path in front
-				soldiersInFront[i] = tempSoldier;
-			}
-		}
-
-		var pauseMovement = false;
-
-		for ( var i = 0; i < array_length_1d(soldiersInFront); i++ ) {
-	
-			if ( instance_exists(soldiersInFront[i]) ) {
-				// Another soldier on path is in front, measure distance
-				//var distanceToFrontSoldier = distance_to_object( soldiersInFront[i] );
-				var distanceToFrontSoldier = abs( soldiersInFront[i].path_position - path_position );
-		
-				if ( distanceToFrontSoldier < 0.015 ) {
-					// Distance to next soldier is  too small
-					pauseMovement = true;
-					break;		
+			for ( var i = 0; i < nrOfSoldiers; i++ ) {
+				var tempSoldier = instance_find( obj_soldier, i );
+				if( tempSoldier.currentPhase == SoldierPhase.FOLLOW_PATH 
+					&& tempSoldier.path_index == path_index 
+					&& tempSoldier.pathDirection == pathDirection 
+					&& ( tempSoldier.path_position - path_position ) * pathDirection > 0 ) {
+					// Non-enemy soldier on same path in front
+						
+					var distanceToFrontSoldier = abs( tempSoldier.path_position - path_position );
+					if( distanceToFrontSoldier < minimumDistance ){
+						// Update best candidate to minimum distance
+						soldierInFront = tempSoldier;
+						minimumDistance = distanceToFrontSoldier;
+					}
 				}
 			}
 		}
-
-		if ( pauseMovement ) {
-			path_speed = 0;	
+	
+		if( soldierInFront != noone && instance_exists( soldierInFront ) ){
+			
+			var distanceToFrontSoldier = abs( soldierInFront.path_position - path_position );	
+			
+			// y = ( x - 0.01 ) * 100
+			// speedLimiter = ( distance - 0.01 ) * 100
+			// 0.01 is 0 and 0.02 is 1
+			// So if unit is closer than 0.01, then stop the unit
+			// If unit is further than 0.02, then move at max speed
+			path_speed = pathDirection * pathMoveSpeed * clamp( ( distanceToFrontSoldier - 0.01 ) * 100 , 0, 1 );
 		} else {
-			path_speed = pathDirection * pathMoveSpeed;	
+			path_speed = pathDirection * pathMoveSpeed;
 		}
 	
 		break;
-	case STATE_SOLDIER.ENTER_TUNNEL:
+	case SoldierPhase.ENTER_TUNNEL:
 			
 		// Nothing different, just hidden
 		visible = false;
-		currentState = STATE_SOLDIER.IN_TUNNEL;
+		currentPhase = SoldierPhase.IN_TUNNEL;
 		
 		break;
-	case STATE_SOLDIER.IN_TUNNEL:
+	case SoldierPhase.IN_TUNNEL:
 			
 		// Nothing different...
 			
 		break;
-	case STATE_SOLDIER.EXIT_TUNNEL:
+	case SoldierPhase.EXIT_TUNNEL:
 
 		// Unhide and continue path
 		visible = true;
-		currentState = STATE_SOLDIER.FOLLOW_PATH;
+		currentPhase = SoldierPhase.FOLLOW_PATH;
 			
 		break;
-	case STATE_SOLDIER.FIGHT:
+	case SoldierPhase.INIT_FIGHT:
+	
+		trace( "Starting fight", self, soldierToFight );
+		
+		path_end();
+		speed = 0;		
+		
+		if( soldierToFight.type == SoldierType.BASIC ) {
+			event_user( FightUnitEvent.BASIC );
+		} else if( soldierToFight.type == SoldierType.BOMBER ) {
+			event_user( FightUnitEvent.BOMBER );
+		} else if( soldierToFight.type == SoldierType.ELITE ) {
+			event_user( FightUnitEvent.ELITE );
+		} else {
+			trace( "Failed to detect soldier type to fight", soldierToFight );	
+		}
+		
+		currentPhase = SoldierPhase.FIGHT;
+	
+		break;
+	case SoldierPhase.FIGHT:
 			
 		// If alarm has not been set yet, destory the soldier with a delay
-		if( alarm_get(unitDeadAlarmIndx) == -1 ) {
-			path_end();
-			speed = 0;
-			sprite_index = fightingSprite;
-			alarm_set( unitDeadAlarmIndx, room_speed );	
+		//if( alarm_get(unitDeadAlarmIndx) == -1 ) {
+		//	path_end();
+		//	speed = 0;
+		//	sprite_index = fightingSprite;
+		//	alarm_set( unitDeadAlarmIndx, room_speed );	
+		//}
+	
+		break;
+	case SoldierPhase.CHARGE_TO_FIGHT:
+			
+		path_end();
+		if( instance_exists( chargedSoldier ) ) {
+			// TODO: In what cases the charged soldier is no longer there?
+			move_towards_point(chargedSoldier.x, chargedSoldier.y, pathMoveSpeed * 2);
 		}
 	
 		break;
-	case STATE_SOLDIER.CHARGE_TO_FIGHT:
-			
-		path_end();
-		move_towards_point(chargedSoldier.x, chargedSoldier.y, pathMoveSpeed * 1.5);
-	
-		break;
-	case STATE_SOLDIER.GO_TO_TAVERN:
+	case SoldierPhase.GO_TO_TAVERN:
 	
 		visible = false;
 	
@@ -94,18 +123,18 @@ switch( currentState ){
 		// move_towards_point( x, y, pathMoveSpeed );
 	
 		break;
-	case STATE_SOLDIER.IN_TAVERN:
+	case SoldierPhase.IN_TAVERN:
 		
 		visible = false;
 		
 		break;
-	case STATE_SOLDIER.SPAWN_FROM_TAVERN:
+	case SoldierPhase.SPAWN_FROM_TAVERN:
 	
 		spawnIndex = global.soldierSpawnIndex++; // Consider it a fresh spawn for ordering of soldiers
 		path_start(path, pathDirection * pathMoveSpeed, path_action_stop, true);
 		path_position = 0.5; // #TODO Variable set by child
 		visible = true;
-		currentState = STATE_SOLDIER.FOLLOW_PATH;
+		currentPhase = SoldierPhase.FOLLOW_PATH;
 	
 		break;
 }

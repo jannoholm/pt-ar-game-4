@@ -1,12 +1,12 @@
-/// @description Insert description here
+/// @description Init
 
 team = noone;
-soldierToSpawn = noone;
+path = noone;
+pathDirection = 1;
+pathStartPosition = 0.05;
 
-activationLevel = 0;
+spawnDelay = room_speed / 2;
 spawnDelayAlarmIndx = 0;
 spawnDelayCleared = true; // As soon as activated, spawn a soldier
 
-spawnDelay = room_speed * 2;
-spawnGroupAlarmIndx = 1;
-soldiersToSpawn = 5; // Pack of soldiers
+spawnTasks = ds_list_create();

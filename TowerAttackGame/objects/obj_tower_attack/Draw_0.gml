@@ -1,7 +1,7 @@
 /// @description Draw last game result
 
-if( currentPhase != MainPhase.GAME && lastGameScore != noone) {
-	draw_text( room_width/2, room_height/2, "we have some score" );
-} else if( currentPhase != MainPhase.GAME ){
-	draw_text( room_width/2, room_height/2, "no score yet" );
+draw_set_halign( fa_center );
+
+if( currentPhase == MainPhase.INIT ){
+	draw_text_transformed( room_width/2, room_height/2, "CONNECTING...", 4, 4, 0 );
 }
