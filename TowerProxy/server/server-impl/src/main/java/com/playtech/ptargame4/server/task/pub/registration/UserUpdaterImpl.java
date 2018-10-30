@@ -29,7 +29,7 @@ public class UserUpdaterImpl implements UserUpdater {
     }
 
     private void pollGetUsers() throws IOException {
-        HttpURLConnection con = null;
+/*        HttpURLConnection con = null;
         OutputStream out = null;
         try {
             String urlString = getConfiguration().getManagementServiceUrl();
@@ -49,7 +49,7 @@ public class UserUpdaterImpl implements UserUpdater {
             if (con != null) {
                 con.getInputStream().close();
             }
-        }
+        }*/
     }
 
 
