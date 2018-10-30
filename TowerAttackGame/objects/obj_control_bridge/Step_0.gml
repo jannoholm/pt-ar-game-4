@@ -18,10 +18,11 @@ if( targetBridge.shield <= 0 && team.actionPoints > 10 ) {
 	}
 	
 	if( chargeUp > 2 * room_speed ) {
-		show_debug_message("CHARGE COMPLETE!");
+		show_debug_message( "CHARGE COMPLETE!" );
 		team.actionPoints -= 10;
 		chargeUp = 0;
 		with( targetBridge ) {
+			activatedByTeam = other.team;
 			alarm_set( fixOrBreakAlarmIndx, 1 );
 		}
 	}

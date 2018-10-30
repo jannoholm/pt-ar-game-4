@@ -1,6 +1,7 @@
 package com.playtech.ptargame4.server.rank.calculator;
 
 public enum ScoreCriteria {
+	// TODO: Update to tower attack
 	GOAL("goal", 0.5, 500), BALL_HIT("ballHit", 0.1, 10), BULLET_HIT("bulletHit", 0.2, 100), BOOST_HIT("boostHit", 0.2,
 			20);
 

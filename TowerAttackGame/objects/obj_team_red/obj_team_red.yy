@@ -4,7 +4,16 @@
     "mvc": "1.0",
     "name": "obj_team_red",
     "eventList": [
-        
+        {
+            "id": "8ff651c8-728b-4ac2-969c-d2c5d8cc6d57",
+            "modelName": "GMEvent",
+            "mvc": "1.0",
+            "IsDnD": false,
+            "collisionObjectId": "00000000-0000-0000-0000-000000000000",
+            "enumb": 0,
+            "eventtype": 0,
+            "m_owner": "1940a4d4-51db-406c-a406-fc1275131538"
+        }
     ],
     "maskSpriteId": "00000000-0000-0000-0000-000000000000",
     "overriddenProperties": null,

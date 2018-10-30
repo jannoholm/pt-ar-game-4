@@ -1,5 +1,5 @@
 /// @description default values
-ip_address="localhost";
+ip_address = "localhost";
 port=8100;
 client_type=0;
 reuse_clientid=true;

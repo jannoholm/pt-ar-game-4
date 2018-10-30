@@ -23,3 +23,15 @@ playerRedTwo = noone;
 
 playerBlueOne = noone;
 playerBlueTwo = noone;
+
+// Initially this game is 1v1
+if( playerRedTwo == noone ){
+	playerRedTwo = instance_create_layer( 0, 0, "lyr_lobby", obj_lobby_player );
+	playerRedTwo.playerId = 0;
+	playerRedTwo.playerName = "TABLE";
+}
+if( playerBlueTwo == noone ){
+	playerBlueTwo = instance_create_layer( 0, 0, "lyr_lobby", obj_lobby_player );
+	playerBlueTwo.playerId = 0;
+	playerBlueTwo.playerName = "TABLE";
+}

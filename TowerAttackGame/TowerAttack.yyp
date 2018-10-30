@@ -31,6 +31,14 @@
     },
     "resources": [
         {
+            "Key": "0324434b-3939-45e3-84e2-cd2241668b70",
+            "Value": {
+                "id": "ee8f2d3d-2e54-4c52-980b-efd4348a2aa2",
+                "resourcePath": "scripts\\scr_create_spawn_task\\scr_create_spawn_task.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "038250bb-6cc9-40b4-a71a-ecc7f4a32c0f",
             "Value": {
                 "id": "0680e143-6e37-4011-82b1-ef8ea0a217bd",
@@ -52,6 +60,30 @@
                 "id": "bf8f3fd9-cbcb-47b5-bf30-3b361a771bf5",
                 "resourcePath": "scripts\\trace\\trace.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "0849530f-cb20-417a-b9fc-5477df5bf047",
+            "Value": {
+                "id": "cee2ce70-6758-4d4f-94f9-7a111d5720bb",
+                "resourcePath": "objects\\obj_soldier_red_dwarven_sapper\\obj_soldier_red_dwarven_sapper.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "09395447-846d-4d5e-8aff-122763cf858d",
+            "Value": {
+                "id": "f6a6aff0-118b-41cb-8b7d-720f7b7a988a",
+                "resourcePath": "objects\\obj_spawn_task\\obj_spawn_task.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "0b97d0cc-a28f-4a5a-af69-34cdd6db3b15",
+            "Value": {
+                "id": "a9362389-93f4-431b-b186-52cebd18ad92",
+                "resourcePath": "objects\\obj_soldier_red_horse_knight\\obj_soldier_red_horse_knight.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -95,6 +127,22 @@
             }
         },
         {
+            "Key": "1adaf646-093c-49e6-9720-7385720650f0",
+            "Value": {
+                "id": "022a7510-2883-45d4-95cf-2f3d260a7d85",
+                "resourcePath": "views\\1adaf646-093c-49e6-9720-7385720650f0.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "1b51909f-3e74-4bcd-a516-5f33e74b66dd",
+            "Value": {
+                "id": "4c4ca21e-4dd0-4d94-90d0-91f67eafc165",
+                "resourcePath": "objects\\obj_soldier_lvl3_elite\\obj_soldier_lvl3_elite.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "1ec23db5-b1a1-4f84-a446-4c8579495765",
             "Value": {
                 "id": "13deda1e-4d8c-44e9-9eb0-ba0b089b211e",
@@ -127,14 +175,6 @@
             }
         },
         {
-            "Key": "272271cb-bf18-4440-bcda-d0c8f4c7cde0",
-            "Value": {
-                "id": "1f064b2e-7ab3-4a74-9264-9c32050bbef7",
-                "resourcePath": "objects\\obj_soldier_blue_top\\obj_soldier_blue_top.yy",
-                "resourceType": "GMObject"
-            }
-        },
-        {
             "Key": "2d0c39af-a427-4b31-aea3-bc5a751a9624",
             "Value": {
                 "id": "d69eb501-a66e-45a4-b708-db14ccb8689b",
@@ -148,14 +188,6 @@
                 "id": "7a5236f3-a7f3-4e95-b3ee-03984996304d",
                 "resourcePath": "scripts\\scr_writehex\\scr_writehex.yy",
                 "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "2ea279d5-c362-49b5-895b-94d8c18167c3",
-            "Value": {
-                "id": "8fef43ae-e7e7-4597-98f2-84aa58129854",
-                "resourcePath": "objects\\obj_soldier_blue\\obj_soldier_blue.yy",
-                "resourceType": "GMObject"
             }
         },
         {
@@ -207,11 +239,11 @@
             }
         },
         {
-            "Key": "3bc92482-19f5-4123-952f-1a20199a2c19",
+            "Key": "3eb07573-15d8-4d17-91b0-c2598e98868d",
             "Value": {
-                "id": "800ee409-d963-409b-9cb1-986e93af49fa",
-                "resourcePath": "objects\\obj_soldier_red_top\\obj_soldier_red_top.yy",
-                "resourceType": "GMObject"
+                "id": "2698872a-e2c2-47e1-a810-057d3127de34",
+                "resourcePath": "scripts\\scr_collision_circle_list\\scr_collision_circle_list.yy",
+                "resourceType": "GMScript"
             }
         },
         {
@@ -220,6 +252,38 @@
                 "id": "3d3bac9e-8524-45aa-86e7-52a72a3d303e",
                 "resourcePath": "views\\3f756373-680c-45fa-84ad-85ff705b19b5.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "44f03afd-70a6-480f-8d03-c04b60aadef9",
+            "Value": {
+                "id": "c22ec64f-bb3c-4bda-8610-5894d83af85d",
+                "resourcePath": "objects\\obj_soldier_blue_orc_wolf_raider\\obj_soldier_blue_orc_wolf_raider.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "44ff0737-d66a-4df0-bd79-b82af85b88c3",
+            "Value": {
+                "id": "964842ce-4980-4b9f-bd13-16faf5b275ab",
+                "resourcePath": "sprites\\spr_soldier_swordsman\\spr_soldier_swordsman.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "45152d97-e2bd-4cab-a191-757b552e7639",
+            "Value": {
+                "id": "be277b30-639f-4072-864c-26b052c8b973",
+                "resourcePath": "scripts\\scr_receive_game_results_store_response\\scr_receive_game_results_store_response.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "45d47835-32dc-40e8-be30-86e70ed52df5",
+            "Value": {
+                "id": "4a915293-9474-4366-a5a4-7bcbef932a97",
+                "resourcePath": "objects\\obj_soldier_lvl1_basic\\obj_soldier_lvl1_basic.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -290,7 +354,7 @@
             "Key": "5277724c-8eb5-4754-9a4f-108cc7e09f1b",
             "Value": {
                 "id": "bfc21db7-56ee-41c2-b005-27ef8c01ba3d",
-                "resourcePath": "sprites\\spr_tower_roman\\spr_tower_roman.yy",
+                "resourcePath": "sprites\\spr_tower_blue\\spr_tower_blue.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -319,10 +383,18 @@
             }
         },
         {
-            "Key": "59364cdb-1024-475b-a781-0d59f2630b33",
+            "Key": "58ff39de-bc9b-4c3b-af6e-bfee94618419",
             "Value": {
-                "id": "238d31f9-a3cb-4f39-b7c8-af7462102a3e",
-                "resourcePath": "objects\\obj_soldier_blue_bottom\\obj_soldier_blue_bottom.yy",
+                "id": "5613aaa7-5f72-47b7-808e-88f430a57627",
+                "resourcePath": "objects\\obj_soldier_lvl2_bomber\\obj_soldier_lvl2_bomber.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "59aed027-ef70-4418-ab71-4b5e1f33eb02",
+            "Value": {
+                "id": "507361ae-5582-4e04-9237-008fb2a13df4",
+                "resourcePath": "objects\\obj_spawn_blue\\obj_spawn_blue.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -367,6 +439,14 @@
             }
         },
         {
+            "Key": "60501c92-7e24-4bb4-9f7d-6771b81a9196",
+            "Value": {
+                "id": "935a7764-31c2-41a7-a4e4-f672d1f52342",
+                "resourcePath": "objects\\obj_team_player\\obj_team_player.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "61e20c09-54f5-4392-9575-0a2562a4d7c7",
             "Value": {
                 "id": "00ccc28a-f6fa-4a7d-b115-5510a5cbb92d",
@@ -395,6 +475,14 @@
             "Value": {
                 "id": "59bc589e-273e-46dc-8872-95c600cda488",
                 "resourcePath": "sprites\\spr_tunnel\\spr_tunnel.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "670807fd-b81f-427c-abdb-671d7f805324",
+            "Value": {
+                "id": "68ef48c1-f4ae-4220-85d3-98d48e77e485",
+                "resourcePath": "sprites\\spr_tower_red\\spr_tower_red.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -436,6 +524,14 @@
                 "id": "711149ce-66c6-4594-a300-14038e991627",
                 "resourcePath": "objects\\obj_spawn\\obj_spawn.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "6cb0a62d-ef7a-4791-9d67-9bc03b4e95cb",
+            "Value": {
+                "id": "6bb538f7-f635-4bb9-a638-f7601064970a",
+                "resourcePath": "sprites\\spr_stone_bridge\\spr_stone_bridge.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -495,18 +591,18 @@
             }
         },
         {
-            "Key": "82f61d91-35bc-4e2f-a2da-02335733f110",
+            "Key": "807bad89-0dab-4a03-bd8c-cfd2f0036b3b",
             "Value": {
-                "id": "47c4460d-8da6-4f08-9adc-6e405a0be4c3",
-                "resourcePath": "objects\\obj_control_bridge_blue\\obj_control_bridge_blue.yy",
+                "id": "5cd1e2c2-c491-42a6-8dda-5d34904fa9fa",
+                "resourcePath": "objects\\obj_soldier_red_swordsman\\obj_soldier_red_swordsman.yy",
                 "resourceType": "GMObject"
             }
         },
         {
-            "Key": "84089b3e-3475-4cbf-ba24-e39879d4602f",
+            "Key": "82f61d91-35bc-4e2f-a2da-02335733f110",
             "Value": {
-                "id": "934cadbd-d52c-4b23-95fa-587903a96e5e",
-                "resourcePath": "objects\\obj_soldier_red_middle_high\\obj_soldier_red_middle_high.yy",
+                "id": "47c4460d-8da6-4f08-9adc-6e405a0be4c3",
+                "resourcePath": "objects\\obj_control_bridge_blue\\obj_control_bridge_blue.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -527,35 +623,11 @@
             }
         },
         {
-            "Key": "91269cc6-65cd-4c30-a318-7520fd268a4c",
-            "Value": {
-                "id": "240345c2-d07d-4d74-9470-98fcf3ab3385",
-                "resourcePath": "objects\\obj_soldier_red_bottom\\obj_soldier_red_bottom.yy",
-                "resourceType": "GMObject"
-            }
-        },
-        {
-            "Key": "9604679f-261e-4d48-8b91-289cfcd29250",
-            "Value": {
-                "id": "ddc6ca3a-0265-4441-a238-35420edc91fe",
-                "resourcePath": "objects\\obj_soldier_red\\obj_soldier_red.yy",
-                "resourceType": "GMObject"
-            }
-        },
-        {
             "Key": "96b79ef1-4c76-4a03-816b-8f58b936a994",
             "Value": {
                 "id": "cfb02a64-61f4-4170-8ee4-abba64af87d1",
                 "resourcePath": "objects\\obj_team_blue\\obj_team_blue.yy",
                 "resourceType": "GMObject"
-            }
-        },
-        {
-            "Key": "9a24c128-f028-43dc-ab6a-f8131e009abb",
-            "Value": {
-                "id": "43707174-427b-45e0-9f9f-ca8661bd3924",
-                "resourcePath": "sprites\\spr_tower_barbarian\\spr_tower_barbarian.yy",
-                "resourceType": "GMSprite"
             }
         },
         {
@@ -623,6 +695,22 @@
             }
         },
         {
+            "Key": "a2496f7c-8403-4ceb-94bd-c81e2953cd4a",
+            "Value": {
+                "id": "0af8c292-ca76-4397-96c2-aef25e9d5c50",
+                "resourcePath": "sprites\\spr_background\\spr_background.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "a2d719eb-fd01-428a-abe0-c352abd42b63",
+            "Value": {
+                "id": "231abd17-b2a4-4dd3-92b5-8b3a407bbf7d",
+                "resourcePath": "objects\\obj_spawn_red\\obj_spawn_red.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "a3d86de9-1c31-48ef-aa3f-27bb89ade291",
             "Value": {
                 "id": "75426d3f-550d-41e0-9748-9779eb648b3e",
@@ -636,6 +724,14 @@
                 "id": "44cbd1cf-3ced-448b-ae23-5aac55e62ce4",
                 "resourcePath": "sprites\\spr_battle_area\\spr_battle_area.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "a7181283-7ec8-4a45-a13f-307698d18072",
+            "Value": {
+                "id": "55b02720-cdbb-452d-97fd-fb69c78d434d",
+                "resourcePath": "objects\\obj_soldier_blue_orc_warrior\\obj_soldier_blue_orc_warrior.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -687,19 +783,19 @@
             }
         },
         {
-            "Key": "bb68986c-d4a4-48ae-83b8-f1bce3015b34",
-            "Value": {
-                "id": "85459afe-c5e1-41ff-85ba-9a0aa6390be3",
-                "resourcePath": "objects\\obj_soldier_red_middle_low\\obj_soldier_red_middle_low.yy",
-                "resourceType": "GMObject"
-            }
-        },
-        {
             "Key": "bb7d97de-c9f2-47bc-ba78-66ee0cd198f1",
             "Value": {
                 "id": "6e38d616-5c87-49e0-ba6b-844f0b012a68",
                 "resourcePath": "views\\bb7d97de-c9f2-47bc-ba78-66ee0cd198f1.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "bde9fb02-7b4f-4f94-80c5-d4d18ccbf738",
+            "Value": {
+                "id": "b29a57c4-10b3-45aa-8d17-5b3ff7959f02",
+                "resourcePath": "objects\\obj_soldier_blue_goblin_kamikaze\\obj_soldier_blue_goblin_kamikaze.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -767,6 +863,14 @@
             }
         },
         {
+            "Key": "c9fb4438-4ef9-447b-a50f-4c85555c4e3b",
+            "Value": {
+                "id": "29b24b04-b994-4d72-a37a-68e79b4deebe",
+                "resourcePath": "objects\\obj_score_team\\obj_score_team.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "cc148c7b-f631-4cda-a9ad-796a76060871",
             "Value": {
                 "id": "be2a2490-b388-4308-a68c-585f0c442547",
@@ -780,6 +884,14 @@
                 "id": "8286ea40-9a3b-4d78-a621-c64d28244920",
                 "resourcePath": "options\\windows\\options_windows.yy",
                 "resourceType": "GMWindowsOptions"
+            }
+        },
+        {
+            "Key": "cd363c71-a7f7-4374-b788-03fbdcc8963c",
+            "Value": {
+                "id": "dc7ea9b1-9963-4ee8-8162-732771294432",
+                "resourcePath": "sprites\\spr_lobby_bg\\spr_lobby_bg.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -815,14 +927,6 @@
             }
         },
         {
-            "Key": "d040fa14-b92d-4164-96c9-452198d608a9",
-            "Value": {
-                "id": "b410b34a-d395-4bb8-9ca5-6a2ef87244ba",
-                "resourcePath": "objects\\obj_soldier_blue_middle_low\\obj_soldier_blue_middle_low.yy",
-                "resourceType": "GMObject"
-            }
-        },
-        {
             "Key": "d0fe1bf7-5ab5-4980-b72d-7082159a57ea",
             "Value": {
                 "id": "1c793eff-1598-4001-93fd-1f67c6612d89",
@@ -839,11 +943,11 @@
             }
         },
         {
-            "Key": "d5e3e7a9-0aa0-4ad3-a127-2a958c841ea4",
+            "Key": "db246f46-b228-4fa3-83b7-862038878e2e",
             "Value": {
-                "id": "b52c73f2-a0c9-4174-a320-1958fa16779f",
-                "resourcePath": "objects\\obj_soldier_blue_middle_high\\obj_soldier_blue_middle_high.yy",
-                "resourceType": "GMObject"
+                "id": "0613a15d-253f-41b0-be5b-3bccc44a2821",
+                "resourcePath": "sprites\\spr_soldier_orc\\spr_soldier_orc.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -959,6 +1063,14 @@
             }
         },
         {
+            "Key": "ea657d17-24dc-47ce-a4e9-527b6436c838",
+            "Value": {
+                "id": "472dd6c9-4742-4f13-bff8-d33078a6a8dd",
+                "resourcePath": "scripts\\scr_choose_random_spawns\\scr_choose_random_spawns.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "eed64d35-6559-48e6-80ad-ef7606c7128e",
             "Value": {
                 "id": "5ea0bd4f-46c7-42b3-ac97-4e91f12fa067",
@@ -983,11 +1095,27 @@
             }
         },
         {
+            "Key": "f306716a-8a72-4987-b4b5-3d6f8cd9313a",
+            "Value": {
+                "id": "80b5273e-7b9f-4aae-a237-008677a654a0",
+                "resourcePath": "scripts\\scr_send_game_results_store_request\\scr_send_game_results_store_request.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "f418569b-3bdd-4706-a0e4-364317f54032",
             "Value": {
                 "id": "e463814a-18ec-4045-b512-de3b3428e17c",
                 "resourcePath": "options\\mac\\options_mac.yy",
                 "resourceType": "GMMacOptions"
+            }
+        },
+        {
+            "Key": "f791412d-6b6a-4fc9-a8b6-f3e888935237",
+            "Value": {
+                "id": "18b12c48-326f-4e54-b2c7-55b1e8a7e844",
+                "resourcePath": "sprites\\spr_soldier_lvl2_bomber_explode\\spr_soldier_lvl2_bomber_explode.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1005,18 +1133,31 @@
                 "resourcePath": "scripts\\scr_send_host_table_game\\scr_send_host_table_game.yy",
                 "resourceType": "GMScript"
             }
+        },
+        {
+            "Key": "fd00927a-796e-4071-b4d4-6d090e019f13",
+            "Value": {
+                "id": "d49dac4d-2e0c-4702-8cf4-61ce1997a52f",
+                "resourcePath": "objects\\obj_score_keeper\\obj_score_keeper.yy",
+                "resourceType": "GMObject"
+            }
         }
     ],
     "script_order": [
         "c5716c61-e130-48ce-badd-1e6fe58e6a72",
+        "f306716a-8a72-4987-b4b5-3d6f8cd9313a",
+        "45152d97-e2bd-4cab-a191-757b552e7639",
         "fbb98d3d-2a7b-4a50-aae6-17b1cd472bc1",
         "5a9ece27-5abf-4801-a9c5-ea148b4a26ba",
         "c4677404-c8c9-4165-9e64-a6b225679630",
         "c2f4d275-b83f-4a74-a3ab-a2189d637b44",
         "7ed45d09-6219-4236-971e-eba66902d96d",
         "c1697b84-b86a-4915-ba0a-f3be075c7d79",
+        "3eb07573-15d8-4d17-91b0-c2598e98868d",
         "9d7e30d3-9b0c-43b5-b617-eaea88ddc250",
         "2f96174d-c7c4-4c10-85f7-c574ddba5b52",
+        "ea657d17-24dc-47ce-a4e9-527b6436c838",
+        "0324434b-3939-45e3-84e2-cd2241668b70",
         "9f4a91af-ef46-438c-8023-4deb6877b76b",
         "e82f4c55-edea-4d9f-8932-d9e788e4aace",
         "b1bddeb0-2317-45aa-85f7-bd03676e2627",

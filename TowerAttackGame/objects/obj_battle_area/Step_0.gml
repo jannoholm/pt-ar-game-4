@@ -1,53 +1,36 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-var battleAreaSoldiersRed = scr_instance_place_list( x, y, obj_soldier_red );
-
-with( battleAreaSoldiersRed ){
-}
-
+var battleAreaSoldiers = scr_instance_place_list( x, y, obj_soldier );
 
 var soldierToFightRed = noone;
+var soldierToFightBlue = noone;
 
-if( battleAreaSoldiersRed != noone){
-	var n = 0;
-	while( n < ds_list_size( battleAreaSoldiersRed ) ){
+if( battleAreaSoldiers != noone){
 		
-		with( battleAreaSoldiersRed[| n] ){
+	var n = 0;
+	while( n < ds_list_size( battleAreaSoldiers ) ){
+		
+		with( battleAreaSoldiers[| n] ){
 			
-			if( currentState == STATE_SOLDIER.FOLLOW_PATH ) {
+			if( type != SoldierType.ELITE && team == obj_game.redTeam && currentPhase == SoldierPhase.FOLLOW_PATH ) {
 				if( soldierToFightRed == noone ) {
 					soldierToFightRed = self;	
 				} else if( spawnIndex < soldierToFightRed.spawnIndex ) {
 					soldierToFightRed = self;
-				}	
+				}
 			}
-		}
-		n += 1;
-   }
-   ds_list_destroy(battleAreaSoldiersRed);
-}
-
-var battleAreaSoldiersBlue = scr_instance_place_list( x, y, obj_soldier_blue );
-
-var soldierToFightBlue = noone;
-
-if( battleAreaSoldiersBlue != noone){
-	var n = 0;
-	while( n < ds_list_size( battleAreaSoldiersBlue ) ){
-		with( battleAreaSoldiersBlue[| n] ){
-			
-			if( currentState == STATE_SOLDIER.FOLLOW_PATH ) {
+			if( type != SoldierType.ELITE && team == obj_game.blueTeam && currentPhase == SoldierPhase.FOLLOW_PATH ) {
 				if( soldierToFightBlue == noone ) {
 					soldierToFightBlue = self;	
 				} else if( spawnIndex < soldierToFightBlue.spawnIndex ) {
 					soldierToFightBlue = self;
-				}	
+				}
 			}
 		}
 		n += 1;
    }
-   ds_list_destroy(battleAreaSoldiersBlue);
+   ds_list_destroy(battleAreaSoldiers);
 }
 
 if( soldierToFightRed != noone && soldierToFightBlue != noone ){
@@ -56,6 +39,6 @@ if( soldierToFightRed != noone && soldierToFightBlue != noone ){
 	soldierToFightRed.chargedSoldier = soldierToFightBlue;
 	soldierToFightBlue.chargedSoldier = soldierToFightRed;
 	
-	soldierToFightRed.currentState = STATE_SOLDIER.CHARGE_TO_FIGHT;	
-	soldierToFightBlue.currentState = STATE_SOLDIER.CHARGE_TO_FIGHT;
+	soldierToFightRed.currentPhase = SoldierPhase.CHARGE_TO_FIGHT;	
+	soldierToFightBlue.currentPhase = SoldierPhase.CHARGE_TO_FIGHT;
 }

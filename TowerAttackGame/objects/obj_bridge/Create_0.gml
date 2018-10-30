@@ -6,3 +6,5 @@ fillUp = 0;
 shield = 0;
 
 fixOrBreakAlarmIndx = 0;
+
+activatedByTeam = noone;

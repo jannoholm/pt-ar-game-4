@@ -4,3 +4,4 @@ draw_self();
 
 // #TODO Normalize values
 image_blend = make_colour_rgb( 255 - chargeUp * 3, 255 - chargeUp * 3, 255 - chargeUp * 3 );
+image_alpha = 0.75;

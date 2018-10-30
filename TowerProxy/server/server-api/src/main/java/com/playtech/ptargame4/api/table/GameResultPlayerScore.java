@@ -16,12 +16,7 @@ public class GameResultPlayerScore {
     private int leaderboardPositionChange;
 
     public void parse(ByteBuffer messageData) {
-        // make sure we read our needed bytes and all our expected bytes
-        int byteCount = messageData.getInt();
-        byte[] bytes = new byte[byteCount];
-        messageData.get(bytes);
-        messageData = ByteBuffer.wrap(bytes).order(messageData.order());
-
+    	
         // message data
         team = Team.values()[messageData.get()];
         positionInTeam = messageData.get();
@@ -33,11 +28,7 @@ public class GameResultPlayerScore {
     }
 
     public void format(ByteBuffer messageData) {
-        // remember old positionInTeam
-        int position = messageData.position();
-        // reserve space, but set some arbitrary value
-        messageData.putInt(0);
-
+    	
         // data
         messageData.put((byte)team.ordinal());
         messageData.put(positionInTeam);
@@ -46,9 +37,6 @@ public class GameResultPlayerScore {
         messageData.putInt(leaderboardPosition);
         messageData.putInt(eloRatingChange);
         messageData.putInt(leaderboardPositionChange);
-
-        // fix length
-        messageData.putInt(position, messageData.position()-position-4);
     }
 
     protected void toStringImpl(StringBuilder s) {

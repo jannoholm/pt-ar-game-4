@@ -4,6 +4,7 @@ package com.playtech.ptargame4.server.database.model;
 import java.util.Collection;
 import java.util.Collections;
 
+// TODO: Update to Tower Attack 
 public class Game {
     private final String gameId;
     private final int goalsRed;

@@ -1,3 +1,3 @@
 /// @description Spawn rate limiter
 
-//spawnDelayCleared = true;
+spawnDelayCleared = true;

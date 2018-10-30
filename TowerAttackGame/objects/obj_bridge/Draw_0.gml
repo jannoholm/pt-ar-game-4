@@ -1,6 +1,11 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Draw bridge stats
 
-draw_text(x-5, y+5, "Fill: " + string(fillUp));
-draw_text(x-5, y+18, "Dura: " + string(durability));
-draw_text(x-5, y+31, "Shie: " + string(shield));
+draw_set_halign( fa_center );
+
+draw_text_transformed( x, y+100, "Fill: " + string( fillUp ), 2, 2, 0 );
+draw_text_transformed( x, y+130, "Dura: " + string( durability ), 2, 2, 0 );
+draw_text_transformed( x, y+160, "Shie: " + string( shield ), 2, 2, 0 );
+
+if( durability > 0 ){
+	draw_sprite( spr_stone_bridge, 0, x, y );
+}

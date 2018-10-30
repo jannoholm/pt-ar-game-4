@@ -1,3 +1,3 @@
 /// @description Init
 
-currentValue = room_speed * 3;
+currentValue = room_speed * 0;
