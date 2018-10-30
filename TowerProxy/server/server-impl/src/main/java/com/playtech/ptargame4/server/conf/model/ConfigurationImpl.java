@@ -1,8 +1,6 @@
-package com.playtech.ptargame4.server.database;
+package com.playtech.ptargame4.server.conf.model;
 
-import com.playtech.ptargame4.server.database.model.ActionToken;
 import com.playtech.ptargame4.server.exception.SystemException;
-import com.playtech.ptargame4.server.registry.GameRegistryGame;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,19 +14,19 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-public class ActionTokenDatabaseImpl implements ActionTokenDatabase {
+public class ConfigurationImpl extends Configuration {
 
-    private static final Logger logger = Logger.getLogger(ActionTokenDatabaseImpl.class.getName());
+    private static final Logger logger = Logger.getLogger(ConfigurationImpl.class.getName());
 
-    private static final String CONF_LOCATON = "conf/token.properties";
+    private static final String CONF_LOCATON = "conf/application.properties";
 
     private final ScheduledExecutorService executor;
     private ScheduledFuture maintenanceFuture;
 
     private long lastUpdateTime = 0;
-    private volatile Map<String, ActionToken> dataMap = Collections.emptyMap();
+    private volatile Properties dataMap = new Properties();
 
-    public ActionTokenDatabaseImpl(ScheduledExecutorService executor) {
+    public ConfigurationImpl(ScheduledExecutorService executor) {
         this.executor = executor;
     }
 
@@ -43,23 +41,10 @@ public class ActionTokenDatabaseImpl implements ActionTokenDatabase {
         long lastModified = confFile.lastModified();
         if ( lastUpdateTime < lastModified ) {
             try {
-                Map<String, ActionToken> newConf = new HashMap<>();
-
-                Properties properties = new Properties();
+                Properties newConf = new Properties();
                 try (InputStream in = new FileInputStream(confFile)) {
-                    properties.load(in);
+                    newConf.load(in);
                 }
-                for (int i = 0; ;++i) {
-                    String indexStr = properties.getProperty("token." + i + ".index");
-                    if (indexStr == null) break;
-
-                    int index = Integer.parseInt(indexStr);
-                    GameRegistryGame.Team team = GameRegistryGame.Team.valueOf(properties.getProperty("token." + i + ".team"));
-                    ActionToken.TokenType tokenType = ActionToken.TokenType.getTokenType(properties.getProperty("token." + i + ".type"));
-                    ActionToken actionToken = new ActionToken(String.valueOf(i), tokenType, (byte)index, team);
-                    newConf.put(actionToken.getQrCode(), actionToken);
-                }
-
                 dataMap = newConf;
                 lastUpdateTime = lastModified;
             } catch (Exception e) {
@@ -76,10 +61,5 @@ public class ActionTokenDatabaseImpl implements ActionTokenDatabase {
         } else {
             throw new IllegalStateException("Already started callback handler.");
         }
-    }
-
-    @Override
-    public ActionToken getActionToken(String qrCode) {
-        return dataMap.get(qrCode);
     }
 }
