@@ -9,9 +9,6 @@ if( soldiersInRadius != noone ){
 	trace( "Exploding bomber, soldiers in radius=" + string( ds_list_size( soldiersInRadius ) ) );
 }
 
-with( soldiersInRadius ){
-}
-
 if( soldiersInRadius != noone){
 		
 	var n = 0;
@@ -19,7 +16,10 @@ if( soldiersInRadius != noone){
 		
 		with( soldiersInRadius[| n] ){
 			trace( "Burning soldier due to bomber explosion", self );
-			event_user( 3 );
+			if( soldierToFight != other ){
+				// Don't burn the fighting soldier
+				event_user( 3 );
+			}
 		}
 		n += 1;
    }

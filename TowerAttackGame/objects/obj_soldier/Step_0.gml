@@ -26,6 +26,7 @@ switch( currentPhase ){
 			for ( var i = 0; i < nrOfSoldiers; i++ ) {
 				var tempSoldier = instance_find( obj_soldier, i );
 				if( tempSoldier.currentPhase == SoldierPhase.FOLLOW_PATH 
+					&& tempSoldier.type == type 
 					&& tempSoldier.path_index == path_index 
 					&& tempSoldier.pathDirection == pathDirection 
 					&& ( tempSoldier.path_position - path_position ) * pathDirection > 0 ) {

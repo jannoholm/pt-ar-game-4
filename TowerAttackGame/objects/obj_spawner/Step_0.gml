@@ -21,9 +21,9 @@ switch( currentPhase ){
 			case SpawnerWave.WAVE_01:
 				alarm_set( nextWaveAlarmIndex, 1 * room_speed );
 				
-				// Useful for debugging, comment out the for loop below to have full control
-				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.RED, instance_find( obj_spawn_red, 0), SoldierType.BASIC ) );
-				
+				// Useful for debugging, comment out the for loop below to have full 
+				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.RED, instance_find( obj_spawn_red, 2), SoldierType.BASIC ) );
+	
 				trace( "Preparing spawn tasks for wave", nextWave );
 				// For both teams, create equal spawn tasks, values are from TeamId enum
 				for( var teamId = 0; teamId < 2; teamId++ ){

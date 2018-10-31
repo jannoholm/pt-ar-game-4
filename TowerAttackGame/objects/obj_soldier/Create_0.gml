@@ -72,3 +72,5 @@ tavernCrossed = false;
 soldierInFront = noone; // For speed limitation on path
 soldierToFight = noone;
 chargedSoldier = noone;
+
+damageToTower = 1;
