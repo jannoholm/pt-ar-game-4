@@ -12,7 +12,8 @@ enum SoldierPhase {
 	SPAWN_FROM_TAVERN,
 	ENTER_TUNNEL,
 	IN_TUNNEL,
-	EXIT_TUNNEL
+	EXIT_TUNNEL,
+	DEAD
 }
 
 phases = ds_list_create();
@@ -27,7 +28,8 @@ ds_list_add(phases,
 	"SPAWN_FROM_TAVERN",
 	"ENTER_TUNNEL",
 	"IN_TUNNEL",
-	"EXIT_TUNNEL"
+	"EXIT_TUNNEL",
+	"DEAD"
 )
 
 previousPhase = SoldierPhase.SPAWN;
@@ -43,7 +45,8 @@ enum SoldierType {
 enum FightUnitEvent {
 	BASIC,
 	BOMBER,
-	ELITE
+	ELITE,
+	BURN_BY_BOMBER
 }
 
 // Global parameter to track "age" of the soldier
@@ -52,17 +55,15 @@ spawnIndex = global.soldierSpawnIndex++;
 type = noone;
 team = noone;
 
-fightUnitEventBasic = 0;
-fightUnitEventBomber = 1;
-fightUnitEventElite = 2;
-
-
-unitDeadAlarmIndx = 0;
+unitFightAnimation = noone;
+unitDeadAnimation = noone;
 
 path = noone; // Set by spawner
 pathMoveSpeed = 5; // Base speed
 pathDirection = noone; // Set by child objects, 1 from left to right; -1 from right to left
 pathStartPosition = noone; // Set by child objects
+
+image_xscale = -1;
 
 fightingSprite = noone; // Set by child objects
 

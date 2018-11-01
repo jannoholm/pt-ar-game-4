@@ -1,7 +1,8 @@
 /// @description Bomber explosion
 
 ///https://opengameart.org/content/2d-explosion-animations-frame-by-frame
-sprite_index = spr_soldier_lvl2_bomber_explode;
+sprite_index = unitExplodeAnimation;
+image_index = 0;
 
 var soldiersInRadius = scr_collision_circle_list( x, y, 300, obj_soldier, true, true );
 
@@ -18,7 +19,7 @@ if( soldiersInRadius != noone){
 			trace( "Burning soldier due to bomber explosion", self );
 			if( soldierToFight != other ){
 				// Don't burn the fighting soldier
-				event_user( 3 );
+				event_user( FightUnitEvent.BURN_BY_BOMBER );
 			}
 		}
 		n += 1;
