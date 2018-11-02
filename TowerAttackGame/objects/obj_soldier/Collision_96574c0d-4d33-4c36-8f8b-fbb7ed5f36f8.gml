@@ -1,8 +1,7 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Hit the tower
 
 instance_destroy();
 
 with ( other ) {
-	towerHealth--;
+	towerHealth = clamp( towerHealth - other.damageToTower, 0, 10000 );
 }

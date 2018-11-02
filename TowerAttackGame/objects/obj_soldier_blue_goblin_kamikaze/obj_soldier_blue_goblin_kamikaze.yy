@@ -4,16 +4,7 @@
     "mvc": "1.0",
     "name": "obj_soldier_blue_goblin_kamikaze",
     "eventList": [
-        {
-            "id": "8de858ec-bee5-4cae-8402-bed53c88fc1b",
-            "modelName": "GMEvent",
-            "mvc": "1.0",
-            "IsDnD": false,
-            "collisionObjectId": "00000000-0000-0000-0000-000000000000",
-            "enumb": 0,
-            "eventtype": 0,
-            "m_owner": "bde9fb02-7b4f-4f94-80c5-d4d18ccbf738"
-        }
+        
     ],
     "maskSpriteId": "00000000-0000-0000-0000-000000000000",
     "overriddenProperties": null,
@@ -33,6 +24,6 @@
     "physicsStartAwake": true,
     "properties": null,
     "solid": false,
-    "spriteId": "db246f46-b228-4fa3-83b7-862038878e2e",
+    "spriteId": "8a5829d1-2033-48b4-8196-92b90576fb31",
     "visible": true
 }

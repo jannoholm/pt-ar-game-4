@@ -4,7 +4,16 @@
     "mvc": "1.0",
     "name": "obj_soldier_red_horse_knight",
     "eventList": [
-        
+        {
+            "id": "c01028fc-3c91-41b0-b1f2-3322c65b6fac",
+            "modelName": "GMEvent",
+            "mvc": "1.0",
+            "IsDnD": false,
+            "collisionObjectId": "00000000-0000-0000-0000-000000000000",
+            "enumb": 0,
+            "eventtype": 0,
+            "m_owner": "0b97d0cc-a28f-4a5a-af69-34cdd6db3b15"
+        }
     ],
     "maskSpriteId": "00000000-0000-0000-0000-000000000000",
     "overriddenProperties": null,
@@ -24,6 +33,6 @@
     "physicsStartAwake": true,
     "properties": null,
     "solid": false,
-    "spriteId": "44ff0737-d66a-4df0-bd79-b82af85b88c3",
+    "spriteId": "ed12d81b-4aa2-4668-98fd-8b16328b6f55",
     "visible": true
 }

@@ -4,6 +4,7 @@
 event_inherited();
 
 type = SoldierType.ELITE;
+damageToTower = 5;
 
 pathMoveSpeed = pathMoveSpeed * 3;
 

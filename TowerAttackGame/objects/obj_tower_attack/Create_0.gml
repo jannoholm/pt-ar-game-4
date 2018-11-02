@@ -1,4 +1,6 @@
 /// @description Init lobby
+
+
 enum MainPhase {
 	INIT, // Start networking
 	GO_TO_LOBBY, // Connected, go to lobby

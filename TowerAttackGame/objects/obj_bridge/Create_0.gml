@@ -7,4 +7,6 @@ shield = 0;
 
 fixOrBreakAlarmIndx = 0;
 
+targetBridgeBackground = instance_nearest(x, y, obj_bridge_background);
+
 activatedByTeam = noone;

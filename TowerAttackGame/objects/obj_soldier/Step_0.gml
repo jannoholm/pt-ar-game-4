@@ -26,6 +26,7 @@ switch( currentPhase ){
 			for ( var i = 0; i < nrOfSoldiers; i++ ) {
 				var tempSoldier = instance_find( obj_soldier, i );
 				if( tempSoldier.currentPhase == SoldierPhase.FOLLOW_PATH 
+					&& tempSoldier.type == type 
 					&& tempSoldier.path_index == path_index 
 					&& tempSoldier.pathDirection == pathDirection 
 					&& ( tempSoldier.path_position - path_position ) * pathDirection > 0 ) {
@@ -92,26 +93,24 @@ switch( currentPhase ){
 			trace( "Failed to detect soldier type to fight", soldierToFight );	
 		}
 		
-		currentPhase = SoldierPhase.FIGHT;
+		if( currentPhase == SoldierPhase.INIT_FIGHT ){
+			currentPhase = SoldierPhase.FIGHT;
+		} else {
+			trace( "Soldier phase changed by some other logic", self );
+		}
 	
 		break;
 	case SoldierPhase.FIGHT:
-			
-		// If alarm has not been set yet, destory the soldier with a delay
-		//if( alarm_get(unitDeadAlarmIndx) == -1 ) {
-		//	path_end();
-		//	speed = 0;
-		//	sprite_index = fightingSprite;
-		//	alarm_set( unitDeadAlarmIndx, room_speed );	
-		//}
-	
+		
 		break;
 	case SoldierPhase.CHARGE_TO_FIGHT:
 			
 		path_end();
 		if( instance_exists( chargedSoldier ) ) {
-			// TODO: In what cases the charged soldier is no longer there?
 			move_towards_point(chargedSoldier.x, chargedSoldier.y, pathMoveSpeed * 2);
+		} else {
+			// #TODO: Quick fix for exploded/charged soldier, actually the soldier should find next soldier to charge or continue path
+			event_user( FightUnitEvent.ELITE );
 		}
 	
 		break;
@@ -135,6 +134,10 @@ switch( currentPhase ){
 		path_position = 0.5; // #TODO Variable set by child
 		visible = true;
 		currentPhase = SoldierPhase.FOLLOW_PATH;
+	
+		break;
+	case SoldierPhase.DEAD:
+		instance_destroy();
 	
 		break;
 }
