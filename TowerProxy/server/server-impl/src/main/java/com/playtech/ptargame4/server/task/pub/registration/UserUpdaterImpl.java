@@ -1,5 +1,7 @@
 package com.playtech.ptargame4.server.task.pub.registration;
 
+import sun.net.www.http.HttpClient;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;

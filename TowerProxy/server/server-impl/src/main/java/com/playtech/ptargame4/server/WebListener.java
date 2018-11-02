@@ -37,13 +37,12 @@ import com.playtech.ptargame.common.util.StringUtil;
 import com.playtech.ptargame4.api.lobby.Team;
 import com.playtech.ptargame4.api.table.SetUserOnMapRequest;
 import com.playtech.ptargame4.api.token.TokenLocationUpdateMessage;
-import com.playtech.ptargame4.api.token.TokenType;
+import com.playtech.ptargame4.server.conf.Configuration;
 import com.playtech.ptargame4.server.database.DatabaseAccess;
-import com.playtech.ptargame4.server.database.model.ActionToken;
+import com.playtech.ptargame4.server.conf.model.ActionToken;
 import com.playtech.ptargame4.server.database.model.EloRating;
 import com.playtech.ptargame4.server.database.model.User;
 import com.playtech.ptargame4.server.exception.SystemException;
-import com.playtech.ptargame4.server.session.ClientSession;
 import com.playtech.ptargame4.server.util.ActionTokenTypeConverter;
 import com.playtech.ptargame4.server.util.QrGenerator;
 import com.playtech.ptargame4.server.util.TeamConverter;
@@ -66,6 +65,8 @@ public final class WebListener {
     private static final String CTX_SERVER = "/server";
     private static final String CTX_CONTROL_USER = "/control/user";
     private static final String CTX_CONTROL_POSITION = "/control/position";
+    private static final String CTX_MOCK_POLLUSERS = "/mock/pollUsers";
+    private static final String CTX_MOCK_PUSHDASH = "/mock/pushDash";
     private static final String METHOD_GET = "GET";
     private static final String METHOD_POST = "POST";
     private static final String METHOD_DELETE = "DELETE";
@@ -78,12 +79,14 @@ public final class WebListener {
     private final DatabaseAccess databaseAccess;
     private final ClientRegistry clientRegistry;
     private final MessageParser messageParser;
+    private final Configuration configuration;
 
-    public WebListener(int port, DatabaseAccess databaseAccess, ClientRegistry clientRegistry, MessageParser messageParser) throws IOException {
+    public WebListener(int port, DatabaseAccess databaseAccess, ClientRegistry clientRegistry, MessageParser messageParser, Configuration configuration) throws IOException {
         this.port = port;
         this.databaseAccess = databaseAccess;
         this.clientRegistry = clientRegistry;
         this.messageParser = messageParser;
+        this.configuration = configuration;
         s = HttpServer.create(new InetSocketAddress(getPort()), 0);
     }
 
@@ -109,6 +112,12 @@ public final class WebListener {
 
         HttpContext ctxHtml = s.createContext(CTX_HTML);
         ctxHtml.setHandler(this::handleExchange);
+
+        HttpContext ctxPollUsers = s.createContext(CTX_MOCK_POLLUSERS);
+        ctxPollUsers.setHandler(this::handleExchange);
+
+        HttpContext ctxPushDash = s.createContext(CTX_MOCK_PUSHDASH);
+        ctxPushDash.setHandler(this::handleExchange);
 
         if (s.getExecutor()!=null)
             throw new IllegalStateException();
@@ -146,6 +155,12 @@ public final class WebListener {
                     break;
                 case CTX_HTML:
                     processHtml(httpExchange, path);
+                    break;
+                case CTX_MOCK_POLLUSERS:
+                    processMockUsers(httpExchange, path);
+                    break;
+                case CTX_MOCK_PUSHDASH:
+                    processMockDash(httpExchange, path);
                     break;
             }
 
@@ -269,7 +284,7 @@ public final class WebListener {
                 int x = Integer.parseInt(params.get("x"));
                 int y = Integer.parseInt(params.get("y"));
 
-                ActionToken actionToken = databaseAccess.getActionTokenDatabase().getActionToken(qrCode);
+                ActionToken actionToken = configuration.getActionToken(qrCode);
                 if (actionToken == null) {
                     throw new HTTPException(HttpURLConnection.HTTP_NOT_FOUND);
                 }
@@ -469,6 +484,14 @@ public final class WebListener {
             logger.log(Level.INFO, "Invalid request", e);
             writeResponse(httpExchange, HttpURLConnection.HTTP_BAD_REQUEST);
         }
+    }
+
+    private void processMockUsers( HttpExchange httpExchange, String idString ) {
+
+    }
+
+    private void processMockDash( HttpExchange httpExchange, String idString ) {
+
     }
 
     private void writeResponse( HttpExchange httpExchange, int errorCode, Object response ) {

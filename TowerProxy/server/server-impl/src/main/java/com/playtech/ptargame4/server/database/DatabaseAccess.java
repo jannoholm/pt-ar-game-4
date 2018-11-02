@@ -9,6 +9,4 @@ public interface DatabaseAccess {
 
     RatingDatabase getRatingDatabase();
 
-    ActionTokenDatabase getActionTokenDatabase();
-
 }

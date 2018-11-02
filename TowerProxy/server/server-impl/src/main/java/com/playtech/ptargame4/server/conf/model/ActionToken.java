@@ -1,4 +1,4 @@
-package com.playtech.ptargame4.server.database.model;
+package com.playtech.ptargame4.server.conf.model;
 
 import com.playtech.ptargame4.server.exception.SystemException;
 import com.playtech.ptargame4.server.registry.GameRegistryGame;
@@ -47,4 +47,13 @@ public class ActionToken {
         return team;
     }
 
+    @Override
+    public String toString() {
+        return "ActionToken{" +
+                "qrCode='" + qrCode + '\'' +
+                ", tokenType=" + tokenType +
+                ", index=" + index +
+                ", team=" + team +
+                '}';
+    }
 }

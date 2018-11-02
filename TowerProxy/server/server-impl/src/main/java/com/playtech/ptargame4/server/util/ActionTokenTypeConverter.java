@@ -1,7 +1,7 @@
 package com.playtech.ptargame4.server.util;
 
 import com.playtech.ptargame4.api.token.TokenType;
-import com.playtech.ptargame4.server.database.model.ActionToken;
+import com.playtech.ptargame4.server.conf.model.ActionToken;
 
 public class ActionTokenTypeConverter {
     public static ActionToken.TokenType convert(TokenType apiType) {
