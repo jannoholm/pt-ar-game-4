@@ -46,6 +46,8 @@ import com.playtech.ptargame4.server.util.QrGenerator;
 import com.playtech.ptargame4.server.util.TeamConverter;
 import com.playtech.ptargame4.server.web.model.RegisteredUser;
 import com.playtech.ptargame4.server.web.model.ResponseWrapper;
+import com.playtech.ptargame4.server.web.model.UserWrapper;
+import com.playtech.ptargame4.server.web.task.dashboard.ListLeaderBoardTask;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
@@ -66,7 +68,7 @@ public final class WebListener {
     private static final String CTX_CONTROL_USER = "/control/user";
     private static final String CTX_CONTROL_POSITION = "/control/position";
     private static final String CTX_MOCK_POLLUSERS = "/mock/pollUsers";
-    private static final String CTX_MOCK_PUSHDASH = "/mock/pushDash";
+    private static final String CTX_MOCK_PUSHDASH = "/mock/pushLeaderboard";
     private static final String METHOD_GET = "GET";
     private static final String METHOD_POST = "POST";
     private static final String METHOD_DELETE = "DELETE";
@@ -158,7 +160,7 @@ public final class WebListener {
                     processMockUsers(httpExchange, path);
                     break;
                 case CTX_MOCK_PUSHDASH:
-                    processMockDash(httpExchange, path);
+                    processLeaderboardPush(httpExchange, path);
                     break;
             }
 
@@ -468,9 +470,7 @@ public final class WebListener {
 
     private void listLeaderboard( HttpExchange httpExchange ) {
         try {
-            Collection<EloRating> leaderboard = databaseAccess.getRatingDatabase().getLeaderboard();
-            Collection<User> users = databaseAccess.getUserDatabase().getUsers();
-            writeResponse(httpExchange, HttpURLConnection.HTTP_OK, convertLeaderboard(leaderboard, users));
+            writeResponse(httpExchange, HttpURLConnection.HTTP_OK, ListLeaderBoardTask.execute(databaseAccess));
         } catch (Exception e) {
             logger.log(Level.INFO, "Invalid request", e);
             writeResponse(httpExchange, HttpURLConnection.HTTP_BAD_REQUEST);
@@ -512,8 +512,15 @@ public final class WebListener {
         writeResponse(httpExchange, HttpURLConnection.HTTP_OK, users);
     }
 
-    private void processMockDash( HttpExchange httpExchange, String path ) {
-
+    private void processLeaderboardPush(HttpExchange httpExchange, String path ) {
+        try {
+            byte[] data = readPostData(httpExchange);
+            logger.info("Pushed leaderboard: " + new String(data, ENCODING));
+            writeResponse(httpExchange, HttpURLConnection.HTTP_OK, "OK");
+        } catch (IOException e) {
+            logger.log(Level.INFO, "Invalid request", e);
+            writeResponse(httpExchange, HttpURLConnection.HTTP_BAD_REQUEST);
+        }
     }
 
     private void writeResponse( HttpExchange httpExchange, int errorCode, Object response ) {
@@ -581,6 +588,13 @@ public final class WebListener {
 
     private static Map<String, String> parsePostParameters(HttpExchange httpExchange) throws IOException {
         // lets get post parameters
+        byte[] messageBody = readPostData(httpExchange);
+
+        // lets parse parameters string
+        return parseJsonParameters(new String(messageBody, ENCODING));
+    }
+
+    private static byte[] readPostData(HttpExchange httpExchange) throws IOException {
         ByteArrayOutputStream messageBody = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
         InputStream in = httpExchange.getRequestBody();
@@ -591,9 +605,7 @@ public final class WebListener {
         if (logger.isLoggable(Level.INFO)) {
             logger.info(String.format("HttpUtilityServer post parameters: %s", new String(messageBody.toByteArray(), ENCODING)));
         }
-
-        // lets parse parameters string
-        return parseJsonParameters(new String(messageBody.toByteArray(), ENCODING));
+        return messageBody.toByteArray();
     }
 
     private static Map<String, String> parseJsonParameters(String paramStr) {
@@ -631,123 +643,6 @@ public final class WebListener {
             }
         }
         return wrapped;
-    }
-
-    private Collection<LeaderboardWrapper> convertLeaderboard(Collection<EloRating> leaderboard, Collection<User> users) {
-        ArrayList<LeaderboardWrapper> wrapped = new ArrayList<>();
-        int pos = 0;
-        for (EloRating rating : leaderboard) {
-            pos++;
-            for (User user : users) {
-                if (user.getId() == rating.getUserId() && user.getUserType() == User.UserType.REGULAR && !user.isHidden()) {
-                    LeaderboardWrapper wrapper = new LeaderboardWrapper(user.getName(), rating, pos);
-                    wrapped.add(wrapper);
-                    break;
-                }
-            }
-        }
-        return wrapped;
-    }
-
-    private static class UserWrapper {
-        private final int id;
-        private final String name;
-        private final String email;
-        private final String qrCode;
-        UserWrapper(User user) {
-            this.id = user.getId();
-            this.name = user.getName();
-            this.email = user.getEmail();
-            this.qrCode = user.getQrCode();
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public String getQrCode() {
-            return qrCode;
-        }
-    }
-
-    private static class LeaderboardWrapper {
-        private final String name;
-        private final int userId;
-        private final int eloRating;
-        private final int matches;
-        private final int goals;
-        private final int bulletHits;
-        private final int totalScore;
-        private final int ballTouches;
-        private final int boostTouches;
-        private final int position;
-        private final int wins;
-
-        public LeaderboardWrapper(String name, EloRating rating, int position) {
-            this.name = name;
-            this.userId = rating.getUserId();
-            this.eloRating = rating.getEloRating();
-            this.matches = rating.getMatches();
-            this.goals = rating.getGoals();
-            this.bulletHits = rating.getBulletHits();
-            this.totalScore = rating.getTotalScore();
-            this.ballTouches = rating.getBallTouches();
-            this.boostTouches = rating.getBoostTouches();
-            this.wins = rating.getWins();
-            this.position = position;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public int getUserId() {
-            return userId;
-        }
-
-        public int getEloRating() {
-            return eloRating;
-        }
-
-        public int getMatches() {
-            return matches;
-        }
-
-        public int getGoals() {
-            return goals;
-        }
-
-        public int getBulletHits() {
-            return bulletHits;
-        }
-
-        public int getTotalScore() {
-            return totalScore;
-        }
-
-        public int getBallTouches() {
-            return ballTouches;
-        }
-
-        public int getBoostTouches() {
-            return boostTouches;
-        }
-
-        public int getPosition() {
-            return position;
-        }
-
-        public int getWins() {
-            return wins;
-        }
     }
 
 }

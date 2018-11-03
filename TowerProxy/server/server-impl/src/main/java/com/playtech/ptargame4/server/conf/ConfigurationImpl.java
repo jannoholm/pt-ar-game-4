@@ -24,11 +24,11 @@ public class ConfigurationImpl implements Configuration {
     private static final String PROP_NAME_WEB_PORT = "port.web";
     private static final String PROP_NAME_BINARY_PORT = "port.binary";
     private static final String PROP_NAME_POLLUSERS_URL = "pub.pollUsers.url";
-    private static final String PROP_NAME_PUSHDASH_URL = "pub.pushDash.url";
+    private static final String PROP_NAME_PUSHLEADERBOARD_URL = "pub.pushLeaderboard.url";
     private static final int PROP_VALUE_WEB_PORT = 8100;
     private static final int PROP_VALUE_BINARY_PORT = 8101;
     private static final String PROP_VALUE_POLLUSERS = "http://localhost:8100/mock/pollUsers";
-    private static final String PROP_VALUE_PUSHDASH = "http://localhost:8100/mock/pushDash";
+    private static final String PROP_VALUE_PUSHLEADERBOARD = "http://localhost:8100/mock/pushLeaderboard";
 
     private final ScheduledExecutorService executor;
     private ScheduledFuture maintenanceFuture;
@@ -36,7 +36,7 @@ public class ConfigurationImpl implements Configuration {
     private long lastUpdateTime = -1;
     private int webPort = PROP_VALUE_WEB_PORT;
     private int binaryPort = PROP_VALUE_BINARY_PORT;
-    private volatile EndPoints endPoints = new EndPoints(PROP_VALUE_POLLUSERS, PROP_VALUE_PUSHDASH);
+    private volatile EndPoints endPoints = new EndPoints(PROP_VALUE_POLLUSERS, PROP_VALUE_PUSHLEADERBOARD);
     private volatile Map<String, ActionToken> actionTokens;
 
     public ConfigurationImpl(ScheduledExecutorService executor) {
@@ -129,7 +129,7 @@ public class ConfigurationImpl implements Configuration {
     private EndPoints readEndpoints(Properties newConf) {
         return new EndPoints(
                 newConf.getProperty(PROP_NAME_POLLUSERS_URL, PROP_VALUE_POLLUSERS),
-                newConf.getProperty(PROP_NAME_PUSHDASH_URL, PROP_VALUE_PUSHDASH)
+                newConf.getProperty(PROP_NAME_PUSHLEADERBOARD_URL, PROP_VALUE_PUSHLEADERBOARD)
         );
     }
 

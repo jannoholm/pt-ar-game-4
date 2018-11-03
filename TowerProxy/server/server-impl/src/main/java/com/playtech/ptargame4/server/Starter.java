@@ -15,10 +15,10 @@ import com.playtech.ptargame4.server.registry.GameRegistry;
 import com.playtech.ptargame4.server.registry.ProxyClientRegistry;
 import com.playtech.ptargame4.server.registry.ProxyLogicRegistry;
 import com.playtech.ptargame.common.util.NamedThreadFactory;
-import com.playtech.ptargame4.server.task.pub.registration.UserPollerImpl;
+import com.playtech.ptargame4.server.web.task.dashboard.LeaderboardPusherImpl;
+import com.playtech.ptargame4.server.web.task.registration.UserPollerImpl;
 import com.playtech.ptargame4.server.web.WebListener;
 
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -59,9 +59,10 @@ public class Starter {
         webListener.start();
 
         ScheduledExecutorService pollerExecutorService = Executors.newScheduledThreadPool(2, new NamedThreadFactory("poll", true));
-        UserPollerImpl poller = new UserPollerImpl(pollerExecutorService, configuration, databaseAccess);
-        poller.init();
-
+        UserPollerImpl userPoller = new UserPollerImpl(pollerExecutorService, configuration, databaseAccess);
+        userPoller.init();
+        LeaderboardPusherImpl leaderboardPusher = new LeaderboardPusherImpl(pollerExecutorService, configuration, databaseAccess);
+        leaderboardPusher.init();
     }
 
     private void stop() {

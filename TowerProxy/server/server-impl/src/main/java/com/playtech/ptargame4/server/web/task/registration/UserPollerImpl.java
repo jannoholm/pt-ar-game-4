@@ -1,4 +1,4 @@
-package com.playtech.ptargame4.server.task.pub.registration;
+package com.playtech.ptargame4.server.web.task.registration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.playtech.ptargame4.server.conf.Configuration;
@@ -54,7 +54,7 @@ public class UserPollerImpl implements UserPoller {
                 } catch (Exception e) {
                     logger.log(Level.INFO, "User poller failed.", e);
                 }
-            }, 1000, 1023, TimeUnit.MILLISECONDS);
+            }, 1000, 5023, TimeUnit.MILLISECONDS);
         } else {
             throw new IllegalStateException("Already started callback handler.");
         }
@@ -76,7 +76,7 @@ public class UserPollerImpl implements UserPoller {
             URL url = new URL(urlString + "/" + latestPosition);
             logger.info("Poll user: " + urlString);
             con = (HttpURLConnection) url.openConnection();
-            con.setDoOutput(true);
+            con.setDoOutput(false);
             int responseCode = con.getResponseCode();
             if ( responseCode == 200 ) {
                 List<RegisteredUser> result = readJson(new BufferedInputStream(con.getInputStream()));
