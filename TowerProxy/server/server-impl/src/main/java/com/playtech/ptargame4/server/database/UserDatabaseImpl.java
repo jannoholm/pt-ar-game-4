@@ -53,12 +53,12 @@ public class UserDatabaseImpl implements UserDatabase {
             // table users
             String sql =
                     "CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " " +
-                            "(ID INT PRIMARY KEY     NOT NULL, " +
-                            " NAME           TEXT    NOT NULL, " +
-                            " EMAIL          TEXT    NOT NULL, " +
-                            " HIDDEN         INT     NOT NULL DEFAULT 0, " +
-                            " INTERNAL       INT     NOT NULL DEFAULT 0, " +
-                            " QR_CODE        TEXT    NOT NULL)";
+                    "(ID INT PRIMARY KEY     NOT NULL, " +
+                    " NAME           TEXT    NOT NULL, " +
+                    " EMAIL          TEXT    NOT NULL, " +
+                    " HIDDEN         INT     NOT NULL DEFAULT 0, " +
+                    " INTERNAL       INT     NOT NULL DEFAULT 0, " +
+                    " QR_CODE        TEXT    NOT NULL)";
             stmt.executeUpdate(sql);
 
             logger.info("Users database created!");

@@ -61,8 +61,8 @@ public class EloCalculatorImpl implements ScoreCalculator {
 	}
 
 	private double calculateGameResult(List<PlayerScore> teamRed, List<PlayerScore> teamBlue) {
-		long redGoals = teamRed.stream().mapToLong(p -> p.getScoreMap().get(ScoreCriteria.GOAL)).sum();
-		long blueGoals = teamBlue.stream().mapToLong(p -> p.getScoreMap().get(ScoreCriteria.GOAL)).sum();
+		long redGoals = teamRed.stream().mapToLong(p -> p.getScoreMap().get(ScoreCriteria.TOWER_HEALTH)).sum();
+		long blueGoals = teamBlue.stream().mapToLong(p -> p.getScoreMap().get(ScoreCriteria.TOWER_HEALTH)).sum();
 
 		if (redGoals > blueGoals)
 			return 1;
@@ -132,9 +132,8 @@ public class EloCalculatorImpl implements ScoreCalculator {
 			contribution = eloDiff < 0 ? 1.0 - contribution : contribution;
 
 			player.setUserScore(calculatePlayerScore(player.getScoreMap()));
-			int addedScore = (int) Math.round(contribution * eloDiff);
 
-			addedScore = (int) (eloDiff < 0 ? Math.round(contribution * Math.abs(eloDiff)) * -1
+			int addedScore = (int) (eloDiff < 0 ? Math.round(contribution * Math.abs(eloDiff)) * -1
 					: Math.round(contribution * eloDiff));
 
 			player.updateElo(addedScore);

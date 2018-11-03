@@ -7,19 +7,19 @@ import java.util.Collections;
 // TODO: Update to Tower Attack 
 public class Game {
     private final String gameId;
-    private final int goalsRed;
-    private final int goalsBlue;
-    private final boolean suddenDeath;
+    private final int eventId;
+    private final int towerHealthRed;
+    private final int towerHealthBlue;
     private final int gameTime;
     private final Collection<GamePlayerScore> playerScores;
 
     public Game(
-            String gameId, int goalsRed, int goalsBlue, boolean suddenDeath,
+            String gameId, int eventId, int towerHealthRed, int towerHealthBlue,
             int gameTime, Collection<GamePlayerScore> playerScores) {
         this.gameId = gameId;
-        this.goalsRed = goalsRed;
-        this.goalsBlue = goalsBlue;
-        this.suddenDeath = suddenDeath;
+        this.eventId = eventId;
+        this.towerHealthRed = towerHealthRed;
+        this.towerHealthBlue = towerHealthBlue;
         this.gameTime = gameTime;
         this.playerScores = Collections.unmodifiableCollection(playerScores);
     }
@@ -28,16 +28,16 @@ public class Game {
         return gameId;
     }
 
-    public int getGoalsRed() {
-        return goalsRed;
+    public int getEventId() {
+        return eventId;
     }
 
-    public int getGoalsBlue() {
-        return goalsBlue;
+    public int getTowerHealthRed() {
+        return towerHealthRed;
     }
 
-    public boolean isSuddenDeath() {
-        return suddenDeath;
+    public int getTowerHealthBlue() {
+        return towerHealthBlue;
     }
 
     public int getGameTime() {
@@ -52,9 +52,9 @@ public class Game {
     public String toString() {
         return "Game{" +
                 "gameId='" + gameId + '\'' +
-                ", goalsRed=" + goalsRed +
-                ", goalsBlue=" + goalsBlue +
-                ", suddenDeath=" + suddenDeath +
+                ", eventId=" + eventId +
+                ", towerHealthRed=" + towerHealthRed +
+                ", towerHealthBlue=" + towerHealthBlue +
                 ", gameTime=" + gameTime +
                 ", playerScores=" + playerScores +
                 '}';

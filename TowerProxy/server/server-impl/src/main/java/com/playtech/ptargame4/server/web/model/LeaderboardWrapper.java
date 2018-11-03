@@ -7,11 +7,9 @@ public class LeaderboardWrapper {
     private final int userId;
     private final int eloRating;
     private final int matches;
-    private final int goals;
-    private final int bulletHits;
+    private final int towerHealth;
+    private final int enemyTowerHealth;
     private final int totalScore;
-    private final int ballTouches;
-    private final int boostTouches;
     private final int position;
     private final int wins;
 
@@ -20,11 +18,9 @@ public class LeaderboardWrapper {
         this.userId = rating.getUserId();
         this.eloRating = rating.getEloRating();
         this.matches = rating.getMatches();
-        this.goals = rating.getGoals();
-        this.bulletHits = rating.getBulletHits();
+        this.towerHealth = rating.getTowerHealth();
+        this.enemyTowerHealth = rating.getEnemyTowerHealth();
         this.totalScore = rating.getTotalScore();
-        this.ballTouches = rating.getBallTouches();
-        this.boostTouches = rating.getBoostTouches();
         this.wins = rating.getWins();
         this.position = position;
     }
@@ -45,24 +41,16 @@ public class LeaderboardWrapper {
         return matches;
     }
 
-    public int getGoals() {
-        return goals;
+    public int getTowerHealth() {
+        return towerHealth;
     }
 
-    public int getBulletHits() {
-        return bulletHits;
+    public int getEnemyTowerHealth() {
+        return enemyTowerHealth;
     }
 
     public int getTotalScore() {
         return totalScore;
-    }
-
-    public int getBallTouches() {
-        return ballTouches;
-    }
-
-    public int getBoostTouches() {
-        return boostTouches;
     }
 
     public int getPosition() {

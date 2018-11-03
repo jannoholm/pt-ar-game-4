@@ -2,7 +2,7 @@ package com.playtech.ptargame4.server.rank.calculator;
 
 public enum ScoreCriteria {
 	// TODO: Update to tower attack
-	GOAL("goal", 0.5, 500), BALL_HIT("ballHit", 0.1, 10), BULLET_HIT("bulletHit", 0.2, 100), BOOST_HIT("boostHit", 0.2,
+	TOWER_HEALTH("goal", 0.5, 500), BRIDGES_BUILT("ballHit", 0.1, 10), BRIDGES_DESTROYED("bulletHit", 0.2, 100), BRIDGE_SOLDIER_ENEMY_KILLS("boostHit", 0.2,
 			20);
 
 	private final String key;

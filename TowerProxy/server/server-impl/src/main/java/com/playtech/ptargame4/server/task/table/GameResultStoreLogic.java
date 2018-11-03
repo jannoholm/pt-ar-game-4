@@ -1,12 +1,12 @@
 package com.playtech.ptargame4.server.task.table;
 
+import com.playtech.ptargame.common.task.LogicResources;
+import com.playtech.ptargame.common.task.Task;
 import com.playtech.ptargame4.api.lobby.Team;
 import com.playtech.ptargame4.api.table.GameResultPlayerActivity;
 import com.playtech.ptargame4.api.table.GameResultPlayerScore;
 import com.playtech.ptargame4.api.table.GameResultStoreRequest;
 import com.playtech.ptargame4.api.table.GameResultStoreResponse;
-import com.playtech.ptargame.common.task.LogicResources;
-import com.playtech.ptargame.common.task.Task;
 import com.playtech.ptargame4.server.ContextConstants;
 import com.playtech.ptargame4.server.database.model.EloRating;
 import com.playtech.ptargame4.server.database.model.Game;
@@ -38,10 +38,10 @@ public class GameResultStoreLogic extends AbstractLogic {
 		for (GameResultPlayerActivity requestPlayer : request.getPlayerResults()) {
 			Map<ScoreCriteria, Integer> scoreMap = new HashMap<>();
 			// TODO: Update to tower attack, random examples here
-			scoreMap.put(ScoreCriteria.GOAL, requestPlayer.getTowerHealth());
-			scoreMap.put(ScoreCriteria.BALL_HIT, requestPlayer.getBridgesBuilt());
-			scoreMap.put(ScoreCriteria.BULLET_HIT, requestPlayer.getBridgesDestroyed());
-			scoreMap.put(ScoreCriteria.BOOST_HIT, requestPlayer.getBridgeSoldierEnemyKills());
+			scoreMap.put(ScoreCriteria.TOWER_HEALTH, requestPlayer.getTowerHealth());
+			scoreMap.put(ScoreCriteria.BRIDGES_BUILT, requestPlayer.getBridgesBuilt());
+			scoreMap.put(ScoreCriteria.BRIDGES_DESTROYED, requestPlayer.getBridgesDestroyed());
+			scoreMap.put(ScoreCriteria.BRIDGE_SOLDIER_ENEMY_KILLS, requestPlayer.getBridgeSoldierEnemyKills());
 
 			EloRating rating = getLogicResources().getDatabaseAccess().getRatingDatabase()
 					.getRating(requestPlayer.getUserId());
@@ -107,27 +107,34 @@ public class GameResultStoreLogic extends AbstractLogic {
 	}
 
 	private void writeGameHistory(GameResultStoreRequest request, ArrayList<Holder> allScores) {
-		int goalsRed = 0;
-		int goalsBlue = 0;
+		int towerHealthRed = 0;
+		int towerHealthBlue = 0;
 		ArrayList<GamePlayerScore> playerResults = new ArrayList<>();
 		for (Holder holder : allScores) {
 			if (holder.getRequestData().getTeam() == Team.RED) {
-				// TODO: Update to tower attack
-				// goalsRed += holder.getRequestData().getGoals();
+				towerHealthRed += holder.getRequestData().getTowerHealth();
 			} else if (holder.getRequestData().getTeam() == Team.BLUE) {
-				// TODO: Update to tower attack
-				// goalsBlue += holder.getRequestData().getGoals();
+				towerHealthBlue += holder.getRequestData().getTowerHealth();
 			}
-			// TODO: Update to tower attack
-			GamePlayerScore playerScore = new GamePlayerScore(holder.getRequestData().getUserId(),
-					TeamConverter.convert(holder.getRequestData().getTeam()), 0, 0, 0, 0, holder.getScore().getUserScore(),
-					holder.getCurrentEloRating().getEloRating(), holder.getCurrentLeaderboardPosition());
+			GamePlayerScore playerScore = new GamePlayerScore(
+					holder.getRequestData().getUserId(),
+					TeamConverter.convert(holder.getRequestData().getTeam()),
+					holder.getRequestData().getTowerHealth(),
+					holder.getRequestData().getBridgesBuilt(),
+					holder.getRequestData().getBridgesBuiltPoints(),
+					holder.getRequestData().getBridgesDestroyed(),
+					holder.getRequestData().getBridgesDestroyedPoints(),
+					holder.getRequestData().getBridgeSoldierSaves(),
+					holder.getRequestData().getBridgeSoldierDeaths(),
+					holder.getRequestData().getBridgeSoldierEnemySaves(),
+					holder.getRequestData().getBridgeSoldierEnemyKills(),
+					holder.getScore().getUserScore(),
+					holder.getCurrentEloRating().getEloRating(),
+					holder.getCurrentLeaderboardPosition());
 			playerResults.add(playerScore);
 		}
 		int round = getLogicResources().getGameRegistry().getGame(request.getGameId()).updateRound();
-		// TODO: Update to Tower Attack 
-		Game game = new Game(request.getGameId() + "+" + round, goalsRed, goalsBlue, false,
-				request.getGameTime(), playerResults);
+		Game game = new Game(request.getGameId() + "+" + round, 0, towerHealthRed, towerHealthBlue, request.getGameTime(), playerResults);
 		getLogicResources().getDatabaseAccess().getGameDatabase().addGame(game);
 	}
 
@@ -148,14 +155,10 @@ public class GameResultStoreLogic extends AbstractLogic {
 	private void updateEloRating(GameResultStoreRequest request, ArrayList<Holder> allScores) {
 		for (Holder holder : allScores) {
 			holder.newEloRating(new EloRating(holder.getRequestData().getUserId(), holder.getScore().getElo(),
-
-					// TODO: Update to tower attack
 					holder.getCurrentEloRating().getMatches() + 1,
-					holder.getCurrentEloRating().getGoals() + 0,
-					holder.getCurrentEloRating().getBulletHits() + 0,
+					holder.getCurrentEloRating().getTowerHealth() + holder.getRequestData().getTowerHealth(),
+					holder.getCurrentEloRating().getEnemyTowerHealth() + holder.getRequestData().getTowerEnemyHealth(),
 					holder.getCurrentEloRating().getTotalScore() + holder.getScore().getUserScore(),
-					holder.getCurrentEloRating().getBallTouches() + 0,
-					holder.getCurrentEloRating().getBoostTouches() + 0,
 					holder.getCurrentEloRating().getWins()
 							+ (isWinner(request.getWinnerTeam(), holder.getRequestData().getTeam()) ? 1 : 0)));
 			getLogicResources().getDatabaseAccess().getRatingDatabase().updateRating(holder.getCurrentEloRating());

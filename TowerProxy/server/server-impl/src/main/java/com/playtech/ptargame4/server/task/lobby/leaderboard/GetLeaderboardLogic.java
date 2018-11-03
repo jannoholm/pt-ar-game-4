@@ -37,11 +37,9 @@ public class GetLeaderboardLogic extends AbstractLogic {
                 responseUser.setName(user.getName());
                 responseUser.setEloRating(rating.getEloRating());
                 responseUser.setMatches(rating.getMatches());
-                responseUser.setGoals(rating.getGoals());
-                responseUser.setBulletHits(rating.getBulletHits());
+                responseUser.setTowerHealth(rating.getTowerHealth());
+                responseUser.setEnemyTowerHealth(rating.getEnemyTowerHealth());
                 responseUser.setTotalScore(rating.getTotalScore());
-                responseUser.setBallTouches(rating.getBallTouches());
-                responseUser.setBoostTouches(rating.getBoostTouches());
                 responseUser.setPosition(pos);
                 response.addUser(responseUser);
             }

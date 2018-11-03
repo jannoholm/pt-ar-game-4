@@ -11,11 +11,9 @@ public class GetLeaderboardUser {
     private String name;
     private int eloRating;
     private int matches;
-    private int goals;
-    private int bulletHits;
+    private int towerHealth;
+    private int enemyTowerHealth;
     private int totalScore;
-    private int ballTouches;
-    private int boostTouches;
     private int position;
 
     public void parse(ByteBuffer messageData) {
@@ -30,11 +28,9 @@ public class GetLeaderboardUser {
         name=StringUtil.readUTF8String(messageData);
         eloRating=messageData.getInt();
         matches=messageData.getInt();
-        goals=messageData.getInt();
-        bulletHits=messageData.getInt();
+        towerHealth=messageData.getInt();
+        enemyTowerHealth =messageData.getInt();
         totalScore=messageData.getInt();
-        ballTouches=messageData.getInt();
-        boostTouches=messageData.getInt();
         position=messageData.getInt();
     }
 
@@ -48,11 +44,9 @@ public class GetLeaderboardUser {
         StringUtil.writeUTF8String(name, messageData);
         messageData.putInt(eloRating);
         messageData.putInt(matches);
-        messageData.putInt(goals);
-        messageData.putInt(bulletHits);
+        messageData.putInt(towerHealth);
+        messageData.putInt(enemyTowerHealth);
         messageData.putInt(totalScore);
-        messageData.putInt(ballTouches);
-        messageData.putInt(boostTouches);
         messageData.putInt(position);
 
         // fix length
@@ -64,11 +58,10 @@ public class GetLeaderboardUser {
         s.append(", name=").append(getName());
         s.append(", eloRating=").append(getEloRating());
         s.append(", matches=").append(getMatches());
-        s.append(", goals=").append(getGoals());
-        s.append(", bulletHits=").append(getBulletHits());
+        s.append(", towerHealth=").append(getTowerHealth());
+        s.append(", enemyTowerHealth=").append(getEnemyTowerHealth());
         s.append(", totalScore=").append(getTotalScore());
-        s.append(", ballTouches=").append(getBallTouches());
-        s.append(", boostTouches=").append(getBoostTouches());
+        s.append(", position=").append(getPosition());
     }
 
     public int getUserId() {
@@ -103,20 +96,20 @@ public class GetLeaderboardUser {
         this.matches = matches;
     }
 
-    public int getGoals() {
-        return goals;
+    public int getTowerHealth() {
+        return towerHealth;
     }
 
-    public void setGoals(int goals) {
-        this.goals = goals;
+    public void setTowerHealth(int towerHealth) {
+        this.towerHealth = towerHealth;
     }
 
-    public int getBulletHits() {
-        return bulletHits;
+    public int getEnemyTowerHealth() {
+        return enemyTowerHealth;
     }
 
-    public void setBulletHits(int bulletHits) {
-        this.bulletHits = bulletHits;
+    public void setEnemyTowerHealth(int enemyTowerHealth) {
+        this.enemyTowerHealth = enemyTowerHealth;
     }
 
     public int getTotalScore() {
@@ -125,22 +118,6 @@ public class GetLeaderboardUser {
 
     public void setTotalScore(int totalScore) {
         this.totalScore = totalScore;
-    }
-
-    public int getBallTouches() {
-        return ballTouches;
-    }
-
-    public void setBallTouches(int ballTouches) {
-        this.ballTouches = ballTouches;
-    }
-
-    public int getBoostTouches() {
-        return boostTouches;
-    }
-
-    public void setBoostTouches(int boostTouches) {
-        this.boostTouches = boostTouches;
     }
 
     public int getPosition() {

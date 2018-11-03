@@ -27,10 +27,10 @@ public class TestEloCalculator {
 
 	private Map<ScoreCriteria, Integer> generateMap(int goal, int ballHit, int boostHit, int bulletHit) {
 		Map<ScoreCriteria, Integer> map = new HashMap<>();
-		map.put(ScoreCriteria.GOAL, goal);
-		map.put(ScoreCriteria.BALL_HIT, ballHit);
-		map.put(ScoreCriteria.BOOST_HIT, boostHit);
-		map.put(ScoreCriteria.BULLET_HIT, bulletHit);
+		map.put(ScoreCriteria.TOWER_HEALTH, goal);
+		map.put(ScoreCriteria.BRIDGES_BUILT, ballHit);
+		map.put(ScoreCriteria.BRIDGE_SOLDIER_ENEMY_KILLS, boostHit);
+		map.put(ScoreCriteria.BRIDGES_DESTROYED, bulletHit);
 
 		return map;
 	}

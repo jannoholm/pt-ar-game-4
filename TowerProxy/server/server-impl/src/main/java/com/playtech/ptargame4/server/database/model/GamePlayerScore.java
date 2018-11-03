@@ -6,23 +6,31 @@ public class GamePlayerScore {
 
     private final int userId;
     private final GameRegistryGame.Team team;
-    private final int goals;
-    private final int bulletHits;
-    private final int ballTouches;
-    private final int boostTouches;
+    private final int towerHealth;
+    private final int bridgesBuilt;
+    private final int bridgesBuiltPoints;
+    private final int bridgesDestroyed;
+    private final int bridgesDestroyedPoints;
+    private final int bridgeSoldierSaves;
+    private final int bridgeSoldierDeaths;
+    private final int bridgeSoldierEnemySaves;
+    private final int bridgeSoldierEnemyKills;
     private final int score;
     private final int eloRating;
     private final int leaderboardPos;
 
-    public GamePlayerScore(int userId, GameRegistryGame.Team team,
-                           int goals, int bulletHits, int ballTouches, int boostTouches,
-                           int score, int eloRating, int leaderboardPos) {
+    public GamePlayerScore(int userId, GameRegistryGame.Team team, int towerHealth, int bridgesBuilt, int bridgesBuiltPoints, int bridgesDestroyed, int bridgesDestroyedPoints, int bridgeSoldierSaves, int bridgeSoldierDeaths, int bridgeSoldierEnemySaves, int bridgeSoldierEnemyKills, int score, int eloRating, int leaderboardPos) {
         this.userId = userId;
         this.team = team;
-        this.goals = goals;
-        this.bulletHits = bulletHits;
-        this.ballTouches = ballTouches;
-        this.boostTouches = boostTouches;
+        this.towerHealth = towerHealth;
+        this.bridgesBuilt = bridgesBuilt;
+        this.bridgesBuiltPoints = bridgesBuiltPoints;
+        this.bridgesDestroyed = bridgesDestroyed;
+        this.bridgesDestroyedPoints = bridgesDestroyedPoints;
+        this.bridgeSoldierSaves = bridgeSoldierSaves;
+        this.bridgeSoldierDeaths = bridgeSoldierDeaths;
+        this.bridgeSoldierEnemySaves = bridgeSoldierEnemySaves;
+        this.bridgeSoldierEnemyKills = bridgeSoldierEnemyKills;
         this.score = score;
         this.eloRating = eloRating;
         this.leaderboardPos = leaderboardPos;
@@ -36,20 +44,40 @@ public class GamePlayerScore {
         return team;
     }
 
-    public int getGoals() {
-        return goals;
+    public int getTowerHealth() {
+        return towerHealth;
     }
 
-    public int getBulletHits() {
-        return bulletHits;
+    public int getBridgesBuilt() {
+        return bridgesBuilt;
     }
 
-    public int getBallTouches() {
-        return ballTouches;
+    public int getBridgesBuiltPoints() {
+        return bridgesBuiltPoints;
     }
 
-    public int getBoostTouches() {
-        return boostTouches;
+    public int getBridgesDestroyed() {
+        return bridgesDestroyed;
+    }
+
+    public int getBridgesDestroyedPoints() {
+        return bridgesDestroyedPoints;
+    }
+
+    public int getBridgeSoldierSaves() {
+        return bridgeSoldierSaves;
+    }
+
+    public int getBridgeSoldierDeaths() {
+        return bridgeSoldierDeaths;
+    }
+
+    public int getBridgeSoldierEnemySaves() {
+        return bridgeSoldierEnemySaves;
+    }
+
+    public int getBridgeSoldierEnemyKills() {
+        return bridgeSoldierEnemyKills;
     }
 
     public int getScore() {
@@ -62,20 +90,5 @@ public class GamePlayerScore {
 
     public int getLeaderboardPos() {
         return leaderboardPos;
-    }
-
-    @Override
-    public String toString() {
-        return "GamePlayerScore{" +
-                "userId=" + userId +
-                ", team=" + team +
-                ", goals=" + goals +
-                ", bulletHits=" + bulletHits +
-                ", ballTouches=" + ballTouches +
-                ", boostTouches=" + boostTouches +
-                ", score=" + score +
-                ", eloRating=" + eloRating +
-                ", leaderboardPos=" + leaderboardPos +
-                '}';
     }
 }

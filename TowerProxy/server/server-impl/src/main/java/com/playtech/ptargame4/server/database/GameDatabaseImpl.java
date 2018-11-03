@@ -7,7 +7,6 @@ import com.playtech.ptargame4.server.exception.SystemException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,52 +42,37 @@ public class GameDatabaseImpl implements GameDatabase {
     protected void createTable() {
         Connection connection = dbInit.allocateConnection();
         try (Statement stmt = connection.createStatement()) {
+
             // table games
             String sql =
                     "CREATE TABLE IF NOT EXISTS " + TABLE_GAMES + " " +
-                    "(ID INT PRIMARY KEY     NOT NULL, " +
-                    " USERID         INT     NOT NULL, " +
-                    " TODO          TEXT    NOT NULL)";
+                    "(GAMEID                TEXT    PRIMARY KEY NOT NULL, " +
+                    " EVENT                 INT     NOT NULL, " +
+                    " TOWER_HEALTH_RED      INT     NOT NULL, " +
+                    " TOWER_HEALTH_BLUE     INT     NOT NULL, " +
+                    " GAME_TIME             INT     NOT NULL)";
             stmt.executeUpdate(sql);
 
-            // recreate
-            boolean recreate = true;
-            sql = "SELECT name FROM sqlite_master WHERE type='table' AND name='" +TABLE_SCORE+ "'";
-            try (ResultSet result = stmt.executeQuery(sql)) {
-                if (result.next()) {
-                    recreate = false;
-                }
-            }
+            // table player score
+            sql =
+                    "CREATE TABLE IF NOT EXISTS " + TABLE_SCORE + " " +
+                    "(GAMEID                        TEXT    NOT NULL, " +
+                    " USERID                        INT     NOT NULL, " +
+                    " TEAM                          INT     NOT NULL, " +
+                    " TOWER_HEALTH                  INT     NOT NULL, " +
+                    " BRIDGES_BUILT                 INT     NOT NULL, " +
+                    " BRIDGES_BUILT_POINTS          INT     NOT NULL, " +
+                    " BRIDGES_DESTROYED             INT     NOT NULL, " +
+                    " BRIDGES_DESTROYED_POINTS      INT     NOT NULL, " +
+                    " BRIDGE_SOLDIER_SAVES          INT     NOT NULL, " +
+                    " BRIDGE_SOLDIER_DEATHS         INT     NOT NULL, " +
+                    " BRIDGE_SOLDIER_ENEMY_SAVES    INT     NOT NULL, " +
+                    " BRIDGE_SOLDIER_ENEMY_KILLS    INT     NOT NULL, " +
+                    " SCORE                         INT     NOT NULL, " +
+                    " ELO_RAITING                   INT     NOT NULL, " +
+                    " LEADERBOARD_POS               INT     NOT NULL)";
+            stmt.executeUpdate(sql);
 
-            if (recreate) {
-                sql = "DROP TABLE " + TABLE_GAMES;
-                stmt.executeUpdate(sql);
-
-                // table games
-                sql =
-                        "CREATE TABLE IF NOT EXISTS " + TABLE_GAMES + " " +
-                        "(GAMEID         TEXT    PRIMARY KEY NOT NULL, " +
-                        " GOALS_RED      INT     NOT NULL, " +
-                        " GOALS_BLUE     INT     NOT NULL, " +
-                        " SUDDEN_DEATH   INT     NOT NULL, " +
-                        " GAME_TIME      INT     NOT NULL)";
-                stmt.executeUpdate(sql);
-
-                // table player score
-                sql =
-                        "CREATE TABLE IF NOT EXISTS " + TABLE_SCORE + " " +
-                        "(GAMEID         TEXT    NOT NULL, " +
-                        " USERID         INT     NOT NULL, " +
-                        " TEAM           INT     NOT NULL, " +
-                        " GOALS          INT     NOT NULL, " +
-                        " BULLET_HITS    INT     NOT NULL, " +
-                        " BALL_TOUCHES   INT     NOT NULL, " +
-                        " BOOST_TOUCHES  INT     NOT NULL, " +
-                        " SCORE          INT     NOT NULL, " +
-                        " ELO_RATING     INT     NOT NULL, " +
-                        " LEADERBOARD_POS INT     NOT NULL)";
-                stmt.executeUpdate(sql);
-            }
             logger.info("Games database created!");
         } catch (Exception e) {
             throw new SystemException("Unable to initialize games database", e);
@@ -105,9 +89,9 @@ public class GameDatabaseImpl implements GameDatabase {
                     todo.addAll(pendingWrites);
                 }
                 if (todo.size() > 0) {
-                    String insertGameSql = "insert into " + TABLE_GAMES + " (GAMEID, GOALS_RED, GOALS_BLUE, SUDDEN_DEATH, GAME_TIME) values (?, ?, ?, ?, ?)";
-                    String insertScoreSql = "insert into " + TABLE_SCORE + " (GAMEID, USERID, TEAM, GOALS, BULLET_HITS, BALL_TOUCHES, BOOST_TOUCHES, SCORE, ELO_RATING, LEADERBOARD_POS) " +
-                            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    String insertGameSql = "insert into " + TABLE_GAMES + " (GAMEID, EVENT, TOWER_HEALTH_RED, TOWER_HEALTH_BLUE, GAME_TIME) values (?, ?, ?, ?, ?)";
+                    String insertScoreSql = "insert into " + TABLE_SCORE + " (GAMEID, USERID, TEAM, TOWER_HEALTH, BRIDGES_BUILT, BRIDGES_BUILT_POINTS, BRIDGES_DESTROYED, BRIDGES_DESTROYED_POINTS, BRIDGE_SOLDIER_SAVES, BRIDGE_SOLDIER_DEATHS, BRIDGE_SOLDIER_ENEMY_SAVES, BRIDGE_SOLDIER_ENEMY_KILLS, SCORE, ELO_RAITING, LEADERBOARD_POS) " +
+                            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     Connection connection = dbInit.allocateConnection();
                     try (
                             PreparedStatement insertGameStmt = connection.prepareStatement(insertGameSql);
@@ -115,9 +99,9 @@ public class GameDatabaseImpl implements GameDatabase {
                     ) {
                         for (Game game : todo) {
                             insertGameStmt.setString(1, game.getGameId());
-                            insertGameStmt.setInt(2, game.getGoalsRed());
-                            insertGameStmt.setInt(3, game.getGoalsBlue());
-                            insertGameStmt.setInt(4, game.isSuddenDeath() ? 1 : 0);
+                            insertGameStmt.setInt(2, game.getEventId());
+                            insertGameStmt.setInt(3, game.getTowerHealthRed());
+                            insertGameStmt.setInt(4, game.getTowerHealthBlue());
                             insertGameStmt.setInt(5, game.getGameTime());
                             insertGameStmt.executeUpdate();
 
@@ -125,13 +109,18 @@ public class GameDatabaseImpl implements GameDatabase {
                                 insertScoreStmt.setString(1, game.getGameId());
                                 insertScoreStmt.setInt(2, score.getUserId());
                                 insertScoreStmt.setInt(3, score.getTeam().ordinal());
-                                insertScoreStmt.setInt(4, score.getGoals());
-                                insertScoreStmt.setInt(5, score.getBulletHits());
-                                insertScoreStmt.setInt(6, score.getBallTouches());
-                                insertScoreStmt.setInt(7, score.getBoostTouches());
-                                insertScoreStmt.setInt(8, score.getScore());
-                                insertScoreStmt.setInt(9, score.getEloRating());
-                                insertScoreStmt.setInt(10, score.getLeaderboardPos());
+                                insertScoreStmt.setInt(4, score.getTowerHealth());
+                                insertScoreStmt.setInt(5, score.getBridgesBuilt());
+                                insertScoreStmt.setInt(6, score.getBridgesBuiltPoints());
+                                insertScoreStmt.setInt(7, score.getBridgesDestroyed());
+                                insertScoreStmt.setInt(8, score.getBridgesDestroyedPoints());
+                                insertScoreStmt.setInt(9, score.getBridgeSoldierSaves());
+                                insertScoreStmt.setInt(10, score.getBridgeSoldierDeaths());
+                                insertScoreStmt.setInt(11, score.getBridgeSoldierEnemySaves());
+                                insertScoreStmt.setInt(12, score.getBridgeSoldierEnemyKills());
+                                insertScoreStmt.setInt(13, score.getScore());
+                                insertScoreStmt.setInt(14, score.getEloRating());
+                                insertScoreStmt.setInt(15, score.getLeaderboardPos());
                                 insertScoreStmt.addBatch();
                             }
                             insertScoreStmt.executeBatch();

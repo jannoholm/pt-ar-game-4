@@ -52,33 +52,14 @@ public class RatingDatabaseImpl implements RatingDatabase {
             // table rating
             String sql =
                     "CREATE TABLE IF NOT EXISTS " + TABLE_RATING + " " +
-                            "(USERID INT PRIMARY KEY NOT NULL, " +
-                            " ELO_RATING     INT     NOT NULL, " +
-                            " MATCHES        INT     NOT NULL, " +
-                            " GOALS          INT     NOT NULL, " +
-                            " BULLET_HITS    INT     NOT NULL, " +
-                            " TOTAL_SCORE    INT     NOT NULL, " +
-                            " BALL_TOUCHES   INT     NOT NULL, " +
-                            " BOOST_TOUCHES  INT     NOT NULL)";
+                    "(USERID INT PRIMARY KEY NOT NULL, " +
+                    " ELO_RATING            INT     NOT NULL, " +
+                    " MATCHES               INT     NOT NULL, " +
+                    " TOWER_HEALTH          INT     NOT NULL, " +
+                    " ENEMY_TOWER_HEALTH    INT     NOT NULL, " +
+                    " TOTAL_SCORE           INT     NOT NULL, " +
+                    " WINS                  INT     NOT NULL)";
             stmt.executeUpdate(sql);
-
-            // check if hidden field already exists
-            boolean alterNeeded = true;
-            sql = "PRAGMA table_info( " + TABLE_RATING + " )";
-            try (ResultSet result = stmt.executeQuery(sql)) {
-                while (result.next()) {
-                    if (result.getString("NAME").equals("WINS")) {
-                        alterNeeded = false;
-                        break;
-                    }
-                }
-            }
-
-            // add hidden field. needed for backward compatibility
-            if (alterNeeded) {
-                sql = "ALTER TABLE " + TABLE_RATING + " ADD COLUMN WINS INT NOT NULL DEFAULT 0";
-                stmt.executeUpdate(sql);
-            }
 
             logger.info("Rating database created!");
         } catch (Exception e) {
@@ -91,20 +72,18 @@ public class RatingDatabaseImpl implements RatingDatabase {
     private void readTables() {
         Connection connection = dbInit.allocateConnection();
         try (Statement stmt = connection.createStatement()) {
-            String sql = "select USERID, ELO_RATING, MATCHES, GOALS, BULLET_HITS, TOTAL_SCORE, BALL_TOUCHES, BOOST_TOUCHES, WINS from " + TABLE_RATING;
+            String sql = "select USERID, ELO_RATING, MATCHES, TOWER_HEALTH, ENEMY_TOWER_HEALTH, TOTAL_SCORE, WINS from " + TABLE_RATING;
             ResultSet result = stmt.executeQuery(sql);
             while (result.next()) {
                 int userId = result.getInt("USERID");
                 int eloRating = result.getInt("ELO_RATING");
                 int matches = result.getInt("MATCHES");
-                int goals = result.getInt("GOALS");
-                int bulletHits = result.getInt("BULLET_HITS");
+                int towerHealth = result.getInt("TOWER_HEALTH");
+                int enemyTowerHealth = result.getInt("ENEMY_TOWER_HEALTH");
                 int totalScore = result.getInt("TOTAL_SCORE");
-                int ballTouches = result.getInt("BALL_TOUCHES");
-                int boostTouches = result.getInt("BOOST_TOUCHES");
                 int wins = result.getInt("WINS");
 
-                EloRating rating = new EloRating(userId, eloRating, matches, goals, bulletHits, totalScore, ballTouches, boostTouches, wins);
+                EloRating rating = new EloRating(userId, eloRating, matches, towerHealth, enemyTowerHealth, totalScore, wins);
                 ratingMap.put(rating.getUserId(), rating);
                 logger.info("Rating read from database: " + rating);
             }
@@ -125,13 +104,13 @@ public class RatingDatabaseImpl implements RatingDatabase {
                 }
                 if (todo.size() > 0) {
                     String selectSql = "select count(1) from " + TABLE_RATING + " where USERID=?";
-                    String insertSql = "insert into " + TABLE_RATING + " (USERID, ELO_RATING, MATCHES, GOALS, BULLET_HITS, TOTAL_SCORE, BALL_TOUCHES, BOOST_TOUCHES, WINS) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    String updateSql = "update " + TABLE_RATING + " set ELO_RATING=?, MATCHES=?, GOALS=?, BULLET_HITS=?, TOTAL_SCORE=?, BALL_TOUCHES=?, BOOST_TOUCHES=?, WINS=? where USERID=?";
+                    String insertSql = "insert into " + TABLE_RATING + " (USERID, ELO_RATING, MATCHES, TOWER_HEALTH, ENEMY_TOWER_HEALTH, TOTAL_SCORE, WINS) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    String updateSql = "update " + TABLE_RATING + " set ELO_RATING=?, MATCHES=?, TOWER_HEALTH=?, ENEMY_TOWER_HEALTH=?, TOTAL_SCORE=?, WINS=? where USERID=?";
                     Connection connection = dbInit.allocateConnection();
                     try (
                             PreparedStatement selectStmt = connection.prepareStatement(selectSql);
                             PreparedStatement insertStmt = connection.prepareStatement(insertSql);
-                            PreparedStatement updateStmt = connection.prepareStatement(updateSql);
+                            PreparedStatement updateStmt = connection.prepareStatement(updateSql)
                     ) {
                         for (EloRating rating : todo) {
                             selectStmt.setInt(1, rating.getUserId());
@@ -141,25 +120,21 @@ public class RatingDatabaseImpl implements RatingDatabase {
                                 // update
                                 updateStmt.setInt(1, rating.getEloRating());
                                 updateStmt.setInt(2, rating.getMatches());
-                                updateStmt.setInt(3, rating.getGoals());
-                                updateStmt.setInt(4, rating.getBulletHits());
+                                updateStmt.setInt(3, rating.getTowerHealth());
+                                updateStmt.setInt(4, rating.getEnemyTowerHealth());
                                 updateStmt.setInt(5, rating.getTotalScore());
-                                updateStmt.setInt(6, rating.getBallTouches());
-                                updateStmt.setInt(7, rating.getBoostTouches());
-                                updateStmt.setInt(8, rating.getWins());
-                                updateStmt.setInt(9, rating.getUserId());
+                                updateStmt.setInt(6, rating.getWins());
+                                updateStmt.setInt(7, rating.getUserId());
                                 updateStmt.executeUpdate();
                             } else {
                                 // insert
                                 insertStmt.setInt(1, rating.getUserId());
                                 insertStmt.setInt(2, rating.getEloRating());
                                 insertStmt.setInt(3, rating.getMatches());
-                                insertStmt.setInt(4, rating.getGoals());
-                                insertStmt.setInt(5, rating.getBulletHits());
+                                insertStmt.setInt(4, rating.getTowerHealth());
+                                insertStmt.setInt(5, rating.getEnemyTowerHealth());
                                 insertStmt.setInt(6, rating.getTotalScore());
-                                insertStmt.setInt(7, rating.getBallTouches());
-                                insertStmt.setInt(8, rating.getBoostTouches());
-                                insertStmt.setInt(9, rating.getWins());
+                                insertStmt.setInt(7, rating.getWins());
                                 insertStmt.executeUpdate();
                             }
                             logger.info("Rating written to database: " + rating);
@@ -185,7 +160,7 @@ public class RatingDatabaseImpl implements RatingDatabase {
         synchronized (this) {
             EloRating rating = ratingMap.get(userId);
             if (userId == 0 || rating == null) {
-                rating = new EloRating(userId, 1000, 0, 0, 0, 0, 0, 0, 0);
+                rating = new EloRating(userId, 1000, 0, 0, 0, 0, 0);
             }
             return rating;
         }

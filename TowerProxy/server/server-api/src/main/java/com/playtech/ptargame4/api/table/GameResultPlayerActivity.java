@@ -13,7 +13,7 @@ public class GameResultPlayerActivity extends AbstractRequest {
     private Team team;
     private byte positionInTeam;
     private int towerHealth;
-    private int towerEnemeyHealth;
+    private int towerEnemyHealth;
     private int bridgesBuilt;
     private int bridgesBuiltPoints;
     private int bridgesDestroyed;
@@ -37,7 +37,7 @@ public class GameResultPlayerActivity extends AbstractRequest {
         team = Team.values()[messageData.get()];
         positionInTeam = messageData.get();
         towerHealth = messageData.getInt();
-        towerEnemeyHealth = messageData.getInt();
+        towerEnemyHealth = messageData.getInt();
         bridgesBuilt = messageData.getInt();
         bridgesBuiltPoints = messageData.getInt();
         bridgesDestroyed = messageData.getInt();
@@ -56,7 +56,7 @@ public class GameResultPlayerActivity extends AbstractRequest {
         messageData.put((byte)team.ordinal());
         messageData.put(positionInTeam);
         messageData.putInt(towerHealth);
-        messageData.putInt(towerEnemeyHealth);
+        messageData.putInt(towerEnemyHealth);
         messageData.putInt(bridgesBuilt);
         messageData.putInt(bridgesBuiltPoints);
         messageData.putInt(bridgesDestroyed);
@@ -76,8 +76,8 @@ public class GameResultPlayerActivity extends AbstractRequest {
 		builder.append(positionInTeam);
 		builder.append(", towerHealth=");
 		builder.append(towerHealth);
-		builder.append(", towerEnemeyHealth=");
-		builder.append(towerEnemeyHealth);
+		builder.append(", towerEnemyHealth=");
+		builder.append(towerEnemyHealth);
 		builder.append(", bridgesBuilt=");
 		builder.append(bridgesBuilt);
 		builder.append(", bridgesBuiltPoints=");
@@ -137,13 +137,13 @@ public class GameResultPlayerActivity extends AbstractRequest {
 	}
 
 
-	public int getTowerEnemeyHealth() {
-		return towerEnemeyHealth;
+	public int getTowerEnemyHealth() {
+		return towerEnemyHealth;
 	}
 
 
-	public void setTowerEnemeyHealth(int towerEnemeyHealth) {
-		this.towerEnemeyHealth = towerEnemeyHealth;
+	public void setTowerEnemyHealth(int towerEnemyHealth) {
+		this.towerEnemyHealth = towerEnemyHealth;
 	}
 
 
