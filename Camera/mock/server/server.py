@@ -9,7 +9,7 @@ import logging
 MAX_MESSAGE_LENGTH = 1024
 PORT = 1337
 
-POST_URL = "http://10.67.95.208:8101/control/position"
+POST_URL = "http://localhost:8101/control/position"
 
 
 class RemoteClient(asyncore.dispatcher):

@@ -43,7 +43,7 @@
 		{
 			"name": "set user in game",
 			"request": {
-				"url": "http://localhost:8101/user",
+				"url": "http://localhost:8101/control/user",
 				"method": "POST",
 				"header": [
 					{
@@ -56,14 +56,14 @@
 					"mode": "urlencoded",
 					"urlencoded": [
 						{
-							"key": "name",
-							"value": "name-djdsfsfd",
+							"key": "QR",
+							"value": "fhbds",
 							"description": "",
 							"type": "text"
 						},
 						{
-							"key": "email",
-							"value": "email1@somewhere.com",
+							"key": "position",
+							"value": "1",
 							"description": "",
 							"type": "text"
 						}
@@ -75,6 +75,45 @@
 		},
 		{
 			"name": "set actiontoken position",
+			"request": {
+				"url": "http://localhost:8101/control/position",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "qrCode",
+							"value": "3",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "x",
+							"value": "600",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "y",
+							"value": "300",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Create user in soccar"
+			},
+			"response": []
+		},
+		{
+			"name": "poll users from pub",
 			"request": {
 				"url": "http://localhost:8101/control/position",
 				"method": "POST",
@@ -180,6 +219,33 @@
 		},
 		{
 			"name": "update player",
+			"request": {
+				"url": "http://localhost:8101/player/125",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "email1@someelse.com",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Create user in soccar"
+			},
+			"response": []
+		},
+		{
+			"name": "update dashboard",
 			"request": {
 				"url": "http://localhost:8101/player/125",
 				"method": "POST",

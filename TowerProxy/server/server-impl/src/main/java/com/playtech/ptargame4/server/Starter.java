@@ -14,11 +14,13 @@ import com.playtech.ptargame4.server.database.DatabaseAccessImpl;
 import com.playtech.ptargame4.server.registry.GameRegistry;
 import com.playtech.ptargame4.server.registry.ProxyClientRegistry;
 import com.playtech.ptargame4.server.registry.ProxyLogicRegistry;
+import com.playtech.ptargame.common.util.NamedThreadFactory;
+import com.playtech.ptargame4.server.task.pub.registration.UserPollerImpl;
+import com.playtech.ptargame4.server.web.WebListener;
 
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Starter {
 
@@ -33,15 +35,9 @@ public class Starter {
         messageFactory.initialize();
         MessageParser messageParser = new ProxyMessageParser(messageFactory);
         ProxyClientRegistry clientRegistry = new ProxyClientRegistry();
-        ScheduledExecutorService backgroundExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
-            private final AtomicInteger count = new AtomicInteger(0);
-            @Override
-            public Thread newThread(Runnable r) {
-                Thread thread = new Thread(r, "back-" + count.addAndGet(1));
-                thread.setDaemon(true);
-                return thread;
-            }
-        });
+        ScheduledExecutorService backgroundExecutorService = Executors.newSingleThreadScheduledExecutor(new NamedThreadFactory("back", true));
+        ConfigurationImpl configuration = new ConfigurationImpl(backgroundExecutorService);
+        configuration.init();
         CallbackHandlerImpl callbackHandler = new CallbackHandlerImpl(clientRegistry, backgroundExecutorService);
         callbackHandler.start();
         taskExecutor = new TaskExecutorImpl("te", 2);
@@ -50,20 +46,22 @@ public class Starter {
         GameRegistry gameRegistry = new GameRegistry(backgroundExecutorService);
         DatabaseAccessImpl databaseAccess = new DatabaseAccessImpl(backgroundExecutorService);
         databaseAccess.setup();
-        GameLogImpl gamelog = new GameLogImpl(backgroundExecutorService);
-        gamelog.init();
-        LogicResourcesImpl logicResources = new LogicResourcesImpl(callbackHandler, messageParser, clientRegistry, gameRegistry, taskFactory, databaseAccess, gamelog);
+        GameLogImpl gameLog = new GameLogImpl(backgroundExecutorService);
+        gameLog.init();
+        LogicResourcesImpl logicResources = new LogicResourcesImpl(callbackHandler, messageParser, clientRegistry, gameRegistry, taskFactory, databaseAccess, gameLog);
         logicRegistry.initialize(logicResources);
         ProxyConnectionFactory connectionFactory = new ProxyConnectionFactory(messageParser, callbackHandler, clientRegistry, gameRegistry, taskFactory);
 
-        proxyListener = new NioServerListener(connectionFactory, 8100);
+        proxyListener = new NioServerListener(connectionFactory, configuration.getBinaryPort());
         new Thread(proxyListener.start(), "proxyListener").start();
 
-        ConfigurationImpl configuration = new ConfigurationImpl(backgroundExecutorService);
-        configuration.init();
-
-        webListener = new WebListener(8101, databaseAccess, clientRegistry, messageParser, configuration);
+        webListener = new WebListener(databaseAccess, clientRegistry, messageParser, configuration);
         webListener.start();
+
+        ScheduledExecutorService pollerExecutorService = Executors.newScheduledThreadPool(2, new NamedThreadFactory("poll", true));
+        UserPollerImpl poller = new UserPollerImpl(pollerExecutorService, configuration, databaseAccess);
+        poller.init();
+
     }
 
     private void stop() {

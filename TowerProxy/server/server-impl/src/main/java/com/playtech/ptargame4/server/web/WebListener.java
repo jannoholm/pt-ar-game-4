@@ -1,4 +1,4 @@
-package com.playtech.ptargame4.server;
+package com.playtech.ptargame4.server.web;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -28,8 +28,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.playtech.ptargame.common.callback.ClientRegistry;
 import com.playtech.ptargame.common.message.MessageParser;
 import com.playtech.ptargame.common.session.Session;
@@ -46,6 +44,8 @@ import com.playtech.ptargame4.server.exception.SystemException;
 import com.playtech.ptargame4.server.util.ActionTokenTypeConverter;
 import com.playtech.ptargame4.server.util.QrGenerator;
 import com.playtech.ptargame4.server.util.TeamConverter;
+import com.playtech.ptargame4.server.web.model.RegisteredUser;
+import com.playtech.ptargame4.server.web.model.ResponseWrapper;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
@@ -74,15 +74,13 @@ public final class WebListener {
 
     private static final String HTML_DIR = "html";
 
-    private final int port;
     private final HttpServer s;
     private final DatabaseAccess databaseAccess;
     private final ClientRegistry clientRegistry;
     private final MessageParser messageParser;
     private final Configuration configuration;
 
-    public WebListener(int port, DatabaseAccess databaseAccess, ClientRegistry clientRegistry, MessageParser messageParser, Configuration configuration) throws IOException {
-        this.port = port;
+    public WebListener(DatabaseAccess databaseAccess, ClientRegistry clientRegistry, MessageParser messageParser, Configuration configuration) throws IOException {
         this.databaseAccess = databaseAccess;
         this.clientRegistry = clientRegistry;
         this.messageParser = messageParser;
@@ -91,7 +89,7 @@ public final class WebListener {
     }
 
     private int getPort() {
-        return this.port;
+        return this.configuration.getWebPort();
     }
 
     public void start() {
@@ -281,8 +279,8 @@ public final class WebListener {
                 Map<String, String> params = parsePostParameters(httpExchange);
                 String qrCode = params.get("qrCode");
                 if (qrCode != null) qrCode = qrCode.trim();
-                int x = Integer.parseInt(params.get("x"));
-                int y = Integer.parseInt(params.get("y"));
+                int x = parseCoordinate(params.get("x"));
+                int y = parseCoordinate(params.get("y"));
 
                 ActionToken actionToken = configuration.getActionToken(qrCode);
                 if (actionToken == null) {
@@ -309,6 +307,15 @@ public final class WebListener {
             writeResponse(httpExchange, HttpURLConnection.HTTP_BAD_REQUEST);
         }
     }
+
+    private int parseCoordinate(String nr) {
+        int pos = nr.indexOf(".");
+        if (pos >= 0) {
+            nr = nr.substring(0, pos);
+        }
+        return Integer.parseInt(nr);
+    }
+
     private void processHtml(HttpExchange httpExchange, String path) throws IOException {
         File file = new File(HTML_DIR + File.separator + path);
         if (file.exists()) {
@@ -486,18 +493,33 @@ public final class WebListener {
         }
     }
 
-    private void processMockUsers( HttpExchange httpExchange, String idString ) {
-
+    private void processMockUsers( HttpExchange httpExchange, String path ) {
+        ArrayList<RegisteredUser> users = new ArrayList<>();
+        int position = 0;
+        if (path != null && path.trim().length() > 0) {
+            try {
+                position = Integer.parseInt(path.trim());
+            } catch (NumberFormatException e) {}
+        }
+        if (position < 1) {
+            users.add(new RegisteredUser(1, "test1", "test1@gmail.com"));
+        } else if (position < 2) {
+            users.add(new RegisteredUser(1, "test1", "test1@gmail.com"));
+            users.add(new RegisteredUser(2, "test2", "test2@gmail.com"));
+        } else if (position < 3) {
+            users.add(new RegisteredUser(3, "test3", "test3@gmail.com"));
+        }
+        writeResponse(httpExchange, HttpURLConnection.HTTP_OK, users);
     }
 
-    private void processMockDash( HttpExchange httpExchange, String idString ) {
+    private void processMockDash( HttpExchange httpExchange, String path ) {
 
     }
 
     private void writeResponse( HttpExchange httpExchange, int errorCode, Object response ) {
         try {
             ResponseWrapper rw = new ResponseWrapper(response);
-            byte[] b = rw.getBytes();
+            byte[] b = rw.toBytes();
             httpExchange.getResponseHeaders().set("Content-Type", "application/json; charset=utf-8");
             httpExchange.sendResponseHeaders( errorCode, b.length);
             httpExchange.getResponseBody().write( b);
@@ -509,7 +531,7 @@ public final class WebListener {
     private void writeResponse( HttpExchange httpExchange, int errorCode ) {
         try {
             ResponseWrapper rw = new ResponseWrapper("Bad request");
-            byte[] b = rw.getBytes();
+            byte[] b = rw.toBytes();
             httpExchange.getResponseHeaders().set("Content-Type", "application/json; charset=utf-8");
             httpExchange.sendResponseHeaders( errorCode, b.length);
             httpExchange.getResponseBody().write( b);
@@ -625,27 +647,6 @@ public final class WebListener {
             }
         }
         return wrapped;
-    }
-
-    private static class ResponseWrapper {
-        private static ObjectWriter writer = new ObjectMapper().writer();
-        private Object data;
-
-        private ResponseWrapper( Object data ) {
-            this.data = data;
-        }
-
-        public Object getData() {
-            return data;
-        }
-
-        private byte[] getBytes() {
-            try {
-                return writer.writeValueAsBytes(this);
-            } catch (IOException e) {
-                throw new SystemException("Unable to serialize object: " + data, e);
-            }
-        }
     }
 
     private static class UserWrapper {

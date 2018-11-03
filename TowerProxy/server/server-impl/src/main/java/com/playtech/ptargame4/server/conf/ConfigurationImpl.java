@@ -69,6 +69,8 @@ public class ConfigurationImpl implements Configuration {
                 this.actionTokens = readActionTokens(newConf);
                 logger.info("Configuration.endpoints: " + this.endPoints);
                 logger.info("Configuration.actionTokens: " + this.actionTokens);
+                logger.info("Configuration.webport: " + this.webPort);
+                logger.info("Configuration.binaryport: " + this.binaryPort);
 
                 lastUpdateTime = lastModified;
             } catch (Exception e) {

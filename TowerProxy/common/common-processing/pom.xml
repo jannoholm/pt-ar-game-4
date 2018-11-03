@@ -20,6 +20,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.playtech.pt-ar-game-4.proxy-server.common</groupId>
+            <artifactId>common-util</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>

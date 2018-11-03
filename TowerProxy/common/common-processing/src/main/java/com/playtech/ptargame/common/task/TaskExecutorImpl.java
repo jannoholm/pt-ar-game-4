@@ -1,9 +1,10 @@
 package com.playtech.ptargame.common.task;
 
 
+import com.playtech.ptargame.common.util.NamedThreadFactory;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 import java.util.logging.Logger;
 
 public class TaskExecutorImpl implements  TaskExecutor {
@@ -13,13 +14,7 @@ public class TaskExecutorImpl implements  TaskExecutor {
     private ExecutorService executor;
 
     public TaskExecutorImpl(final String prefix, int threads) {
-        executor = Executors.newFixedThreadPool(threads, new ThreadFactory() {
-            private int count = 0;
-            @Override
-            public Thread newThread(Runnable r) {
-                return new Thread(r, prefix + "-" + (++count));
-            }
-        });
+        executor = Executors.newFixedThreadPool(threads, new NamedThreadFactory(prefix));
     }
 
     public void addTask(Task task) {
