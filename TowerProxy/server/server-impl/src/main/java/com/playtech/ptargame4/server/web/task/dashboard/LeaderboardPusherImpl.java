@@ -49,6 +49,9 @@ public class LeaderboardPusherImpl implements LeaderboardPusher {
         HttpURLConnection con = null;
         try {
             String urlString = configuration.getEndpoints().getPushLeaderboardUrl();
+            if (urlString.equalsIgnoreCase("disable")) {
+                return;
+            }
             URL url = new URL(urlString);
             con = (HttpURLConnection) url.openConnection();
             con.setDoOutput(true);

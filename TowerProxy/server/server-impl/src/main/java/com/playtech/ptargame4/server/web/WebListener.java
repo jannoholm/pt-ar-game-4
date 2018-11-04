@@ -39,11 +39,13 @@ import com.playtech.ptargame4.server.conf.Configuration;
 import com.playtech.ptargame4.server.database.DatabaseAccess;
 import com.playtech.ptargame4.server.conf.model.ActionToken;
 import com.playtech.ptargame4.server.database.model.EloRating;
+import com.playtech.ptargame4.server.database.model.Occasion;
 import com.playtech.ptargame4.server.database.model.User;
 import com.playtech.ptargame4.server.exception.SystemException;
 import com.playtech.ptargame4.server.util.ActionTokenTypeConverter;
 import com.playtech.ptargame4.server.util.QrGenerator;
 import com.playtech.ptargame4.server.util.TeamConverter;
+import com.playtech.ptargame4.server.web.model.OccasionWrapper;
 import com.playtech.ptargame4.server.web.model.RegisteredUser;
 import com.playtech.ptargame4.server.web.model.ResponseWrapper;
 import com.playtech.ptargame4.server.web.model.UserWrapper;
@@ -63,6 +65,8 @@ public final class WebListener {
     private static final Logger logger = Logger.getLogger(WebListener.class.getName());
     private static final String CTX_LEADERBOARD = "/leaderboard";
     private static final String CTX_USER = "/player";
+    private static final String CTX_OCCASION = "/occasion";
+    private static final String CTX_CURRENT_OCCASION = "/current_occasion";
     private static final String CTX_HTML = "/html";
     private static final String CTX_SERVER = "/server";
     private static final String CTX_CONTROL_USER = "/control/user";
@@ -104,8 +108,14 @@ public final class WebListener {
         HttpContext ctxCompetitor = s.createContext(CTX_USER);
         ctxCompetitor.setHandler(this::handleExchange);
 
-        HttpContext ctxControlUser= s.createContext(CTX_CONTROL_USER);
+        HttpContext ctxControlUser = s.createContext(CTX_CONTROL_USER);
         ctxControlUser.setHandler(this::handleExchange);
+
+        HttpContext ctxControlOccasion = s.createContext(CTX_OCCASION);
+        ctxControlOccasion.setHandler(this::handleExchange);
+
+        HttpContext ctxControlCurrentOccasion = s.createContext(CTX_CURRENT_OCCASION);
+        ctxControlCurrentOccasion.setHandler(this::handleExchange);
 
         HttpContext ctxControlPosition = s.createContext(CTX_CONTROL_POSITION);
         ctxControlPosition.setHandler(this::handleExchange);
@@ -146,6 +156,12 @@ public final class WebListener {
                     break;
                 case CTX_USER:
                     processUser(httpExchange, path);
+                    break;
+                case CTX_OCCASION:
+                    processOccasion(httpExchange, path);
+                    break;
+                case CTX_CURRENT_OCCASION:
+                    processCurrentOccasion(httpExchange, path);
                     break;
                 case CTX_CONTROL_POSITION:
                     processControlPosition(httpExchange, path);
@@ -218,6 +234,35 @@ public final class WebListener {
         } else if (METHOD_GET.equals(httpExchange.getRequestMethod())) {
             // get player
             getUserRequest(httpExchange, path);
+        }
+    }
+
+    private void processOccasion(HttpExchange httpExchange, String path) throws IOException {
+        if (METHOD_POST.equals(httpExchange.getRequestMethod()) && path.trim().length() == 0) {
+            // create player
+            createOccasionRequest(httpExchange);
+        } else if (METHOD_POST.equals(httpExchange.getRequestMethod())) {
+            // update player
+            updateOccasionRequest(httpExchange, path);
+        } else if (METHOD_DELETE.equals(httpExchange.getRequestMethod())) {
+            // delete player
+            deleteOccasionRequest(httpExchange, path);
+        } else if (METHOD_GET.equals(httpExchange.getRequestMethod()) && path.trim().length() == 0) {
+            // get players
+            listOccasionsRequest(httpExchange);
+        } else if (METHOD_GET.equals(httpExchange.getRequestMethod())) {
+            // get player
+            getOccasionRequest(httpExchange, path);
+        }
+    }
+
+    private void processCurrentOccasion(HttpExchange httpExchange, String path) throws IOException {
+        if (METHOD_POST.equals(httpExchange.getRequestMethod()) && path.trim().length() > 0) {
+            // update player
+            updateCurrentOccasionRequest(httpExchange, path);
+        } else if (METHOD_GET.equals(httpExchange.getRequestMethod())) {
+            // get player
+            getCurrentOccasionRequest(httpExchange, path);
         }
     }
 
@@ -468,6 +513,153 @@ public final class WebListener {
         }
     }
 
+    private void getOccasionRequest( HttpExchange httpExchange, String idString ) {
+        try {
+            // get user
+            int id = Integer.valueOf(idString);
+            Occasion occasion = databaseAccess.getOccasionDatabase().getOccasion(id);
+            if (occasion == null || occasion.isHidden()) throw new HTTPException(HttpURLConnection.HTTP_NOT_FOUND);
+            writeResponse(httpExchange, HttpURLConnection.HTTP_OK, new OccasionWrapper(occasion));
+        } catch (HTTPException e) {
+            logger.log(Level.INFO, "Invalid request", e);
+            writeResponse(httpExchange, e.getStatusCode());
+        } catch (Exception e) {
+            logger.log(Level.INFO, "Invalid request", e);
+            writeResponse(httpExchange, HttpURLConnection.HTTP_BAD_REQUEST);
+        }
+    }
+
+    private void createOccasionRequest( HttpExchange httpExchange ) {
+        try {
+            Map<String, String> params = parsePostParameters(httpExchange);
+            String description = params.get("description");
+            if (description != null) description = description.trim();
+
+            // validate
+            if (StringUtil.isNull(description)) throw new NullPointerException("Description cannot be null.");
+            for (Occasion o : databaseAccess.getOccasionDatabase().listOccasions()) {
+                if (o.isHidden()) continue;
+                if (description.equalsIgnoreCase(o.getDescription())) {
+                    throw new HTTPException(HttpURLConnection.HTTP_CONFLICT);
+                }
+            }
+
+            Occasion occasion = databaseAccess.getOccasionDatabase().createOccasion(description);
+            writeResponse(httpExchange, HttpURLConnection.HTTP_OK, new OccasionWrapper(occasion));
+        } catch (HTTPException e) {
+            logger.log(Level.INFO, "Error processing request", e);
+            writeResponse(httpExchange, e.getStatusCode());
+        } catch (Exception e) {
+            logger.log(Level.INFO, "Invalid request", e);
+            writeResponse(httpExchange, HttpURLConnection.HTTP_BAD_REQUEST);
+        }
+    }
+
+    private void updateOccasionRequest( HttpExchange httpExchange, String idString ) {
+        try {
+            Map<String, String> params = parsePostParameters(httpExchange);
+
+            // get
+            int id = Integer.valueOf(idString);
+            Occasion occasion = databaseAccess.getOccasionDatabase().getOccasion(id);
+
+            // validate
+            if (occasion == null || occasion.isHidden()) throw new HTTPException(HttpURLConnection.HTTP_NOT_FOUND);
+
+            // create updated object
+            String description = params.get("description");
+            occasion = new Occasion(
+                    id,
+                    description == null ? occasion.getDescription() : description,
+                    occasion.isHidden()
+            );
+
+            // update
+            databaseAccess.getOccasionDatabase().updateOccasion(occasion);
+
+            // send response
+            writeResponse(httpExchange, HttpURLConnection.HTTP_OK, new OccasionWrapper(occasion));
+        } catch (HTTPException e) {
+            logger.log(Level.INFO, "Invalid request", e);
+            writeResponse(httpExchange, e.getStatusCode());
+        } catch (Exception e) {
+            logger.log(Level.INFO, "Invalid request", e);
+            writeResponse(httpExchange, HttpURLConnection.HTTP_BAD_REQUEST);
+        }
+    }
+
+    private void deleteOccasionRequest( HttpExchange httpExchange, String idString ) {
+        try {
+            int id = Integer.valueOf(idString);
+            Occasion occasion = databaseAccess.getOccasionDatabase().getOccasion(id);
+
+            // validate
+            if (occasion == null || occasion.isHidden()) throw new HTTPException(HttpURLConnection.HTTP_NOT_FOUND);
+
+            // update hidden
+            occasion = new Occasion(occasion.getOccasionId(), occasion.getDescription(), true);
+
+            // update
+            databaseAccess.getOccasionDatabase().updateOccasion(occasion);
+
+            // response
+            writeResponse(httpExchange, HttpURLConnection.HTTP_OK, "OK");
+        } catch (HTTPException e) {
+            logger.log(Level.INFO, "Invalid request", e);
+            writeResponse(httpExchange, e.getStatusCode());
+        } catch (Exception e) {
+            logger.log(Level.INFO, "Invalid request", e);
+            writeResponse(httpExchange, HttpURLConnection.HTTP_BAD_REQUEST);
+        }
+    }
+
+    private void listOccasionsRequest( HttpExchange httpExchange ) {
+        try {
+            Collection<Occasion> occasions = databaseAccess.getOccasionDatabase().listOccasions();
+            writeResponse(httpExchange, HttpURLConnection.HTTP_OK, convertOccasions(occasions));
+        } catch (Exception e) {
+            logger.log(Level.INFO, "Invalid request", e);
+            writeResponse(httpExchange, HttpURLConnection.HTTP_BAD_REQUEST);
+        }
+    }
+
+    private void updateCurrentOccasionRequest( HttpExchange httpExchange, String idString ) {
+        try {
+            // get occasion
+            int id = Integer.valueOf(idString);
+            Occasion occasion = databaseAccess.getOccasionDatabase().getOccasion(id);
+
+            // validate
+            if (occasion == null || occasion.isHidden()) throw new HTTPException(HttpURLConnection.HTTP_NOT_FOUND);
+
+            // update
+            databaseAccess.getOccasionDatabase().setCurrentOccasion(occasion);
+
+            // send response
+            writeResponse(httpExchange, HttpURLConnection.HTTP_OK, new OccasionWrapper(occasion));
+        } catch (HTTPException e) {
+            logger.log(Level.INFO, "Invalid request", e);
+            writeResponse(httpExchange, e.getStatusCode());
+        } catch (Exception e) {
+            logger.log(Level.INFO, "Invalid request", e);
+            writeResponse(httpExchange, HttpURLConnection.HTTP_BAD_REQUEST);
+        }
+    }
+
+    private void getCurrentOccasionRequest( HttpExchange httpExchange, String idString ) {
+        try {
+            // get user
+            Occasion occasion = databaseAccess.getOccasionDatabase().getCurrentOccasion();
+            writeResponse(httpExchange, HttpURLConnection.HTTP_OK, new OccasionWrapper(occasion));
+        } catch (HTTPException e) {
+            logger.log(Level.INFO, "Invalid request", e);
+            writeResponse(httpExchange, e.getStatusCode());
+        } catch (Exception e) {
+            logger.log(Level.INFO, "Invalid request", e);
+            writeResponse(httpExchange, HttpURLConnection.HTTP_BAD_REQUEST);
+        }
+    }
+
     private void listLeaderboard( HttpExchange httpExchange ) {
         try {
             writeResponse(httpExchange, HttpURLConnection.HTTP_OK, ListLeaderBoardTask.execute(databaseAccess));
@@ -640,6 +832,16 @@ public final class WebListener {
         for (User user : users) {
             if (!user.isHidden()) {
                 wrapped.add(new UserWrapper(user));
+            }
+        }
+        return wrapped;
+    }
+
+    private Collection<OccasionWrapper> convertOccasions(Collection<Occasion> occasions) {
+        ArrayList<OccasionWrapper> wrapped = new ArrayList<>();
+        for (Occasion occasion : occasions) {
+            if (!occasion.isHidden()) {
+                wrapped.add(new OccasionWrapper(occasion));
             }
         }
         return wrapped;

@@ -273,6 +273,152 @@
 			"response": []
 		},
 		{
+			"name": "list occasions",
+			"request": {
+				"url": "http://localhost:8101/player",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "name1",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "email1@somewhere.com",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": "List users"
+			},
+			"response": []
+		},
+		{
+			"name": "get occasion",
+			"request": {
+				"url": "http://localhost:8101/player/125",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "Create user in soccar"
+			},
+			"response": []
+		},
+		{
+			"name": "create occasion",
+			"request": {
+				"url": "http://localhost:8101/user",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "name-djdsfsfd",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "email1@somewhere.com",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Create user in soccar"
+			},
+			"response": []
+		},
+		{
+			"name": "delete occasion",
+			"request": {
+				"url": "http://localhost:8101/player/125",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "Create user in soccar"
+			},
+			"response": []
+		},
+		{
+			"name": "get current occasion",
+			"request": {
+				"url": "http://localhost:8101/player/125",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "Create user in soccar"
+			},
+			"response": []
+		},
+		{
+			"name": "set current occasion",
+			"request": {
+				"url": "http://localhost:8101/player/125",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "Create user in soccar"
+			},
+			"response": []
+		},
+		{
 			"name": "mock: poll users from pub",
 			"request": {
 				"url": "http://localhost:8101/control/position",

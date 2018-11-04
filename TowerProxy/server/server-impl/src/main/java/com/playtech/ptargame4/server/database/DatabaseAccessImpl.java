@@ -20,6 +20,7 @@ public class DatabaseAccessImpl implements DatabaseAccess {
     private UserDatabaseImpl userDatabase;
     private GameDatabaseImpl gameDatabase;
     private RatingDatabaseImpl ratingDatabase;
+    private OccasionDatabaseImpl occasionDatabase;
 
     public DatabaseAccessImpl(ScheduledExecutorService executor) {
         this.executor = executor;
@@ -31,10 +32,12 @@ public class DatabaseAccessImpl implements DatabaseAccess {
         userDatabase = new UserDatabaseImpl(this, executor);
         gameDatabase = new GameDatabaseImpl(this, executor);
         ratingDatabase = new RatingDatabaseImpl(this, executor);
+        occasionDatabase = new OccasionDatabaseImpl(this, executor);
         initialized = true;
         userDatabase.init();
         gameDatabase.init();
         ratingDatabase.init();
+        occasionDatabase.init();
     }
 
     protected synchronized Connection allocateConnection() {
@@ -86,6 +89,11 @@ public class DatabaseAccessImpl implements DatabaseAccess {
     @Override
     public RatingDatabase getRatingDatabase() {
         return ratingDatabase;
+    }
+
+    @Override
+    public OccasionDatabase getOccasionDatabase() {
+        return occasionDatabase;
     }
 
 }

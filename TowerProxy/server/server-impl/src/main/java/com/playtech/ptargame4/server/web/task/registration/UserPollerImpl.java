@@ -73,6 +73,9 @@ public class UserPollerImpl implements UserPoller {
         HttpURLConnection con = null;
         try {
             String urlString = configuration.getEndpoints().getPollUsersUrl();
+            if (urlString.equalsIgnoreCase("disable")) {
+                return Collections.emptyList();
+            }
             URL url = new URL(urlString + "/" + latestPosition);
             logger.info("Poll user: " + urlString);
             con = (HttpURLConnection) url.openConnection();

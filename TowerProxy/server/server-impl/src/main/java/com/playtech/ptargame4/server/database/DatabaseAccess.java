@@ -9,4 +9,6 @@ public interface DatabaseAccess {
 
     RatingDatabase getRatingDatabase();
 
+    OccasionDatabase getOccasionDatabase();
+
 }
