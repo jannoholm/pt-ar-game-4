@@ -1,5 +1,10 @@
 /// @description Fill or erode bridge
 
+if( obj_game.currentPhase != GamePhase.GAME ){
+	// Demo mode
+	return;
+}
+
 if ( durability > 0 ) {
 	
 	// Roadblock is fixed, degrade if soldier passes

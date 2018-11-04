@@ -1,13 +1,8 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Fill up counter
 
-if ( fillUp >= 10 ) {
+if ( fillUp >= 99999 ) { // TODO: In case of A.I. add this feature
 	fillUp = 0;
 	durability = 100;
 	// Bridge is fixed by filled bodies, reset last activation if any
 	activatedByTeam = noone;
-}
-
-if( shield > 0) {
-	shield--;
 }

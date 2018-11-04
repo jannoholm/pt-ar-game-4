@@ -1,15 +1,15 @@
 var targetTeamId = argument0;
 
 var spawns = ds_list_create();
-if( targetTeamId == TeamId.RED ){
-	with( obj_spawn_red ){
-		trace( "Adding red spawn", id );
+if( targetTeamId == TeamId.ONE ){
+	with( obj_spawn_team_one ){
+		trace( "Adding team one spawn", id );
 		ds_list_add( spawns, id );	
 	}
 } 
-if( targetTeamId == TeamId.BLUE ){
-	with( obj_spawn_blue ){
-		trace( "Adding blue spawn", id );
+if( targetTeamId == TeamId.TWO ){
+	with( obj_spawn_team_two ){
+		trace( "Adding team two spawn", id );
 		ds_list_add( spawns, id );	
 	}
 }

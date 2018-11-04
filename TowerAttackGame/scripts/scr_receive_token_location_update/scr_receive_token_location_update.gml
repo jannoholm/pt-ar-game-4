@@ -14,10 +14,10 @@ var token = noone;
 
 if( instance_exists( obj_game ) && obj_game.currentPhase == GamePhase.GAME ){
 
-	if( team == TeamId.RED && tokenType == TokenType.BRIDGE ){
-		var token = instance_find( obj_action_bridge_red, tokenIndex );
-	} else if( team == TeamId.BLUE && tokenType == TokenType.BRIDGE ){
-		var token = instance_find( obj_action_bridge_blue, tokenIndex );
+	if( team == TeamId.ONE && tokenType == TokenType.BRIDGE ){
+		var token = instance_find( obj_action_bridge_team_one, tokenIndex );
+	} else if( team == TeamId.TWO && tokenType == TokenType.BRIDGE ){
+		var token = instance_find( obj_action_bridge_team_two, tokenIndex );
 	} else {
 		trace( "Unknown team/token combination" );	
 	}
@@ -28,7 +28,7 @@ if( instance_exists( obj_game ) && obj_game.currentPhase == GamePhase.GAME ){
 
 if( token != noone ){
 	with( token ){
-		x = locationX;
-		y = locationY;
+		x = locationX; // * room_width / 150; // #TODO: Define max constant
+		y = locationY; // * room_height / 50; // #TODO: Define max constant
 	}
 }

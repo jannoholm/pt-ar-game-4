@@ -22,37 +22,43 @@ switch( currentPhase ){
 	
 		break;
 	case MainPhase.GAME_INIT:
+		
+		lastGameScore = instance_create_layer( 0, 0, "lyr_tower_attack", obj_score_keeper );
+		lastGameScore.teamOne = instance_create_layer( 0, 0, "lyr_tower_attack", obj_score_team );
+		lastGameScore.teamTwo = instance_create_layer( 0, 0, "lyr_tower_attack", obj_score_team );
+		
+		lastGameScore.teamOne.playerId = obj_lobby.playerOneTop.playerId;
+		lastGameScore.teamTwo.playerId = obj_lobby.playerTwoTop.playerId;
+		
+		lastGameScore.teamOne.playerName = obj_lobby.playerOneTop.playerName;
+		lastGameScore.teamTwo.playerName = obj_lobby.playerTwoTop.playerName;
 	
 		currentPhase = MainPhase.GAME;
-		room_goto_next();
+		
+		room_restart();
 	
 		break;
 	case MainPhase.GAME:
 	
 		break;
 	case MainPhase.GAME_END:
-	
-		
-		lastGameScore = instance_create_layer( 0, 0, "lyr_tower_attack", obj_score_keeper );
-		lastGameScore.redTeam = instance_create_layer( 0, 0, "lyr_tower_attack", obj_score_team );
-		lastGameScore.blueTeam = instance_create_layer( 0, 0, "lyr_tower_attack", obj_score_team );
-		
-		if( obj_game.redTower.towerHealth > obj_game.blueTower.towerHealth ){
-			lastGameScore.winnerTeam = WinnerTeam.RED;
-		} else if( obj_game.redTower.towerHealth < obj_game.blueTower.towerHealth ){
-			lastGameScore.winnerTeam = WinnerTeam.BLUE;
+			
+		if( obj_game.teamOneTower.towerHealth > obj_game.teamTwoTower.towerHealth ){
+			lastGameScore.winnerTeam = WinnerTeam.ONE;
+		} else if( obj_game.teamOneTower.towerHealth < obj_game.teamTwoTower.towerHealth ){
+			lastGameScore.winnerTeam = WinnerTeam.TWO;
 		} else {
 			lastGameScore.winnerTeam = WinnerTeam.DRAW;
 		}
 		
 		lastGameScore.gameTime = obj_game_timer.currentValue;
 		
-		lastGameScore.redTowerHealth = obj_game.redTower.towerHealth;
-		lastGameScore.blueTowerHealth = obj_game.blueTower.towerHealth;
+		lastGameScore.teamOneTowerHealth = obj_game.teamOneTower.towerHealth;
+		lastGameScore.teamTwoTowerHealth = obj_game.teamTwoTower.towerHealth;
 
 		// TODO: Loop over all players and create list instead
-		var team = obj_game.redTeam;
-		with( lastGameScore.redTeam ){
+		var team = obj_game.teamOne;
+		with( lastGameScore.teamOne ){
 			teamId = team.teamId;
 			bridgesBuilt = team.bridgesBuilt;
 			bridgesBuiltPoints = team.bridgesBuiltPoints;
@@ -62,9 +68,12 @@ switch( currentPhase ){
 			bridgeSoldierDeaths = team.bridgeSoldierDeaths;
 			bridgeSoldierEnemySaves = team.bridgeSoldierEnemySaves;
 			bridgeSoldierEnemyKills = team.bridgeSoldierEnemyKills;
+			
+			//tavernSoldierKills = team.tavernSoldierKills;
+			//tavernSoldierDeaths = team.tavernSoldierDeaths;
 		}
-		team = obj_game.blueTeam;
-		with( lastGameScore.blueTeam ){
+		team = obj_game.teamTwo;
+		with( lastGameScore.teamTwo ){
 			teamId = team.teamId;
 			bridgesBuilt = team.bridgesBuilt;
 			bridgesBuiltPoints = team.bridgesBuiltPoints;
@@ -74,6 +83,9 @@ switch( currentPhase ){
 			bridgeSoldierDeaths = team.bridgeSoldierDeaths;
 			bridgeSoldierEnemySaves = team.bridgeSoldierEnemySaves;
 			bridgeSoldierEnemyKills = team.bridgeSoldierEnemyKills;
+			
+			//tavernSoldierKills = team.tavernSoldierKills;
+			//tavernSoldierDeaths = team.tavernSoldierDeaths;
 		}
 		
 		scr_send_game_results_store_request( lastGameScore );
@@ -83,8 +95,15 @@ switch( currentPhase ){
 		break;
 	case MainPhase.GAME_RESULT:
 	
-		currentPhase = MainPhase.LOBBY
-		room_goto_previous();
+		if( !alarm[1] ){
+			trace( "Setting alarm to clean up scores" );
+			alarm[1] = room_speed * 30;	
+			obj_lobby.currentPhase = LobbyPhase.INIT;
+		}		
+		// TODO: Add shader blur
 	
+		break;
+	case MainPhase.DEMO:
+		
 		break;
 }

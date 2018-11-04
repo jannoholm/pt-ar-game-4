@@ -4,7 +4,16 @@
     "mvc": "1.0",
     "name": "obj_bridge_background",
     "eventList": [
-        
+        {
+            "id": "cf143cd9-a521-4f89-b1fd-59c47e153417",
+            "modelName": "GMEvent",
+            "mvc": "1.0",
+            "IsDnD": false,
+            "collisionObjectId": "00000000-0000-0000-0000-000000000000",
+            "enumb": 0,
+            "eventtype": 0,
+            "m_owner": "44082601-4e7e-462f-ae78-57d5245a40de"
+        }
     ],
     "maskSpriteId": "00000000-0000-0000-0000-000000000000",
     "overriddenProperties": null,

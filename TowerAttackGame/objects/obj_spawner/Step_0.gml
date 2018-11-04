@@ -10,22 +10,25 @@ if( previousPhase != currentPhase ){
 switch( currentPhase ){
 	case SpawnerPhase.INIT:
 		
-		if( obj_game.currentPhase == GamePhase.GAME ){
+		if( obj_game.currentPhase == GamePhase.GAME || obj_game.currentPhase == GamePhase.DEMO ){
 			currentPhase = SpawnerPhase.PREPARE_NEXT_WAVE;	
 		}
 	
 		break;
 	case SpawnerPhase.PREPARE_NEXT_WAVE:
+		
+		currentPhase = SpawnerPhase.WAIT_FOR_WAVE; // Go to waiting wave after triggering spawn tasks
 	
 		switch( nextWave ){
 			case SpawnerWave.WAVE_01:
+				alarm_set( warnWaveAlarmIndex, 1 ); // Next frame
 				alarm_set( nextWaveAlarmIndex, 1 * room_speed );
 				
 				// Useful for debugging, comment out the for loop below to have full 
-				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.RED, instance_find( obj_spawn_red, 1), SoldierType.BASIC ) );
-				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.RED, instance_find( obj_spawn_red, 1), SoldierType.BASIC ) );
-				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.RED, instance_find( obj_spawn_red, 1), SoldierType.BASIC ) );
-				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.RED, instance_find( obj_spawn_red, 1), SoldierType.BASIC ) );
+				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.ONE, instance_find( obj_spawn_team_one, 1), SoldierType.BASIC ) );
+				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.ONE, instance_find( obj_spawn_team_one, 1), SoldierType.BASIC ) );
+				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.ONE, instance_find( obj_spawn_team_one, 1), SoldierType.BASIC ) );
+				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.ONE, instance_find( obj_spawn_team_one, 1), SoldierType.BASIC ) );
 	
 				trace( "Preparing spawn tasks for wave", nextWave );
 				// For both teams, create equal spawn tasks, values are from TeamId enum
@@ -42,10 +45,11 @@ switch( currentPhase ){
 			
 				break;
 			case SpawnerWave.WAVE_02:
+				alarm_set( warnWaveAlarmIndex, 5 * room_speed );
 				alarm_set( nextWaveAlarmIndex, 10 * room_speed );
 				
-				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.RED, instance_find( obj_spawn_red, 1), SoldierType.BASIC ) );
-				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.BLUE, instance_find( obj_spawn_blue, 1), SoldierType.ELITE ) );
+				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.ONE, instance_find( obj_spawn_team_one, 1), SoldierType.BASIC ) );
+				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.TWO, instance_find( obj_spawn_team_two, 1), SoldierType.ELITE ) );
 				
 				trace( "Preparing spawn tasks for wave", nextWave );
 				// For both teams, create equal spawn tasks, values are from TeamId enum
@@ -62,6 +66,7 @@ switch( currentPhase ){
 			
 				break;
 			case SpawnerWave.WAVE_03:
+				alarm_set( warnWaveAlarmIndex, 5 * room_speed );
 				alarm_set( nextWaveAlarmIndex, 10 * room_speed );
 				
 				// For both teams, create equal spawn tasks, values are from TeamId enum
@@ -78,6 +83,7 @@ switch( currentPhase ){
 			
 				break;
 			case SpawnerWave.WAVE_04:
+				alarm_set( warnWaveAlarmIndex, 5 * room_speed );
 				alarm_set( nextWaveAlarmIndex, 10 * room_speed );
 				
 				// For both teams, create equal spawn tasks, values are from TeamId enum
@@ -94,6 +100,7 @@ switch( currentPhase ){
 			
 				break;
 			case SpawnerWave.WAVE_05:
+				alarm_set( warnWaveAlarmIndex, 5 * room_speed );
 				alarm_set( nextWaveAlarmIndex, 10 * room_speed );
 				
 				// For both teams, create equal spawn tasks, values are from TeamId enum
@@ -111,6 +118,7 @@ switch( currentPhase ){
 			
 				break;
 			case SpawnerWave.WAVE_06:
+				alarm_set( warnWaveAlarmIndex, 5 * room_speed );
 				alarm_set( nextWaveAlarmIndex, 10 * room_speed );
 				
 				// For both teams, create equal spawn tasks, values are from TeamId enum
@@ -129,6 +137,7 @@ switch( currentPhase ){
 			
 				break;
 			case SpawnerWave.WAVE_07:
+				alarm_set( warnWaveAlarmIndex, 5 * room_speed );
 				alarm_set( nextWaveAlarmIndex, 10 * room_speed );
 				
 				// For both teams, create equal spawn tasks, values are from TeamId enum
@@ -147,6 +156,7 @@ switch( currentPhase ){
 			
 				break;
 			case SpawnerWave.WAVE_08:
+				alarm_set( warnWaveAlarmIndex, 5 * room_speed );
 				alarm_set( nextWaveAlarmIndex, 10 * room_speed );
 				
 				// For both teams, create equal spawn tasks, values are from TeamId enum
@@ -168,6 +178,7 @@ switch( currentPhase ){
 			
 				break;
 			case SpawnerWave.WAVE_09:
+				alarm_set( warnWaveAlarmIndex, 5 * room_speed );
 				alarm_set( nextWaveAlarmIndex, 10 * room_speed );
 				
 				// For both teams, create equal spawn tasks, values are from TeamId enum
@@ -193,6 +204,7 @@ switch( currentPhase ){
 			
 				break;
 			case SpawnerWave.WAVE_10:
+				alarm_set( warnWaveAlarmIndex, 5 * room_speed );
 				alarm_set( nextWaveAlarmIndex, 10 * room_speed );
 				
 				// For both teams, create equal spawn tasks, values are from TeamId enum
@@ -218,6 +230,7 @@ switch( currentPhase ){
 			
 				break;
 			case SpawnerWave.WAVE_11:
+				alarm_set( warnWaveAlarmIndex, 5 * room_speed );
 				alarm_set( nextWaveAlarmIndex, 10 * room_speed );
 				
 				// For both teams, create equal spawn tasks, values are from TeamId enum
@@ -245,6 +258,7 @@ switch( currentPhase ){
 			
 				break;
 			case SpawnerWave.WAVE_12:
+				alarm_set( warnWaveAlarmIndex, 5 * room_speed );
 				alarm_set( nextWaveAlarmIndex, 10 * room_speed );
 				
 				// For both teams, create equal spawn tasks, values are from TeamId enum
@@ -276,6 +290,7 @@ switch( currentPhase ){
 			
 				break;
 			case SpawnerWave.WAVE_13:
+				alarm_set( warnWaveAlarmIndex, 5 * room_speed );
 				alarm_set( nextWaveAlarmIndex, 10 * room_speed );
 				
 				// For both teams, create equal spawn tasks, values are from TeamId enum
@@ -306,6 +321,7 @@ switch( currentPhase ){
 			
 				break;
 			case SpawnerWave.WAVE_14:
+				alarm_set( warnWaveAlarmIndex, 5 * room_speed );
 				alarm_set( nextWaveAlarmIndex, 10 * room_speed );
 				
 				// For both teams, create equal spawn tasks, values are from TeamId enum
@@ -340,7 +356,6 @@ switch( currentPhase ){
 		}
 		
 		nextWave++; // Enum magic, switch to next wave
-		currentPhase = SpawnerPhase.WAIT_FOR_WAVE;		
 	
 		break;
 	case SpawnerPhase.WAIT_FOR_WAVE: // Triggered after preparing the wave
@@ -351,6 +366,10 @@ switch( currentPhase ){
 	case SpawnerPhase.TRIGGER_WAVE: // Triggered by alarm
 	
 		trace( "Triggering next wave", nextWave );
+		
+		with( obj_spawn ){
+			showWarningIcon = false;	
+		}
 	
 		for(var i = 0; i < ds_list_size( nextWaveTasks ); i++ ){
 			var task = ds_list_find_value( nextWaveTasks, i );
@@ -364,6 +383,9 @@ switch( currentPhase ){
 	
 		break
 	case SpawnerPhase.WAVES_COMPLETE:
+		// Restart for demo mode
+		nextWave = SpawnerWave.WAVE_01;
+		currentPhase = SpawnerPhase.PREPARE_NEXT_WAVE;	
 	
 		break;
 }

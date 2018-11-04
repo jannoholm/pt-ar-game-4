@@ -1,8 +1,8 @@
 /// @description Insert description here
 
 enum TeamId {
-	RED = 0,
-	BLUE = 1
+	ONE = 0,
+	TWO = 1
 }
 
 enum Position {
@@ -12,7 +12,7 @@ enum Position {
 
 teamId = noone;
 
-actionPoints = 10;
+actionPoints = 1000;
 actionTokenSpawn = 0;
 
 // Initiallize action point recurring collection alarm

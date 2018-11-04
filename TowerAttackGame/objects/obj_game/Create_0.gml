@@ -2,87 +2,86 @@
 
 enum GamePhase {
 	INIT, // Create game elements
+	WAIT_PLAYERS_READY, // Wait for token placement
 	COUNTDOWN, // Countdown timer
 	GAME_START, // Countdown timer full
 	GAME, // Game in progress
-	GAME_END // Game has ended
+	GAME_END, // Game has ended
+	DEMO // Keep spawning soldiers
 }
 
 
 phases = ds_list_create();
 ds_list_add(phases, 
 	"INIT",
+	"WAIT_PLAYERS_READY",
 	"COUNTDOWN",
 	"GAME_START",
 	"GAME",
-	"GAME_END"
+	"GAME_END",
+	"DEMO"
 )
 
 previousPhase = LobbyPhase.INIT;
 currentPhase = LobbyPhase.INIT;
 
 
-redTeam = instance_create_layer( room_width*0.15, 20, "lyr_gameplay", obj_team_red );
-blueTeam = instance_create_layer( room_width*0.85, 20, "lyr_gameplay", obj_team_blue );
+teamOne = instance_create_layer( room_width*0.15, 20, "lyr_gameplay", obj_team_one );
+teamTwo = instance_create_layer( room_width*0.85, 20, "lyr_gameplay", obj_team_two );
 
-redTower = instance_create_layer( 130, 950, "lyr_elements", obj_tower_red );
-blueTower = instance_create_layer( 3720, 950, "lyr_elements", obj_tower_blue );
+teamOneTower = instance_create_layer( 130, 950, "lyr_elements", obj_tower_team_one );
+teamTwoTower = instance_create_layer( 3720, 950, "lyr_elements", obj_tower_team_two );
 
-//obj_soldier_red_top
-//obj_soldier_blue_top
-//obj_soldier_red_middle_high
-//obj_soldier_blue_middle_high
-//obj_soldier_blue_middle_low
-//obj_soldier_red_middle_low
-//obj_soldier_red_bottom
-//obj_soldier_blue_bottom
-with( instance_create_layer( 100, 170, "lyr_elements", obj_spawn_red) ) {
+instructionIconShrink = true;
+instructionIconSize = 1; // Add a little wobble effect
+
+with( instance_create_layer( 60, 670, "lyr_elements", obj_spawn_team_one) ) {
 	path = path_top;
 	pathDirection = 1;
 	pathStartPosition = 0.05;
-	team = other.redTeam;
+	team = other.teamOne;
 }
-with( instance_create_layer( 930, 170, "lyr_elements", obj_spawn_blue ) ) {
+with( instance_create_layer( 3770, 645, "lyr_elements", obj_spawn_team_two ) ) {
 	path = path_top;
 	pathDirection = -1;
 	pathStartPosition = 0.95;
-	team = other.blueTeam;
+	team = other.teamTwo;
 }
-with( instance_create_layer( 170, 255, "lyr_elements", obj_spawn_red ) ) {
+with( instance_create_layer( 370, 930, "lyr_elements", obj_spawn_team_one ) ) {
 	path = path_middle_high;
 	pathDirection = 1;
 	pathStartPosition = 0.05;
-	team = other.redTeam;
+	team = other.teamOne;
 }
-with( instance_create_layer( 880, 260, "lyr_elements", obj_spawn_blue ) ) {
+with( instance_create_layer( 3500, 927, "lyr_elements", obj_spawn_team_two ) ) {
 	path = path_middle_high;
 	pathDirection = -1;
 	pathStartPosition = 0.95;
-	team = other.blueTeam;
+	team = other.teamTwo;
 }
-with( instance_create_layer( 175, 380, "lyr_elements", obj_spawn_red ) ) {
+with( instance_create_layer( 420, 1190, "lyr_elements", obj_spawn_team_one ) ) {
 	path = path_middle_low;
 	pathDirection = 1;
 	pathStartPosition = 0.05;
-	team = other.redTeam;
+	team = other.teamOne;
 }
-with( instance_create_layer( 870, 365, "lyr_elements", obj_spawn_blue ) ) {
+with( instance_create_layer( 3440, 1180, "lyr_elements", obj_spawn_team_two ) ) {
 	path = path_middle_low;
 	pathDirection = -1;
 	pathStartPosition = 0.95;
-	team = other.blueTeam;
+	team = other.teamTwo;
 }
-with( instance_create_layer( 95, 440, "lyr_elements", obj_spawn_red ) ) {
+with( instance_create_layer( 55, 1150, "lyr_elements", obj_spawn_team_one ) ) {
 	path = path_bottom_from_left;
 	pathDirection = 1;
 	pathStartPosition = 0.05;
-	team = other.redTeam;
+	team = other.teamOne;
 }
-with( instance_create_layer( 920, 420, "lyr_elements", obj_spawn_blue ) ) {
+with( instance_create_layer( 3665, 1140, "lyr_elements", obj_spawn_team_two ) ) {
 	path = path_bottom_from_right;
 	pathDirection = -1;
 	pathStartPosition = 0.95;
-	team = other.blueTeam;
+	team = other.teamTwo;
 }
 
 // Controls drag-n-drop for the action figures

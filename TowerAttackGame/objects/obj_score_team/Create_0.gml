@@ -1,7 +1,8 @@
 /// @description Initial values
 
-userId = noone; // #TODO Fix
 teamId = noone; // #TODO Fix
+playerId = noone; // #TODO Fix
+playerName = noone;
 positionInTeam = 0; // #TODO Fix
 
 // Current assumption is 1v1
@@ -14,3 +15,6 @@ bridgeSoldierSaves = 0;
 bridgeSoldierDeaths = 0;
 bridgeSoldierEnemySaves = 0;
 bridgeSoldierEnemyKills = 0;
+
+tavernSoldierDeaths = 0;
+tavernSoldierKills = 0;
