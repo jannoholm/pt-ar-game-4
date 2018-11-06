@@ -17,7 +17,9 @@
         "92ff2717-2a2f-43bd-89c2-6c63ff08dd7b",
         "b2ef0ecf-8d0a-42f5-8e12-9c29158e6263",
         "8a9e148c-ec8c-4f5d-885c-d84c60743581",
-        "63a0257a-88b9-4545-bf43-0b552748eb99"
+        "63a0257a-88b9-4545-bf43-0b552748eb99",
+        "237ffb05-04c6-4b11-8dea-9634aaa64965",
+        "75a6d408-9e89-489c-b410-b6635d129662"
     ],
     "filterType": "GMSprite",
     "folderName": "elements",

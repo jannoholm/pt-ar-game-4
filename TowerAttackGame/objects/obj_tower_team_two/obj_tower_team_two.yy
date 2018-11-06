@@ -4,7 +4,16 @@
     "mvc": "1.0",
     "name": "obj_tower_team_two",
     "eventList": [
-        
+        {
+            "id": "29746005-e87f-4f79-8391-036bc357f346",
+            "modelName": "GMEvent",
+            "mvc": "1.0",
+            "IsDnD": false,
+            "collisionObjectId": "00000000-0000-0000-0000-000000000000",
+            "enumb": 0,
+            "eventtype": 0,
+            "m_owner": "a3d86de9-1c31-48ef-aa3f-27bb89ade291"
+        }
     ],
     "maskSpriteId": "00000000-0000-0000-0000-000000000000",
     "overriddenProperties": null,
