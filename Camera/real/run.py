@@ -127,12 +127,14 @@ print("Calibrating camera .... Please wait...")
 # mat = np.zeros((3,3), float)
 ret, mtx, dist, rvecs, tvecs = aruco.calibrateCameraAruco(corners_list, id_list, counter, board, img_gray.shape, None, None)
 
+aruco_dict = aruco.Dictionary_get(aruco.DICT_ARUCO_ORIGINAL)
 while True:
+    import time
+    time.sleep(0.2)
+
     ret, frame = cap.read()
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-    aruco_dict = aruco.Dictionary_get(aruco.DICT_6X6_250)
 
     parameters = aruco.DetectorParameters_create()
     corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict, parameters=parameters)
@@ -140,13 +142,19 @@ while True:
     font = cv2.FONT_HERSHEY_SIMPLEX  # font for displaying text (below)
 
     if np.all(ids != None):
-        rvec, tvec, _ = aruco.estimatePoseSingleMarkers(corners, 0.05, mtx, dist)
+        sent_markers = []
+        for corner in range(0, len(corners)):
+            marker_id = ids[corner]
+            marker_corners = corners[corner]
+            rvec, tvec, _ = aruco.estimatePoseSingleMarkers(marker_corners, 0.05, mtx, dist)
+            if marker_id in sent_markers:
+                continue
+            dist_vec = tvec[0][0] * 0.714 * 1000
 
-        dist_vec = tvec[0][0] * 0.714 * 1000
-
-        print(dist_vec)
-
-        sender.send(json.dumps({"1": (dist_vec[0], dist_vec[2])}))
+            print(dist_vec)
+            time.sleep(0.05)
+            sender.send(json.dumps({str(marker_id[0]): (int(dist_vec[0]), int(dist_vec[2]))}))
+            sent_markers.append(marker_id)
 
     cv2.imshow('frame', frame)
 
