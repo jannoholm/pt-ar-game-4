@@ -24,8 +24,6 @@ joined=false;
 client_id="TABLE";
 client_name="not set";
 client_email="not set";
-client_type=conf.client_type;
-reuse_clientid=conf.reuse_clientid;
 gameId="";
 
 // Names from server

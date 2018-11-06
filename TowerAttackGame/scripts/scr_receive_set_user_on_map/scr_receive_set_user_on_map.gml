@@ -12,14 +12,14 @@ if( instance_exists( obj_lobby ) && obj_lobby.currentPhase == LobbyPhase.WAITING
 	lobbyPlayer.playerId = userId;
 	lobbyPlayer.playerName = userName;
 
-	if( team == TeamId.RED && positionInTeam == Position.TOP ){
-		obj_lobby.playerRedOne = lobbyPlayer;
-	} else if( team == TeamId.RED && positionInTeam == Position.BOTTOM ){
-		obj_lobby.playerRedTwo = lobbyPlayer;
-	} else if( team == TeamId.BLUE && positionInTeam == Position.TOP ){
-		obj_lobby.playerBlueOne = lobbyPlayer;
-	} else if( team == TeamId.BLUE && positionInTeam == Position.BOTTOM ){
-		obj_lobby.playerBlueTwo = lobbyPlayer;
+	if( team == TeamId.ONE && positionInTeam == Position.TOP ){
+		obj_lobby.playerOneTop = lobbyPlayer;
+	} else if( team == TeamId.ONE && positionInTeam == Position.BOTTOM ){
+		obj_lobby.playerOneBottom = lobbyPlayer;
+	} else if( team == TeamId.TWO && positionInTeam == Position.TOP ){
+		obj_lobby.playerTwoTop = lobbyPlayer;
+	} else if( team == TeamId.TWO && positionInTeam == Position.BOTTOM ){
+		obj_lobby.playerTwoBottom = lobbyPlayer;
 	} else {
 		trace( "Unknown team/position combination" );	
 	}

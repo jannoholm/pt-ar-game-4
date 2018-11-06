@@ -1,6 +1,6 @@
 /// @description Fix or break bridge
 
-shield = 10 * room_speed;
+protected = true; // Shield bar will pick up the value and start countdown
 
 if( durability > 0 ) {
 	show_debug_message("BREAKING BRIDGE");

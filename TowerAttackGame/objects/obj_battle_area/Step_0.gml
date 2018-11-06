@@ -3,8 +3,8 @@
 
 var battleAreaSoldiers = scr_instance_place_list( x, y, obj_soldier );
 
-var soldierToFightRed = noone;
-var soldierToFightBlue = noone;
+var soldierToFightTeamOne = noone;
+var soldierToFightTeamTwo = noone;
 
 if( battleAreaSoldiers != noone){
 		
@@ -13,18 +13,18 @@ if( battleAreaSoldiers != noone){
 		
 		with( battleAreaSoldiers[| n] ){
 			
-			if( type != SoldierType.ELITE && team == obj_game.redTeam && currentPhase == SoldierPhase.FOLLOW_PATH ) {
-				if( soldierToFightRed == noone ) {
-					soldierToFightRed = self;	
-				} else if( spawnIndex < soldierToFightRed.spawnIndex ) {
-					soldierToFightRed = self;
+			if( type != SoldierType.ELITE && team == obj_game.teamOne && currentPhase == SoldierPhase.FOLLOW_PATH ) {
+				if( soldierToFightTeamOne == noone ) {
+					soldierToFightTeamOne = self;	
+				} else if( spawnIndex < soldierToFightTeamOne.spawnIndex ) {
+					soldierToFightTeamOne = self;
 				}
 			}
-			if( type != SoldierType.ELITE && team == obj_game.blueTeam && currentPhase == SoldierPhase.FOLLOW_PATH ) {
-				if( soldierToFightBlue == noone ) {
-					soldierToFightBlue = self;	
-				} else if( spawnIndex < soldierToFightBlue.spawnIndex ) {
-					soldierToFightBlue = self;
+			if( type != SoldierType.ELITE && team == obj_game.teamTwo && currentPhase == SoldierPhase.FOLLOW_PATH ) {
+				if( soldierToFightTeamTwo == noone ) {
+					soldierToFightTeamTwo = self;	
+				} else if( spawnIndex < soldierToFightTeamTwo.spawnIndex ) {
+					soldierToFightTeamTwo = self;
 				}
 			}
 		}
@@ -33,12 +33,12 @@ if( battleAreaSoldiers != noone){
    ds_list_destroy(battleAreaSoldiers);
 }
 
-if( soldierToFightRed != noone && soldierToFightBlue != noone ){
-	show_debug_message("Found soldierrs to fight, red=" + string( soldierToFightRed ) + ", blue=" + string( soldierToFightBlue ) );
+if( soldierToFightTeamOne != noone && soldierToFightTeamTwo != noone ){
+	show_debug_message("Found soldierrs to fight, one=" + string( soldierToFightTeamOne ) + ", two=" + string( soldierToFightTeamTwo ) );
 	
-	soldierToFightRed.chargedSoldier = soldierToFightBlue;
-	soldierToFightBlue.chargedSoldier = soldierToFightRed;
+	soldierToFightTeamOne.chargedSoldier = soldierToFightTeamTwo;
+	soldierToFightTeamTwo.chargedSoldier = soldierToFightTeamOne;
 	
-	soldierToFightRed.currentPhase = SoldierPhase.CHARGE_TO_FIGHT;	
-	soldierToFightBlue.currentPhase = SoldierPhase.CHARGE_TO_FIGHT;
+	soldierToFightTeamOne.currentPhase = SoldierPhase.CHARGE_TO_FIGHT;	
+	soldierToFightTeamTwo.currentPhase = SoldierPhase.CHARGE_TO_FIGHT;
 }

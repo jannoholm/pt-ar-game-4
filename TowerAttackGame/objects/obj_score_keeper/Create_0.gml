@@ -2,16 +2,16 @@
 
 enum WinnerTeam {
 	DRAW,
-	RED,
-	BLUE
+	ONE,
+	TWO
 }
 
 winnerTeam = noone;
 
 gameTime = 0;
 
-redTowerHealth = 0;
-blueTowerHealth = 0;
+teamOneTowerHealth = 0;
+teamTwoTowerHealth = 0;
 
-redTeam = noone;
-blueTeam = noone;
+teamOne = noone;
+teamTwo = noone;

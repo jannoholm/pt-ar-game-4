@@ -116,10 +116,8 @@ switch( currentPhase ){
 		break;
 	case SoldierPhase.GO_TO_TAVERN:
 	
-		visible = false;
-	
-		path_end();
-		// move_towards_point( x, y, pathMoveSpeed );
+		// #TODO: Move to point X
+		instance_destroy();
 	
 		break;
 	case SoldierPhase.IN_TAVERN:

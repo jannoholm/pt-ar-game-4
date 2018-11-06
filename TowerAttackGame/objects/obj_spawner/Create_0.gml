@@ -45,3 +45,4 @@ enum SpawnerWave {
 nextWave = SpawnerWave.WAVE_01;
 nextWaveTasks = ds_list_create();
 nextWaveAlarmIndex = 0;
+warnWaveAlarmIndex = 1;

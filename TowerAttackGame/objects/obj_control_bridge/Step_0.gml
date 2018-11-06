@@ -1,7 +1,7 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-if( obj_game.currentPhase != GamePhase.GAME ){
+if( obj_game.currentPhase != GamePhase.GAME && obj_game.currentPhase != GamePhase.DEMO ){
 	// No actions if game is not in progress
 	chargeUp = 0;
 	colliding = false;
@@ -9,7 +9,7 @@ if( obj_game.currentPhase != GamePhase.GAME ){
 }
 
 // #TODO: Take into account the points to be recieved during charge
-if( targetBridge.shield <= 0 && team.actionPoints > 10 ) {
+if( !targetBridge.protected && team.actionPoints > 10 ) {
 	// Shield is down start counting
 	if( colliding ){
 		chargeUp++;	

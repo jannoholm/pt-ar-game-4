@@ -21,7 +21,7 @@ obj_server_client.messageid_counter+=10000;
 scr_write_messageheader(buffer, 1002, obj_server_client.messageid_counter, obj_server_client.client_id);
 buffer_write(buffer, buffer_string, name);
 buffer_write(buffer, buffer_string, email);
-buffer_write(buffer, buffer_s8, obj_server_client.client_type);
+buffer_write(buffer, buffer_s8, 0);
 
 // send message
 scr_send_packet(buffer);

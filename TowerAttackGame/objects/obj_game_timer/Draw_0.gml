@@ -1,5 +1,9 @@
 /// @description Draw timer
 
-if( currentValue > 0 ){
-	draw_text_transformed( room_width/2, 100, string( round( currentValue/room_speed ) ), 5, 5, 0 );
+draw_set_font( fnt_game_result );
+if( currentValue > 0 && obj_game.currentPhase == GamePhase.GAME ){
+	draw_text( room_width/2, room_height*0.22, string( round( currentValue/room_speed ) ) );
 }
+draw_set_font( -1 );
+
+	

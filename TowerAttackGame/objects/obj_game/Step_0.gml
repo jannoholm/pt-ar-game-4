@@ -10,9 +10,22 @@ if( previousPhase != currentPhase ){
 switch( currentPhase ){
 	case GamePhase.INIT:
 	
-		instance_create_layer( 0, 0, "lyr_gameplay", obj_countdown );
-		currentPhase = GamePhase.COUNTDOWN;
+		if( obj_tower_attack.firstTimeStart ){
+			// Fast forward to demo mode
+			currentPhase = GamePhase.GAME_START;
+		} else {
+			currentPhase = GamePhase.WAIT_PLAYERS_READY;
+		}
 	
+		break;
+	case GamePhase.WAIT_PLAYERS_READY:
+		
+		if( obj_control_init_game_team_one.activated && obj_control_init_game_team_two.activated  ){
+			instance_create_layer( 0, 0, "lyr_gameplay", obj_countdown );
+			currentPhase = GamePhase.COUNTDOWN;	
+		}
+		
+		
 		break;
 	case GamePhase.COUNTDOWN:
 		
@@ -31,19 +44,24 @@ switch( currentPhase ){
 		break;
 	case GamePhase.GAME:
 	
+		if( obj_tower_attack.firstTimeStart ){
+			// Fast forward to demo mode
+			currentPhase = GamePhase.GAME_END;
+		}
+	
 		if( obj_game_timer.currentValue <= 0 ){
 			trace( "GAME END BY TIMER" );
 			currentPhase = GamePhase.GAME_END;
 			return;
 		}
 		
-		if( obj_tower_red.towerHealth <= 0 ){
+		if( obj_tower_team_one.towerHealth <= 0 ){
 			trace( "GAME END BY RED TOWER HEALTH" );
 			currentPhase = GamePhase.GAME_END;
 			return;			
 		}
 		
-		if( obj_tower_blue.towerHealth <= 0 ){
+		if( obj_tower_team_two.towerHealth <= 0 ){
 			trace( "GAME END BY BLUE TOWER HEALTH" );
 			currentPhase = GamePhase.GAME_END;
 			return;			
@@ -57,7 +75,19 @@ switch( currentPhase ){
 			// Switch to next phase only once
 			if( currentPhase == MainPhase.GAME ){
 				currentPhase = MainPhase.GAME_END;
+			} else if ( currentPhase == MainPhase.LOBBY ){
+				// Fast forward to demo mode if first time
+				currentPhase = MainPhase.DEMO;
+				firstTimeStart = false;
 			}
+		}
+		
+		currentPhase = GamePhase.DEMO;
+	
+		break;
+	case GamePhase.DEMO:
+		with( obj_bridge ){
+			durability = 100;
 		}
 	
 		break;

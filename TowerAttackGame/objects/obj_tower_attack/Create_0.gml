@@ -8,7 +8,8 @@ enum MainPhase {
 	GAME_INIT, // Create game elements
 	GAME, // Game in progress
 	GAME_END, // Clean-up game elements, send result
-	GAME_RESULT // Show leaderboard and init lobby
+	GAME_RESULT, // Show leaderboard and init lobby
+	DEMO // Demo
 }
 
 
@@ -20,7 +21,8 @@ ds_list_add(phases,
 	"GAME_INIT", 
 	"GAME", 
 	"GAME_END", 
-	"GAME_RESULT"
+	"GAME_RESULT",
+	"DEMO"
 )
 
 previousPhase = MainPhase.INIT;
@@ -31,6 +33,11 @@ server = instance_create_layer( 0, 0, "lyr_tower_attack", obj_server_client );
 clientId = "TABLE";
 email = "info@playtech.com";
 
-scr_send_join_server(clientId, email);
+if( obj_configuration.standAloneMode ){
+	obj_tower_attack.currentPhase = MainPhase.GO_TO_LOBBY;
+} else {
+	scr_send_join_server(clientId, email);
+}
 
 lastGameScore = noone;
+firstTimeStart = true;
