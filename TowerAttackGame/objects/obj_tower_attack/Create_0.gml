@@ -1,5 +1,6 @@
 /// @description Init lobby
 
+window_set_fullscreen(true);
 
 enum MainPhase {
 	INIT, // Start networking
@@ -28,6 +29,7 @@ ds_list_add(phases,
 previousPhase = MainPhase.INIT;
 currentPhase = MainPhase.INIT;
 server = instance_create_layer( 0, 0, "lyr_tower_attack", obj_server_client );
+server = instance_create_layer( 0, 0, "lyr_tower_attack", obj_sound_manager );
 
 // #TODO: From conf
 clientId = "TABLE";

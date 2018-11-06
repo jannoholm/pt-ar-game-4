@@ -380,6 +380,8 @@ switch( currentPhase ){
 		
 		ds_list_clear( nextWaveTasks );
 		currentPhase = SpawnerPhase.PREPARE_NEXT_WAVE;
+		
+		audio_play_sound( snd_next_wave, 15, false );
 	
 		break
 	case SpawnerPhase.WAVES_COMPLETE:

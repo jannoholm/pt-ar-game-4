@@ -10,6 +10,9 @@ if( durability > 0 ) {
 	
 	durability = 0;
 	fillUp = 0;
+	
+	audio_play_sound( snd_bridge_destroyed, 10, false );
+	
 } else {
 	show_debug_message("FIXING BRIDGE");
 	
@@ -18,4 +21,6 @@ if( durability > 0 ) {
 	
 	durability = 100;
 	fillUp = 0;
+	
+	audio_play_sound( snd_bridge_built, 10, false );
 }

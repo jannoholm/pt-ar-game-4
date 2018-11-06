@@ -98,6 +98,8 @@ switch( currentPhase ){
 		} else {
 			trace( "Soldier phase changed by some other logic", self );
 		}
+		
+		audio_play_sound( snd_unit_hit, 1, false );
 	
 		break;
 	case SoldierPhase.FIGHT:

@@ -13,6 +13,8 @@ switch( currentPhase ){
 	
 		break;
 	case MainPhase.GO_TO_LOBBY:
+		
+		audio_play_sound( snd_background_tense, 10, true );
 
 		currentPhase = MainPhase.LOBBY
 		room_goto_next();
@@ -91,6 +93,8 @@ switch( currentPhase ){
 		scr_send_game_results_store_request( lastGameScore );
 		
 		currentPhase = MainPhase.GAME_RESULT
+		audio_stop_sound( snd_background_tense );
+		audio_play_sound( snd_victory_music, 10, false );
 	
 		break;
 	case MainPhase.GAME_RESULT:
@@ -99,7 +103,7 @@ switch( currentPhase ){
 			trace( "Setting alarm to clean up scores" );
 			alarm[1] = room_speed * 30;	
 			obj_lobby.currentPhase = LobbyPhase.INIT;
-		}		
+		}
 		// TODO: Add shader blur
 	
 		break;

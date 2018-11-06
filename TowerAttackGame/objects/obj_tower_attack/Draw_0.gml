@@ -78,6 +78,6 @@ if( currentPhase == MainPhase.INIT ){
 	
 } else if( currentPhase == MainPhase.DEMO ){
 	draw_set_font( fnt_game_result );
-	draw_text( room_width/2, room_height*0.22, "DEMO" );
+	draw_text( room_width/2, room_height*0.22, "WAITING PLAYERS" );
 	draw_set_font( -1 );
 }
