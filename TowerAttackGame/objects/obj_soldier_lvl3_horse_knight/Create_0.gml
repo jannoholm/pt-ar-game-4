@@ -3,7 +3,7 @@
 // Inherit the parent event
 event_inherited();
 
-unitFightAnimation = spr_soldier_swordsman_attack;
+unitFightAnimation = spr_soldier_horse_knight_attack;
 unitDeadAnimation = spr_soldier_swordsman_die;
 
 unitWalkAnimation = spr_soldier_horse_knight_walk;

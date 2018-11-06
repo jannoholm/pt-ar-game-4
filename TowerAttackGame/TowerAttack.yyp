@@ -159,6 +159,14 @@
             }
         },
         {
+            "Key": "177be3b4-48af-40a7-af56-cb8d873dd440",
+            "Value": {
+                "id": "f9845b87-9391-404a-87cb-4ea5716623be",
+                "resourcePath": "sprites\\spr_background\\spr_background.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "181bdfe6-45fd-4feb-94ff-bb2f515dec57",
             "Value": {
                 "id": "0d5c1abb-b395-4ffd-9633-cc428fdefd9d",
@@ -236,6 +244,14 @@
                 "id": "13deda1e-4d8c-44e9-9eb0-ba0b089b211e",
                 "resourcePath": "views\\1ec23db5-b1a1-4f84-a446-4c8579495765.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "22aca635-10f2-4e51-b8a3-703ad62a7096",
+            "Value": {
+                "id": "12ad8ef7-0e5e-47e8-8fe9-60151f2d485b",
+                "resourcePath": "sprites\\spr_bridge_4_team_one\\spr_bridge_4_team_one.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -799,6 +815,14 @@
             }
         },
         {
+            "Key": "6d7823bb-849b-4447-afd1-36607700f141",
+            "Value": {
+                "id": "1252b439-b11a-455a-85c3-28f8b5c8cf3d",
+                "resourcePath": "sprites\\spr_bridge_3_team_one\\spr_bridge_3_team_one.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "6f4dd541-0e6f-4e5a-bf95-8b87ff6de374",
             "Value": {
                 "id": "f89a3718-78d4-4157-a4e2-170ba2d4806a",
@@ -1175,14 +1199,6 @@
             }
         },
         {
-            "Key": "a97bffca-e173-4c42-b3a0-8f0403378d1e",
-            "Value": {
-                "id": "b5bd0379-8582-4013-810c-b6e848ceb032",
-                "resourcePath": "sprites\\spr_background\\spr_background.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
             "Key": "aac043ec-c01e-4667-990c-64a9dc9ff460",
             "Value": {
                 "id": "3bb425b2-0e44-4c82-830f-fc1f87cd4a69",
@@ -1415,6 +1431,14 @@
             }
         },
         {
+            "Key": "cbd86f2e-b568-46d5-b57b-4c8ec9c86baf",
+            "Value": {
+                "id": "7ba1284c-56b0-4f91-8ff9-1f86b6cc107e",
+                "resourcePath": "sprites\\spr_soldier_horse_knight_attack\\spr_soldier_horse_knight_attack.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "cc148c7b-f631-4cda-a9ad-796a76060871",
             "Value": {
                 "id": "be2a2490-b388-4308-a68c-585f0c442547",
@@ -1475,6 +1499,14 @@
             "Value": {
                 "id": "1c793eff-1598-4001-93fd-1f67c6612d89",
                 "resourcePath": "sprites\\spr_action_bridge_team_two\\spr_action_bridge_team_two.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "d203cc99-db36-4f81-b39e-eaada50086bf",
+            "Value": {
+                "id": "5f7c0e45-8208-4f16-9774-d1285349aa8a",
+                "resourcePath": "sprites\\spr_bridge_5_team_one\\spr_bridge_5_team_one.yy",
                 "resourceType": "GMSprite"
             }
         },
