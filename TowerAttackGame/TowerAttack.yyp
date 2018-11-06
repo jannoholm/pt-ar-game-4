@@ -255,6 +255,14 @@
             }
         },
         {
+            "Key": "237ffb05-04c6-4b11-8dea-9634aaa64965",
+            "Value": {
+                "id": "f118bf93-34d0-4445-ac48-cb69906a0162",
+                "resourcePath": "sprites\\spr_health_bar_team_one\\spr_health_bar_team_one.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "2424212e-00f8-4da8-b00f-73d348a78af3",
             "Value": {
                 "id": "37667283-c6d8-4fa4-af80-4ed1ddff1734",
@@ -884,6 +892,14 @@
                 "id": "79de9b56-7f36-400e-8e25-70c594c55107",
                 "resourcePath": "views\\7579757f-6d87-4a15-9edf-3dd504b434b1.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "75a6d408-9e89-489c-b410-b6635d129662",
+            "Value": {
+                "id": "6885c96a-a423-4aea-807a-d40918bbed6e",
+                "resourcePath": "sprites\\spr_health_bar_team_two\\spr_health_bar_team_two.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
