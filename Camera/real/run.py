@@ -8,6 +8,9 @@ import json
 
 import glob
 
+import time
+import math
+
 
 def to_tuple(a):
     try:
@@ -20,8 +23,12 @@ def get_string(id, dst):
     return "ID: {}({}m)".format(id, round(dst, 2))
 
 
-wid = 1920
-hei = 1080
+wid = 1280
+hei = 720
+
+camera_angle = np.radians(35)
+board_x = 800
+board_y = 1420
 
 cam_id = 1
 
@@ -74,7 +81,22 @@ counter = []
 corners_list = []
 id_list = []
 
-
+def remap_points(cam_x, cam_y, x_max, y_max):
+    print("cam_x:", cam_x)
+    real_dist = math.sqrt(cam_x**2 + cam_y**2)
+	beta = None
+	
+    if cam_y != 0:
+        beta = np.sin(cam_y / cam_x)
+    else:
+        beta = 0
+	
+	# camera angle == physical camera offset from field in radians
+	
+    real_x = x_max - np.cos(camera_angle) * cam_x
+    real_y = y_max - np.sin(camera_angle) * cam_x
+	
+    return (real_x, real_y)
 
 class TcpSender:
     def __init__(self, ip, port, buffer):
@@ -102,7 +124,7 @@ class TcpSender:
         self.socket.close()
 
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 
 sender = TcpSender(TCP_IP, TCP_PORT, BUFFER_SIZE)
 sender.connect()
@@ -127,12 +149,13 @@ print("Calibrating camera .... Please wait...")
 # mat = np.zeros((3,3), float)
 ret, mtx, dist, rvecs, tvecs = aruco.calibrateCameraAruco(corners_list, id_list, counter, board, img_gray.shape, None, None)
 
+aruco_dict = aruco.Dictionary_get(aruco.DICT_ARUCO_ORIGINAL)
 while True:
+    time.sleep(0.2)
+
     ret, frame = cap.read()
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-    aruco_dict = aruco.Dictionary_get(aruco.DICT_6X6_250)
 
     parameters = aruco.DetectorParameters_create()
     corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict, parameters=parameters)
@@ -140,13 +163,21 @@ while True:
     font = cv2.FONT_HERSHEY_SIMPLEX  # font for displaying text (below)
 
     if np.all(ids != None):
-        rvec, tvec, _ = aruco.estimatePoseSingleMarkers(corners, 0.05, mtx, dist)
+        sent_markers = []
+        for corner in range(0, len(corners)):
+            marker_id = ids[corner]
+            marker_corners = corners[corner]
+            rvec, tvec, _ = aruco.estimatePoseSingleMarkers(marker_corners, 0.05, mtx, dist)
+            if marker_id in sent_markers:
+                continue
+            dist_vec = tvec[0][0] * 0.714 * 1000
 
-        dist_vec = tvec[0][0] * 0.714 * 1000
-
-        print(dist_vec)
-
-        sender.send(json.dumps({"1": (dist_vec[0], dist_vec[2])}))
+            print(dist_vec)
+            #marker_distance = math.sqrt(int(dist_vec[0])**2 + int(dist_vec[2])**2)
+            print(remap_points(int(dist_vec[0]), int(dist_vec[2]), board_x, board_y))
+            time.sleep(0.05)
+            sender.send(json.dumps({str(marker_id[0]): (int(dist_vec[0]), int(dist_vec[2]))}))
+            sent_markers.append(marker_id)
 
     cv2.imshow('frame', frame)
 

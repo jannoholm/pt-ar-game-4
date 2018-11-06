@@ -60,16 +60,19 @@ class Server(asyncore.dispatcher):
         self.log.info('Broadcasting message: %s', message)
         for remote_client in self.remote_clients:
             if len(message) > 0:
-                loaded_response = json.loads(message.decode('utf-8'))
-                self.log.debug('Received message : %s', loaded_response)
-                self.log.debug('Current state: %s', self.current_state)
+                try:
+                    loaded_response = json.loads(message.decode('utf-8'))
+                    self.log.debug('Received message : %s', loaded_response)
+                    self.log.debug('Current state: %s', self.current_state)
 
-                diff_resp = self.calculate_diff(loaded_response)
-                self.log.info('Sending: %s', diff_resp)
+                    diff_resp = self.calculate_diff(loaded_response)
+                    self.log.info('Sending: %s', diff_resp)
 
-                self.post_date(diff_resp)
+                    self.post_date(diff_resp)
 
-                self.current_state.update(loaded_response)
+                    self.current_state.update(loaded_response)
+                except:
+                    pass
             else:
                 self.remote_clients.remove(remote_client)
 
