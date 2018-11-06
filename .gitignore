@@ -6,3 +6,4 @@ TowerProxy/run2/log/**
 TowerProxy/**/.classpath
 TowerProxy/**/.project
 TowerProxy/**/.settings
+TowerProxy/**/game.db
