@@ -53,7 +53,8 @@ with( instance_create_layer( 370, 930, "lyr_elements", obj_spawn_team_one ) ) {
 	pathStartPosition = 0.05;
 	team = other.teamOne;
 }
-with( instance_create_layer( 3500, 927, "lyr_elements", obj_spawn_team_two ) ) {
+with( instance_create_layer( 3440, 1180, "lyr_elements", obj_spawn_team_two ) ) {
+	// Note: cooridnates are swapped on right side since the paths cross in the middle
 	path = path_middle_high;
 	pathDirection = -1;
 	pathStartPosition = 0.95;
@@ -65,7 +66,8 @@ with( instance_create_layer( 420, 1190, "lyr_elements", obj_spawn_team_one ) ) {
 	pathStartPosition = 0.05;
 	team = other.teamOne;
 }
-with( instance_create_layer( 3440, 1180, "lyr_elements", obj_spawn_team_two ) ) {
+with( instance_create_layer( 3500, 927, "lyr_elements", obj_spawn_team_two ) ) {
+	// Note: cooridnates are swapped on right side since the paths cross in the middle
 	path = path_middle_low;
 	pathDirection = -1;
 	pathStartPosition = 0.95;

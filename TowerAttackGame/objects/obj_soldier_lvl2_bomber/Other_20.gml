@@ -26,3 +26,5 @@ if( soldiersInRadius != noone){
    }
    ds_list_destroy(soldiersInRadius);
 }
+
+audio_play_sound( snd_explosion_big, 1, false );

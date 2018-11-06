@@ -12,7 +12,7 @@ trace( "Received TokenLocationUpdateMessage", tokenId, team, tokenType, tokenInd
 
 var token = noone;
 
-if( instance_exists( obj_game ) && obj_game.currentPhase == GamePhase.GAME ){
+if( instance_exists( obj_game ) ){
 
 	if( team == TeamId.ONE && tokenType == TokenType.BRIDGE ){
 		var token = instance_find( obj_action_bridge_team_one, tokenIndex );
@@ -28,7 +28,7 @@ if( instance_exists( obj_game ) && obj_game.currentPhase == GamePhase.GAME ){
 
 if( token != noone ){
 	with( token ){
-		x = locationX; // * room_width / 150; // #TODO: Define max constant
-		y = locationY; // * room_height / 50; // #TODO: Define max constant
+		x = locationX * room_width / 10000; // #TODO: Define max constant
+		y = locationY * room_height / 10000; // #TODO: Define max constant
 	}
 }
