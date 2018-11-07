@@ -18,7 +18,7 @@ public class QrGenerator {
     }
 
     public static String generateQr(){
-        byte[] randomBytes = new byte[24];
+        byte[] randomBytes = new byte[8];
         random.nextBytes(randomBytes);
         return Base64.getEncoder().encodeToString(randomBytes);
     }
