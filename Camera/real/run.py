@@ -87,6 +87,8 @@ counter = []
 corners_list = []
 id_list = []
 
+calibrated = False
+
 def calibrate_camera(cam_x, cam_y, physical_camera_x, physical_camera_y):
     
     # Basic math, right? https://gamedev.stackexchange.com/questions/18340/get-position-of-point-on-circumference-of-circle-given-an-angle
@@ -103,22 +105,17 @@ def calibrate_camera(cam_x, cam_y, physical_camera_x, physical_camera_y):
     calibration_angle_offset = np.tan(cam_x / cam_y) if cam_y != 0 else 0    
     
     return (calibration_distance_factor, calibration_angle_offset)
-    
+
+
 def remap_points(cam_x, cam_y, physical_camera_x, physical_camera_y, calibration_distance_factor, calibration_angle_offset):
-    
     # Basic math, right? https://gamedev.stackexchange.com/questions/18340/get-position-of-point-on-circumference-of-circle-given-an-angle
-
     print("cam_x:", cam_x, "cam_y", cam_y, "physical_camera_x", physical_camera_x, "physical_camera_y", physical_camera_y)
-
     distance_camera = math.sqrt(cam_x**2 + cam_y**2) * calibration_distance_factor
-	
     # Angle between camera Y and target object in radians
     # Tan(angle) = Opposite / Adjacent
-    camera_angle = np.tan(cam_x / cam_y) if cam_y != 0 else 0 
-    
+    camera_angle = np.tan(cam_x / cam_y) if cam_y != 0 else 0
     # Angle between board X (top edge) and object, note that board angle increases to towards bottom, but camera angle increases towards top
     board_angle = physical_camera_angle + camera_angle + calibration_angle_offset
-    
     # Distance from top left corner to object
     # x = Cos(a) * r
     board_x = physical_camera_x + np.cos( board_angle ) * distance_camera
@@ -126,8 +123,8 @@ def remap_points(cam_x, cam_y, physical_camera_x, physical_camera_y, calibration
     board_y = physical_camera_y + np.sin( board_angle ) * distance_camera
     
     print("distance_camera: ", round(distance_camera), "camera_angle: ", round(np.degrees(camera_angle)), "board_angle: ", round(np.degrees(board_angle)), "board_x: ", round(board_x), "board_y", round(board_y))
-	
     return (board_x, board_y)
+
 
 class TcpSender:
     def __init__(self, ip, port, buffer):
@@ -183,9 +180,9 @@ print("Calibrating camera complete")
 
 aruco_dict = aruco.Dictionary_get(aruco.DICT_ARUCO_ORIGINAL)
 
-
 nrOfLoops = 0
-calibration = (1,0)
+calibration = (1, 0)
+calib_array = []
 
 while True:
     time.sleep(0.2)
@@ -200,33 +197,43 @@ while True:
     font = cv2.FONT_HERSHEY_SIMPLEX  # font for displaying text (below)
 
     if np.all(ids != None):
-        sent_markers = []
+        sent_markers = {}
+
         for corner in range(0, len(corners)):
             marker_id = ids[corner]
             marker_corners = corners[corner]
             rvec, tvec, _ = aruco.estimatePoseSingleMarkers(marker_corners, 0.05, mtx, dist)
-            if marker_id in sent_markers:
-                continue
+
             dist_vec = tvec[0][0] * 0.714 * 1000
 
             # print(dist_vec)
             #marker_distance = math.sqrt(int(dist_vec[0])**2 + int(dist_vec[2])**2)
-            if nrOfLoops < 40: # 10 seconds
+            if nrOfLoops < 40:# 10 seconds
                 #print("CAL:", calibrate_camera(int(dist_vec[0]), int(dist_vec[2]), physical_camera_x, physical_camera_y))
-                calibration = calibrate_camera(int(dist_vec[0]), int(dist_vec[2]), physical_camera_x, physical_camera_y)
-                # TODO: These should be aggregated and mean taken
-                print(calibration)
+                cal = calibrate_camera(int(dist_vec[0]), int(dist_vec[2]), physical_camera_x, physical_camera_y)
+                print(cal)
+                # appends to calibration array and averages after 40 loops below
+                calib_array.append(cal)
             else:
-                coordinates = remap_points(int(dist_vec[0]), int(dist_vec[2]), physical_camera_x, physical_camera_y, calibration[0], calibration[1])
-                print(coordinates)
-                # 1440 x 800 mm is the monitor, normalize to 10k
-                sender.send(json.dumps({str(marker_id[0]): (int(coordinates[0]/1440 * 10000), int(coordinates[1]/800 * 10000))}))  
-                #sender.send(json.dumps({str(marker_id[0]): (int(coordinates[0]), int(coordinates[1]))}))   
+                if marker_id in sent_markers:
+                    sent_markers[marker_id] = sent_markers[marker_id].append(tvec)
+                else:
+                    sent_markers[marker_id] = [tvec]
             
-            nrOfLoops += 1;
-            
+            nrOfLoops += 1
+
+        # averages calibration and saves it
+        if not calibrated and nrOfLoops > 40:
+            calibrated = True
+            calibration = np.average(np.array(calib_array))
+
+        for marker in sent_markers:
+            avg_dist = np.average(np.array(sent_markers[marker]))
+            coordinates = remap_points(int(avg_dist[0]), int(avg_dist[2]), physical_camera_x, physical_camera_y,
+                                       calibration[0], calibration[1])
+            sender.send(json.dumps(
+                {str(marker_id[0]): (int(coordinates[0] / 1440 * 10000), int(coordinates[1] / 800 * 10000))}))
             time.sleep(0.05)
-            sent_markers.append(marker_id)
 
     cv2.imshow('frame', frame)
 
