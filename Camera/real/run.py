@@ -11,6 +11,10 @@ import glob
 import time
 import math
 
+import argparse
+from builtins import int
+from numpy import double
+
 
 def to_tuple(a):
     try:
@@ -23,14 +27,23 @@ def get_string(id, dst):
     return "ID: {}({}m)".format(id, round(dst, 2))
 
 
-wid = 1280
-hei = 720
+parser = argparse.ArgumentParser(description='Run token detection via webcam')
+parser.add_argument('-c', '--camera', help='Camera index to use, usually starting from zero', required=True, type=int)
+parser.add_argument('-a', '--angle', help='Angle in degrees from top TV edge to camera mid axis', required=True,
+                    type=double)
+parser.add_argument('-x', '--boardX',
+                    help='Camera X location in mm compared to zero point of TV top left corner, top side is X axis going right',
+                    required=True, type=double)
+parser.add_argument('-y', '--boardY',
+                    help='Camera Y location in mm compared to zero point of TV top left corner, left side is Y axis going down',
+                    required=True, type=double)
+args = parser.parse_args()
 
-camera_angle = np.radians(35)
-board_x = 800
-board_y = 1420
+physical_camera_angle = np.radians(args.angle)
+physical_camera_x = args.boardX
+physical_camera_y = args.boardY
 
-cam_id = 1
+cam_id = args.camera
 
 TCP_IP = "localhost"
 TCP_PORT = 1337
@@ -40,12 +53,10 @@ calibrate = False
 
 sample_size = 20
 
-
 cap = cv2.VideoCapture(cam_id)
 
-#cap.set(cv2.CAP_PROP_FRAME_WIDTH, wid)
-#cap.set(cv2.CAP_PROP_FRAME_HEIGHT, hei)
-
+# cap.set(cv2.CAP_PROP_FRAME_WIDTH, wid)
+# cap.set(cv2.CAP_PROP_FRAME_HEIGHT, hei)
 
 
 path = ""
@@ -61,17 +72,16 @@ board = aruco.GridBoard_create(4, 5, markel_side, marker_separation, aruco_dict)
 
 img = board.draw((864, 1080))
 
-#cv2.imshow("aruco", img)
+# cv2.imshow("aruco", img)
 
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
-objp = np.zeros((6*7,3), np.float32)
+objp = np.zeros((6 * 7, 3), np.float32)
 objp[:, :2] = np.mgrid[0:7, 0:6].T.reshape(-1, 2)
 
 # Arrays to store object points and image points from all the images.
-objpoints = [] # 3d point in real world space
-imgpoints = [] # 2d points in image plane.
-
+objpoints = []  # 3d point in real world space
+imgpoints = []  # 2d points in image plane.
 
 images = glob.glob('calib/*.jpg')
 
@@ -81,22 +91,47 @@ counter = []
 corners_list = []
 id_list = []
 
-def remap_points(cam_x, cam_y, x_max, y_max):
-    print("cam_x:", cam_x)
-    real_dist = math.sqrt(cam_x**2 + cam_y**2)
-	beta = None
-	
-    if cam_y != 0:
-        beta = np.sin(cam_y / cam_x)
-    else:
-        beta = 0
-	
-	# camera angle == physical camera offset from field in radians
-	
-    real_x = x_max - np.cos(camera_angle) * cam_x
-    real_y = y_max - np.sin(camera_angle) * cam_x
-	
-    return (real_x, real_y)
+calibrated = False
+
+
+def calibrate_camera(cam_x, cam_y, physical_camera_x, physical_camera_y):
+    # Basic math, right? https://gamedev.stackexchange.com/questions/18340/get-position-of-point-on-circumference-of-circle-given-an-angle
+
+    distance_from_camera = math.sqrt(cam_x ** 2 + cam_y ** 2)
+    physical_distance_from_camera = math.sqrt((1440 / 2 - physical_camera_x) ** 2 + (800 / 2 - physical_camera_y) ** 2)
+
+    # Creates the factor offset at least correctly in the middle point
+    calibration_distance_factor = physical_distance_from_camera / distance_from_camera if distance_from_camera != 0 else 1
+
+    # cam_x: -90 cam_y 816 physical_camera_x 280.0 physical_camera_y 809.0
+    # Angle between camera Y and target object in radians, same as camera_angle in the main flow
+    # Tan(angle) = Opposite / Adjacent
+    calibration_angle_offset = np.tan(cam_x / cam_y) if cam_y != 0 else 0
+
+    return (calibration_distance_factor, calibration_angle_offset)
+
+
+def remap_points(cam_x, cam_y, physical_camera_x, physical_camera_y, calibration_distance_factor,
+                 calibration_angle_offset):
+    # Basic math, right? https://gamedev.stackexchange.com/questions/18340/get-position-of-point-on-circumference-of-circle-given-an-angle
+    print("cam_x:", cam_x, "cam_y", cam_y, "physical_camera_x", physical_camera_x, "physical_camera_y",
+          physical_camera_y)
+    distance_camera = math.sqrt(cam_x ** 2 + cam_y ** 2) * calibration_distance_factor
+    # Angle between camera Y and target object in radians
+    # Tan(angle) = Opposite / Adjacent
+    camera_angle = np.tan(cam_x / cam_y) if cam_y != 0 else 0
+    # Angle between board X (top edge) and object, note that board angle increases to towards bottom, but camera angle increases towards top
+    board_angle = physical_camera_angle + camera_angle + calibration_angle_offset
+    # Distance from top left corner to object
+    # x = Cos(a) * r
+    board_x = physical_camera_x + np.cos(board_angle) * distance_camera
+    # y = Sin(a) * r
+    board_y = physical_camera_y + np.sin(board_angle) * distance_camera
+
+    print("distance_camera: ", round(distance_camera), "camera_angle: ", round(np.degrees(camera_angle)),
+          "board_angle: ", round(np.degrees(board_angle)), "board_x: ", round(board_x), "board_y", round(board_y))
+    return (board_x, board_y)
+
 
 class TcpSender:
     def __init__(self, ip, port, buffer):
@@ -147,9 +182,16 @@ for fname in images:
 counter = np.array(counter)
 print("Calibrating camera .... Please wait...")
 # mat = np.zeros((3,3), float)
-ret, mtx, dist, rvecs, tvecs = aruco.calibrateCameraAruco(corners_list, id_list, counter, board, img_gray.shape, None, None)
+ret, mtx, dist, rvecs, tvecs = aruco.calibrateCameraAruco(corners_list, id_list, counter, board, img_gray.shape, None,
+                                                          None)
+print("Calibrating camera complete")
 
 aruco_dict = aruco.Dictionary_get(aruco.DICT_ARUCO_ORIGINAL)
+
+nrOfLoops = 0
+calibration = (1, 0)
+calib_array = []
+
 while True:
     time.sleep(0.2)
 
@@ -163,21 +205,43 @@ while True:
     font = cv2.FONT_HERSHEY_SIMPLEX  # font for displaying text (below)
 
     if np.all(ids != None):
-        sent_markers = []
+        sent_markers = {}
+
         for corner in range(0, len(corners)):
             marker_id = ids[corner]
             marker_corners = corners[corner]
             rvec, tvec, _ = aruco.estimatePoseSingleMarkers(marker_corners, 0.05, mtx, dist)
-            if marker_id in sent_markers:
-                continue
+
             dist_vec = tvec[0][0] * 0.714 * 1000
 
-            print(dist_vec)
-            #marker_distance = math.sqrt(int(dist_vec[0])**2 + int(dist_vec[2])**2)
-            print(remap_points(int(dist_vec[0]), int(dist_vec[2]), board_x, board_y))
+            # print(dist_vec)
+            # marker_distance = math.sqrt(int(dist_vec[0])**2 + int(dist_vec[2])**2)
+            if nrOfLoops < 40:  # 10 seconds
+                # print("CAL:", calibrate_camera(int(dist_vec[0]), int(dist_vec[2]), physical_camera_x, physical_camera_y))
+                cal = calibrate_camera(int(dist_vec[0]), int(dist_vec[2]), physical_camera_x, physical_camera_y)
+                print(cal)
+                # appends to calibration array and averages after 40 loops below
+                calib_array.append(cal)
+            else:
+                if marker_id in sent_markers:
+                    sent_markers[marker_id] = sent_markers[marker_id].append(tvec)
+                else:
+                    sent_markers[marker_id] = [tvec]
+
+            nrOfLoops += 1
+
+        # averages calibration and saves it
+        if not calibrated and nrOfLoops > 40:
+            calibrated = True
+            calibration = np.average(np.array(calib_array))
+
+        for marker in sent_markers:
+            avg_dist = np.average(np.array(sent_markers[marker]))
+            coordinates = remap_points(int(avg_dist[0]), int(avg_dist[2]), physical_camera_x, physical_camera_y,
+                                       calibration[0], calibration[1])
+            sender.send(json.dumps(
+                {str(marker_id[0]): (int(coordinates[0] / 1440 * 10000), int(coordinates[1] / 800 * 10000))}))
             time.sleep(0.05)
-            sender.send(json.dumps({str(marker_id[0]): (int(dist_vec[0]), int(dist_vec[2]))}))
-            sent_markers.append(marker_id)
 
     cv2.imshow('frame', frame)
 
