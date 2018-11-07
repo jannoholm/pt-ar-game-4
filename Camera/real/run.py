@@ -223,10 +223,10 @@ while True:
                 # appends to calibration array and averages after 40 loops below
                 calib_array.append(cal)
             else:
-                if marker_id in sent_markers:
-                    sent_markers[marker_id] = sent_markers[marker_id].append(tvec)
+                if marker_id[0] in sent_markers:
+                    sent_markers[marker_id[0]] = sent_markers[marker_id[0]].append(tvec)
                 else:
-                    sent_markers[marker_id] = [tvec]
+                    sent_markers[marker_id[0]] = [tvec]
 
             nrOfLoops += 1
 
@@ -237,10 +237,11 @@ while True:
 
         for marker in sent_markers:
             avg_dist = np.average(np.array(sent_markers[marker]))
-            coordinates = remap_points(int(avg_dist[0]), int(avg_dist[2]), physical_camera_x, physical_camera_y,
+            print(avg_dist)
+            coordinates = remap_points(int(avg_dist), int(avg_dist[2]), physical_camera_x, physical_camera_y,
                                        calibration[0], calibration[1])
             sender.send(json.dumps(
-                {str(marker_id[0]): (int(coordinates[0] / 1440 * 10000), int(coordinates[1] / 800 * 10000))}))
+                {str(marker): (int(coordinates[0] / 1440 * 10000), int(coordinates[1] / 800 * 10000))}))
             time.sleep(0.05)
 
     cv2.imshow('frame', frame)
