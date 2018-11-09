@@ -343,14 +343,6 @@
             }
         },
         {
-            "Key": "2feb9044-6f9a-4500-a193-8a86573d87f0",
-            "Value": {
-                "id": "3d2fe1ec-ee1b-4554-893f-647b87eca9bc",
-                "resourcePath": "sprites\\spr_soldier_orc_wolf_raider_slash\\spr_soldier_orc_wolf_raider_slash.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
             "Key": "3205cd33-4633-4f9e-93c0-dad48cc86d32",
             "Value": {
                 "id": "882fd932-849f-433c-8a1c-243047fcaa3d",
@@ -548,6 +540,14 @@
                 "id": "92e84adf-1275-4fff-873e-90e73873523d",
                 "resourcePath": "views\\4de56477-9fba-405e-ba87-b448546e4bef.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "4e018473-3ffa-4fde-8fad-9900825fdc1b",
+            "Value": {
+                "id": "d63f5791-b69b-41bb-9cab-5b8b7e8dcaf7",
+                "resourcePath": "sprites\\spr_soldier_horse_knight_dead\\spr_soldier_horse_knight_dead.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1183,6 +1183,14 @@
             }
         },
         {
+            "Key": "a39f8ce1-c0d1-48c7-acdc-27efa8dd25ce",
+            "Value": {
+                "id": "f2b4d798-7988-4ed5-82a8-deac462f9df6",
+                "resourcePath": "sprites\\spr_soldier_orc_wolf_raider_attack\\spr_soldier_orc_wolf_raider_attack.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "a3d86de9-1c31-48ef-aa3f-27bb89ade291",
             "Value": {
                 "id": "75426d3f-550d-41e0-9748-9779eb648b3e",
@@ -1575,6 +1583,14 @@
             }
         },
         {
+            "Key": "db5d1460-8fb2-485c-9dd2-a98c8a7c1c94",
+            "Value": {
+                "id": "dfcc3445-de33-4e52-ab7a-4054c6797a66",
+                "resourcePath": "sprites\\spr_soldier_orc_wolf_raider_slash\\spr_soldier_orc_wolf_raider_slash.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "dbf002a5-79d5-453b-a44c-171ac7bed03f",
             "Value": {
                 "id": "04f9f367-ec1d-4dce-b19f-6bc4d515111a",
@@ -1796,6 +1812,14 @@
                 "id": "e463814a-18ec-4045-b512-de3b3428e17c",
                 "resourcePath": "options\\mac\\options_mac.yy",
                 "resourceType": "GMMacOptions"
+            }
+        },
+        {
+            "Key": "f63562c6-14d5-49e7-81bf-f4943b65741e",
+            "Value": {
+                "id": "f8d2e954-c9cd-4faa-ae15-3cb0ca9a61e2",
+                "resourcePath": "sprites\\spr_soldier_orc_wolf_raider_dead\\spr_soldier_orc_wolf_raider_dead.yy",
+                "resourceType": "GMSprite"
             }
         },
         {

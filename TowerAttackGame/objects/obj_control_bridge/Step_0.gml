@@ -17,7 +17,7 @@ if( !targetBridge.protected && team.actionPoints > 10 ) {
 		chargeUp = 0;
 	}
 	
-	if( chargeUp > 2 * room_speed ) {
+	if( chargeUp > 1 * room_speed ) {
 		show_debug_message( "CHARGE COMPLETE!" );
 		team.actionPoints -= 10;
 		chargeUp = 0;
