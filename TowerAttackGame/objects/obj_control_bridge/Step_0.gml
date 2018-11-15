@@ -9,21 +9,21 @@ if( obj_game.currentPhase != GamePhase.GAME && obj_game.currentPhase != GamePhas
 }
 
 // #TODO: Take into account the points to be recieved during charge
-if( !targetBridge.protected && team.actionPoints > 10 ) {
-	// Shield is down start counting
-	if( colliding ){
-		chargeUp++;	
+if( !targetBridge.protected && colliding && chargingTeam.actionPoints > 10 ) {
+	// Shield is down start counting and bridge is up
+	if( bridgeControlType == BridgeControlType.DESTROY && targetBridge.durability <= 0 ){
+		// No charge up, bridge is destroyed, don't destory it again
 	} else {
-		chargeUp = 0;
-	}
+		chargeUp++;	
+	}	
 	
 	if( chargeUp > 1 * room_speed ) {
 		show_debug_message( "CHARGE COMPLETE!" );
-		team.actionPoints -= 10;
+		chargingTeam.actionPoints -= 10;
 		chargeUp = 0;
 		with( targetBridge ) {
-			activatedByTeam = other.team;
-			alarm_set( fixOrBreakAlarmIndx, 1 );
+			activatedByTeam = other.chargingTeam;
+			event_user( other.bridgeControlType );
 		}
 	}
 } else {

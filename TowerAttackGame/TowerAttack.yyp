@@ -231,6 +231,14 @@
             }
         },
         {
+            "Key": "1d97e422-5a24-4a6d-b0ea-7106fc2af143",
+            "Value": {
+                "id": "8fab2ccf-5850-4e6a-9c0f-512cdbf5be69",
+                "resourcePath": "sprites\\spr_control_team_two\\spr_control_team_two.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "1e211101-3997-4e3e-91fc-d01c58f50876",
             "Value": {
                 "id": "6b4bce34-f146-4736-a412-bceb0cab989f",
@@ -362,7 +370,7 @@
             "Key": "34ce4aa8-d1c4-4d94-8350-90d4e8735ccb",
             "Value": {
                 "id": "42e8b0a0-1d73-4521-907a-b1a3dfcbc0f7",
-                "resourcePath": "objects\\obj_control_bridge_team_one\\obj_control_bridge_team_one.yy",
+                "resourcePath": "objects\\obj_control_bridge_build\\obj_control_bridge_build.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -738,7 +746,7 @@
             "Key": "639604a3-5612-4e49-b5cb-caf6c5456136",
             "Value": {
                 "id": "8bf06958-539c-405f-b702-92e2c97893e4",
-                "resourcePath": "sprites\\spr_control_team_one\\spr_control_team_one.yy",
+                "resourcePath": "sprites\\spr_control_build\\spr_control_build.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -986,7 +994,7 @@
             "Key": "82f61d91-35bc-4e2f-a2da-02335733f110",
             "Value": {
                 "id": "47c4460d-8da6-4f08-9adc-6e405a0be4c3",
-                "resourcePath": "objects\\obj_control_bridge_team_two\\obj_control_bridge_team_two.yy",
+                "resourcePath": "objects\\obj_control_bridge_destroy\\obj_control_bridge_destroy.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -1140,6 +1148,14 @@
                 "id": "4e1ee284-a412-4698-8e94-72c80ba27718",
                 "resourcePath": "sounds\\snd_background_normal\\snd_background_normal.yy",
                 "resourceType": "GMSound"
+            }
+        },
+        {
+            "Key": "9ccde5b6-fce6-4fc4-b034-29247b758d40",
+            "Value": {
+                "id": "c575b4f0-5b4e-43f0-8c8e-519f10a52c2a",
+                "resourcePath": "sprites\\spr_control_team_one\\spr_control_team_one.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1442,7 +1458,7 @@
             "Key": "c738d157-e027-4df4-8a03-c80174d999d2",
             "Value": {
                 "id": "766c1799-b942-4a92-81c6-762f4d7867d8",
-                "resourcePath": "sprites\\spr_control_team_two\\spr_control_team_two.yy",
+                "resourcePath": "sprites\\spr_control_destroy\\spr_control_destroy.yy",
                 "resourceType": "GMSprite"
             }
         },

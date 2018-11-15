@@ -1,7 +1,13 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-team = noone;
+enum BridgeControlType {
+	BUILD = 0,
+	DESTROY = 1
+}
+
+bridgeControlType = noone;
 targetBridge = instance_nearest(x, y, obj_bridge);
+chargingTeam = noone;
 chargeUp = 0;
 colliding = false;
