@@ -43,7 +43,7 @@
 		{
 			"name": "get player",
 			"request": {
-				"url": "http://localhost:8101/player/125",
+				"url": "http://localhost:8101/player/1",
 				"method": "GET",
 				"header": [
 					{
@@ -52,10 +52,7 @@
 						"description": ""
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
+				"body": {},
 				"description": "Create user in soccar"
 			},
 			"response": []
@@ -63,7 +60,7 @@
 		{
 			"name": "create player",
 			"request": {
-				"url": "http://localhost:8101/user",
+				"url": "http://localhost:8101/player",
 				"method": "POST",
 				"header": [
 					{
@@ -132,10 +129,7 @@
 						"description": ""
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
+				"body": {},
 				"description": "Create user in soccar"
 			},
 			"response": []
@@ -189,14 +183,14 @@
 					"mode": "urlencoded",
 					"urlencoded": [
 						{
-							"key": "QR",
-							"value": "fhbds",
+							"key": "qrCode",
+							"value": "R08h0FxJ16M=",
 							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "position",
-							"value": "1",
+							"value": "2",
 							"description": "",
 							"type": "text"
 						}
@@ -248,8 +242,8 @@
 		{
 			"name": "show leaderboard",
 			"request": {
-				"url": "http://localhost:8101/player/125",
-				"method": "POST",
+				"url": "http://localhost:8101/leaderboard",
+				"method": "GET",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -275,7 +269,7 @@
 		{
 			"name": "list occasions",
 			"request": {
-				"url": "http://localhost:8101/player",
+				"url": "http://localhost:8101/occasion",
 				"method": "GET",
 				"header": [
 					{
@@ -308,7 +302,7 @@
 		{
 			"name": "get occasion",
 			"request": {
-				"url": "http://localhost:8101/player/125",
+				"url": "http://localhost:8101/occasion/2",
 				"method": "GET",
 				"header": [
 					{
@@ -317,10 +311,7 @@
 						"description": ""
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
+				"body": {},
 				"description": "Create user in soccar"
 			},
 			"response": []
@@ -328,7 +319,7 @@
 		{
 			"name": "create occasion",
 			"request": {
-				"url": "http://localhost:8101/user",
+				"url": "http://localhost:8101/occasion",
 				"method": "POST",
 				"header": [
 					{
@@ -341,14 +332,8 @@
 					"mode": "urlencoded",
 					"urlencoded": [
 						{
-							"key": "name",
-							"value": "name-djdsfsfd",
-							"description": "",
-							"type": "text"
-						},
-						{
-							"key": "email",
-							"value": "email1@somewhere.com",
+							"key": "description",
+							"value": "TedX 2018",
 							"description": "",
 							"type": "text"
 						}
@@ -361,7 +346,7 @@
 		{
 			"name": "delete occasion",
 			"request": {
-				"url": "http://localhost:8101/player/125",
+				"url": "http://localhost:8101/occasion/1",
 				"method": "DELETE",
 				"header": [
 					{
@@ -370,10 +355,7 @@
 						"description": ""
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
+				"body": {},
 				"description": "Create user in soccar"
 			},
 			"response": []
@@ -381,7 +363,7 @@
 		{
 			"name": "get current occasion",
 			"request": {
-				"url": "http://localhost:8101/player/125",
+				"url": "http://localhost:8101/current_occasion",
 				"method": "GET",
 				"header": [
 					{
@@ -390,10 +372,7 @@
 						"description": ""
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
+				"body": {},
 				"description": "Create user in soccar"
 			},
 			"response": []
@@ -401,8 +380,8 @@
 		{
 			"name": "set current occasion",
 			"request": {
-				"url": "http://localhost:8101/player/125",
-				"method": "GET",
+				"url": "http://localhost:8101/current_occasion/3",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -410,10 +389,7 @@
 						"description": ""
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
+				"body": {},
 				"description": "Create user in soccar"
 			},
 			"response": []
@@ -421,8 +397,8 @@
 		{
 			"name": "mock: poll users from pub",
 			"request": {
-				"url": "http://localhost:8101/control/position",
-				"method": "POST",
+				"url": "http://localhost:8101/mock/pollUsers/1",
+				"method": "GET",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -460,7 +436,7 @@
 		{
 			"name": "mock: update dashboard",
 			"request": {
-				"url": "http://localhost:8101/player/125",
+				"url": "http://localhost:8101/mock/pushLeaderboard",
 				"method": "POST",
 				"header": [
 					{
@@ -473,8 +449,8 @@
 					"mode": "urlencoded",
 					"urlencoded": [
 						{
-							"key": "email",
-							"value": "email1@someelse.com",
+							"key": "data",
+							"value": "<json>",
 							"description": "",
 							"type": "text"
 						}
