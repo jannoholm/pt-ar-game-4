@@ -104,7 +104,7 @@ public class RatingDatabaseImpl implements RatingDatabase {
                 }
                 if (todo.size() > 0) {
                     String selectSql = "select count(1) from " + TABLE_RATING + " where USERID=?";
-                    String insertSql = "insert into " + TABLE_RATING + " (USERID, ELO_RATING, MATCHES, TOWER_HEALTH, ENEMY_TOWER_HEALTH, TOTAL_SCORE, WINS) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    String insertSql = "insert into " + TABLE_RATING + " (USERID, ELO_RATING, MATCHES, TOWER_HEALTH, ENEMY_TOWER_HEALTH, TOTAL_SCORE, WINS) values (?, ?, ?, ?, ?, ?, ?)";
                     String updateSql = "update " + TABLE_RATING + " set ELO_RATING=?, MATCHES=?, TOWER_HEALTH=?, ENEMY_TOWER_HEALTH=?, TOTAL_SCORE=?, WINS=? where USERID=?";
                     Connection connection = dbInit.allocateConnection();
                     try (
