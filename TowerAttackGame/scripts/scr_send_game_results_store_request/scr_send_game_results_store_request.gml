@@ -1,6 +1,8 @@
 // GameResultStoreRequest 
 var result = argument[0];
 
+trace( "Sending GameResultStoreRequest" );
+
 // reset buffer
 var buffer=obj_server_client.out_buffer;
 buffer_seek( buffer, buffer_seek_start, 0 );
@@ -19,7 +21,7 @@ buffer_write( buffer, buffer_s32, result.teamOne.playerId );
 buffer_write( buffer, buffer_s8, result.teamOne.teamId );
 buffer_write( buffer, buffer_s8, result.teamOne.positionInTeam );
 buffer_write( buffer, buffer_s32, result.teamOneTowerHealth ); // #TODO Make dynamic
-buffer_write( buffer, buffer_s32, result.teamOneTowerHealth ); // #TODO Make dynamic
+buffer_write( buffer, buffer_s32, result.teamTwoTowerHealth ); // #TODO Make dynamic
 buffer_write( buffer, buffer_s32, result.teamOne.bridgesBuilt );
 buffer_write( buffer, buffer_s32, result.teamOne.bridgesBuiltPoints );
 buffer_write( buffer, buffer_s32, result.teamOne.bridgesDestroyed );

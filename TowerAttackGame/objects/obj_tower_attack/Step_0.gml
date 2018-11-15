@@ -90,11 +90,20 @@ switch( currentPhase ){
 			//tavernSoldierDeaths = team.tavernSoldierDeaths;
 		}
 		
-		scr_send_game_results_store_request( lastGameScore );
+		if( obj_configuration.standAloneMode ){
+			obj_tower_attack.currentPhase = MainPhase.GAME_RESULT;
+		} else {
+			currentPhase = MainPhase.WAIT_SERVER_SCORE;
+			scr_send_game_results_store_request( lastGameScore );
+		}
 		
-		currentPhase = MainPhase.GAME_RESULT
 		audio_stop_sound( snd_background_tense );
 		audio_play_sound( snd_victory_music, 10, false );
+	
+		break;
+	case MainPhase.WAIT_SERVER_SCORE:
+	
+		// Phase to GAME_RESULT is changed in response receive script
 	
 		break;
 	case MainPhase.GAME_RESULT:

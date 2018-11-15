@@ -1,6 +1,6 @@
 /// @description Draw guidelines
 
-draw_set_font( fnt_game_result );
+draw_set_font( fnt_basic_font );
 if( currentPhase == GamePhase.WAIT_PLAYERS_READY ){
 	draw_text( room_width/2, room_height*0.22, string( "PLACE YOUR TOKENS" ) );
 		
