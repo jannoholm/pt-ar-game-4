@@ -40,10 +40,7 @@
             <a class="nav-link" href="#">Manage players<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item"><a class="nav-link" href="leaderboard.html">Leadeboard</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Responsible gaming</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Fraud detection</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Payments</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Business Intelligence</a></li>
+          <li class="nav-item"><a class="nav-link" href="signup.html">Signup</a></li>
         </ul>
       </div>
     </nav>
@@ -73,6 +70,7 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Email</th>
+				<th>qrCode</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -81,6 +79,7 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Email</th>
+				<th>qrCode</th>
                 <th>Actions</th>
             </tr>
         </tfoot>
@@ -111,6 +110,7 @@
 //              "ajax": '/competitors.json',
               "ajax": '/player',
               "rowId": 'id',
+			  "rowQr": { "data": "qrCode" },
               "pageLength": 100,
               "paging":   false,
               "order": [[ 0, "desc" ]],
@@ -118,6 +118,11 @@
                   { "data": "id" },
                   { "data": "name" },
                   { "data": "email" },
+				  {
+                      mRender: function (data, type, row) {
+                          return '<a href=showqr.html?qr=' + encodeURIComponent(row['qrCode']) + '>' + String(row['qrCode']) + '</a>';
+                      }
+                  },
                   /* EDIT */ {
                       mRender: function (data, type, row) {
                           return '<button class="edit_row_button" data-id="' + row['id'] + '">Edit</button> <button class="delete_row_button"  data-id="' + row['id'] + '">Delete</button>';
@@ -135,7 +140,8 @@
                       console.log("Entering edit mode for row " + id)
                       var $name_cell = $(row).find("td:nth-child(2)");
                       var $email_cell = $(row).find("td:nth-child(3)");
-                      var $action_cell = $(row).find("td:nth-child(4)");
+					  var $qrcode_cell = $(row).find("td:nth-child(4)");
+                      var $action_cell = $(row).find("td:nth-child(5)");
                       var name_old_value = $name_cell.text();
                       var email_old_value = $email_cell.text();
                       $name_cell.empty().append($("<input id='edit_name_field' type='text' value='"+name_old_value+"'/>"));
@@ -169,11 +175,9 @@
                       type: 'DELETE', 
                       url: '/player/' + id,
                       dataType: 'script' 
-                    }).done(function( data ) {
-                      console.log( "Player "+ id + " deleted");
-                      table.row($(row)).remove();
-                    table.draw(false);
-                    });
+                    }).always(function (data) {
+						table.ajax.reload();
+					});
                   });
                }
           } );
@@ -187,7 +191,7 @@
             console.log( "Adding player: " + $form.serialize());
             $.post( "/player", {name: $('#add_name_field').val(), email: $('#add_email_field').val()})
               .done(function( data ) {
-                console.log( "Player added: " + data );
+                console.log( "Player added: " + JSON.stringify(data) );
                 $('#add_name_field').val('');
                 $('#add_email_field').val('');
 

@@ -25,10 +25,10 @@ switch( currentPhase ){
 				alarm_set( nextWaveAlarmIndex, 1 * room_speed );
 				
 				// Useful for debugging, comment out the for loop below to have full 
-				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.ONE, instance_find( obj_spawn_team_one, 1), SoldierType.BASIC ) );
-				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.ONE, instance_find( obj_spawn_team_one, 1), SoldierType.BASIC ) );
-				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.ONE, instance_find( obj_spawn_team_one, 1), SoldierType.BASIC ) );
-				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.ONE, instance_find( obj_spawn_team_one, 1), SoldierType.BASIC ) );
+				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.ONE, instance_find( obj_spawn_team_one, 1), SoldierType.ELITE ) );
+				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.ONE, instance_find( obj_spawn_team_one, 1), SoldierType.ELITE ) );
+				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.TWO, instance_find( obj_spawn_team_two, 1), SoldierType.ELITE ) );
+				//ds_list_add( nextWaveTasks, scr_create_spawn_task( TeamId.TWO, instance_find( obj_spawn_team_two, 1), SoldierType.ELITE ) );
 	
 				trace( "Preparing spawn tasks for wave", nextWave );
 				// For both teams, create equal spawn tasks, values are from TeamId enum

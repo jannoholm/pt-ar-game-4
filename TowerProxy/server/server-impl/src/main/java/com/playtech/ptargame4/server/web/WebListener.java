@@ -415,6 +415,12 @@ public final class WebListener {
     private void createUserRequest( HttpExchange httpExchange ) {
         try {
             Map<String, String> params = parsePostParameters(httpExchange);
+            String id = params.get("id");
+            if (id != null && !id.isEmpty()) {
+                updateUserRequest(httpExchange, id, params);
+                return;
+            }
+
             String name = params.get("name");
             String email = params.get("email");
             if (name != null) name = name.trim().toUpperCase();
@@ -443,7 +449,18 @@ public final class WebListener {
     private void updateUserRequest( HttpExchange httpExchange, String idString ) {
         try {
             Map<String, String> params = parsePostParameters(httpExchange);
+            updateUserRequest(httpExchange, idString, params);
+        } catch (HTTPException e) {
+            logger.log(Level.INFO, "Invalid request", e);
+            writeResponse(httpExchange, e.getStatusCode());
+        } catch (Exception e) {
+            logger.log(Level.INFO, "Invalid request", e);
+            writeResponse(httpExchange, HttpURLConnection.HTTP_BAD_REQUEST);
+        }
+    }
 
+    private void updateUserRequest( HttpExchange httpExchange, String idString, Map<String, String> params ) {
+        try {
             // get user
             int id = Integer.valueOf(idString);
             User user = databaseAccess.getUserDatabase().getUser(id);

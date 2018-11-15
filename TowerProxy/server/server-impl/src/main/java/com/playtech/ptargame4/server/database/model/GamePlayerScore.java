@@ -91,4 +91,24 @@ public class GamePlayerScore {
     public int getLeaderboardPos() {
         return leaderboardPos;
     }
+
+    @Override
+    public String toString() {
+        return "GamePlayerScore{" +
+                "userId=" + userId +
+                ", team=" + team +
+                ", towerHealth=" + towerHealth +
+                ", bridgesBuilt=" + bridgesBuilt +
+                ", bridgesBuiltPoints=" + bridgesBuiltPoints +
+                ", bridgesDestroyed=" + bridgesDestroyed +
+                ", bridgesDestroyedPoints=" + bridgesDestroyedPoints +
+                ", bridgeSoldierSaves=" + bridgeSoldierSaves +
+                ", bridgeSoldierDeaths=" + bridgeSoldierDeaths +
+                ", bridgeSoldierEnemySaves=" + bridgeSoldierEnemySaves +
+                ", bridgeSoldierEnemyKills=" + bridgeSoldierEnemyKills +
+                ", score=" + score +
+                ", eloRating=" + eloRating +
+                ", leaderboardPos=" + leaderboardPos +
+                '}';
+    }
 }

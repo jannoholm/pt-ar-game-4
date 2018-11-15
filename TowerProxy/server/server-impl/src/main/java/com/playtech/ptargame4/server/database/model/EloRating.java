@@ -48,4 +48,17 @@ public class EloRating {
     public int getWins() {
         return wins;
     }
+
+    @Override
+    public String toString() {
+        return "EloRating{" +
+                "userId=" + userId +
+                ", eloRating=" + eloRating +
+                ", matches=" + matches +
+                ", towerHealth=" + towerHealth +
+                ", enemyTowerHealth=" + enemyTowerHealth +
+                ", totalScore=" + totalScore +
+                ", wins=" + wins +
+                '}';
+    }
 }

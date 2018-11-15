@@ -15,6 +15,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ConfigurationImpl implements Configuration {
 
@@ -93,36 +95,20 @@ public class ConfigurationImpl implements Configuration {
 
     private Map<String, ActionToken> readActionTokens(Properties newConf) {
         Map<String, ActionToken> newTokens = new HashMap<>();
-        loop:
-        for (int i = 0; ;++i) {
-            String indexStr = newConf.getProperty("token." + i + ".index");
-            ActionToken actionToken;
-            if (indexStr == null) {
-                switch (i) {
-                    case 0:
-                        actionToken = new ActionToken(String.valueOf(i), ActionToken.TokenType.BRIDGE, (byte)0, GameRegistryGame.Team.RED);
-                        break;
-                    case 1:
-                        actionToken = new ActionToken(String.valueOf(i), ActionToken.TokenType.BRIDGE, (byte)1, GameRegistryGame.Team.RED);
-                        break;
-                    case 2:
-                        actionToken = new ActionToken(String.valueOf(i), ActionToken.TokenType.BRIDGE, (byte)0, GameRegistryGame.Team.BLUE);
-                        break;
-                    case 3:
-                        actionToken = new ActionToken(String.valueOf(i), ActionToken.TokenType.BRIDGE, (byte)1, GameRegistryGame.Team.BLUE);
-                        break;
-                    default:
-                        break loop;
-                }
-            } else {
-                int index = Integer.parseInt(indexStr);
-                GameRegistryGame.Team team = GameRegistryGame.Team.valueOf(newConf.getProperty("token." + i + ".team"));
-                ActionToken.TokenType tokenType = ActionToken.TokenType.getTokenType(newConf.getProperty("token." + i + ".type"));
-                actionToken = new ActionToken(String.valueOf(i), tokenType, (byte)index, team);
-            }
 
-            newTokens.put(actionToken.getQrCode(), actionToken);
+        Pattern p = Pattern.compile("token.(\\d+).index");
+        for (String key : newConf.stringPropertyNames()) {
+            Matcher m = p.matcher(key);
+            if (m.matches()) {
+                int position = Integer.parseInt(m.group(1));
+                String indexStr = newConf.getProperty(key);
+                GameRegistryGame.Team team = GameRegistryGame.Team.valueOf(newConf.getProperty("token." + position + ".team"));
+                ActionToken.TokenType tokenType = ActionToken.TokenType.getTokenType(newConf.getProperty("token." + position + ".type"));
+                ActionToken actionToken = new ActionToken(String.valueOf(position), tokenType, (byte)Integer.parseInt(indexStr), team);
+                newTokens.put(actionToken.getQrCode(), actionToken);
+            }
         }
+
         return newTokens;
     }
 

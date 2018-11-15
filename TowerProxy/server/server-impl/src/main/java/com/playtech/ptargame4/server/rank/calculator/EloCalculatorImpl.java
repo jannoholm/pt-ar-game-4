@@ -51,7 +51,7 @@ public class EloCalculatorImpl implements ScoreCalculator {
 
 		List<Double> s = calculateS(gameResult);
 
-		long newTeam1Elo = (long) Math.round(team1Elo + K * (s.get(0) - team1E));
+		long newTeam1Elo = Math.round(team1Elo + K * (s.get(0) - team1E));
 
 		int team1Diff = (int) Math.round(newTeam1Elo - team1Elo);
 		int team2Diff = team1Diff * -1;

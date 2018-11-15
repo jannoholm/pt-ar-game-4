@@ -37,11 +37,14 @@ public class GameResultStoreLogic extends AbstractLogic {
 		ArrayList<Holder> allScores = new ArrayList<>();
 		for (GameResultPlayerActivity requestPlayer : request.getPlayerResults()) {
 			Map<ScoreCriteria, Integer> scoreMap = new HashMap<>();
-			// TODO: Update to tower attack, random examples here
 			scoreMap.put(ScoreCriteria.TOWER_HEALTH, requestPlayer.getTowerHealth());
 			scoreMap.put(ScoreCriteria.BRIDGES_BUILT, requestPlayer.getBridgesBuilt());
 			scoreMap.put(ScoreCriteria.BRIDGES_DESTROYED, requestPlayer.getBridgesDestroyed());
 			scoreMap.put(ScoreCriteria.BRIDGE_SOLDIER_ENEMY_KILLS, requestPlayer.getBridgeSoldierEnemyKills());
+			scoreMap.put(ScoreCriteria.BRIDGE_SOLDIER_SAVES, requestPlayer.getBridgeSoldierSaves());
+			scoreMap.put(ScoreCriteria.BRIDGE_SOLDIER_DEATH, requestPlayer.getBridgeSoldierDeaths());
+			scoreMap.put(ScoreCriteria.BRIDGE_SOLDIER_ENEMY_SAVES, requestPlayer.getBridgeSoldierEnemySaves());
+
 
 			EloRating rating = getLogicResources().getDatabaseAccess().getRatingDatabase()
 					.getRating(requestPlayer.getUserId());
