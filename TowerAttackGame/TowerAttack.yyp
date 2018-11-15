@@ -90,7 +90,7 @@
             "Key": "085b235b-a95d-44df-9cc7-9c73beedbb16",
             "Value": {
                 "id": "e36c238d-5895-4aec-abfe-ca9d24a037fe",
-                "resourcePath": "fonts\\fnt_game_result\\fnt_game_result.yy",
+                "resourcePath": "fonts\\fnt_basic_font\\fnt_basic_font.yy",
                 "resourceType": "GMFont"
             }
         },
@@ -1668,6 +1668,14 @@
                 "id": "cfe0470d-9be0-4ebd-b4dd-13dadc1ef45b",
                 "resourcePath": "objects\\obj_lobby\\obj_lobby.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "e5b2939d-d7d8-4ca5-a5a5-1a68caebecc9",
+            "Value": {
+                "id": "f08bf1a3-fcb0-4459-adeb-4c70bf0bcfba",
+                "resourcePath": "fonts\\fnt_game_result_data\\fnt_game_result_data.yy",
+                "resourceType": "GMFont"
             }
         },
         {

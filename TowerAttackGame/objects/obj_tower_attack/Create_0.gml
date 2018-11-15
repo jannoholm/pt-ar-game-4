@@ -10,6 +10,7 @@ enum MainPhase {
 	GAME, // Game in progress
 	GAME_END, // Clean-up game elements, send result
 	GAME_RESULT, // Show leaderboard and init lobby
+	WAIT_SERVER_SCORE, // Wait for server game result with new ELO ratings
 	DEMO // Demo
 }
 
@@ -23,6 +24,7 @@ ds_list_add(phases,
 	"GAME", 
 	"GAME_END", 
 	"GAME_RESULT",
+	"WAIT_SERVER_SCORE",
 	"DEMO"
 )
 
