@@ -4,6 +4,7 @@ public class RegisteredUser {
     private int position;
     private String name;
     private String email;
+    private String qrCode;
 
     public RegisteredUser() {
     }
@@ -38,12 +39,21 @@ public class RegisteredUser {
         this.position = position;
     }
 
+    public String getQrCode() {
+        return qrCode;
+    }
+
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode;
+    }
+
     @Override
     public String toString() {
         return "RegisteredUser{" +
                 "position=" + position +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
+                ", qrCode='" + qrCode + '\'' +
                 '}';
     }
 }

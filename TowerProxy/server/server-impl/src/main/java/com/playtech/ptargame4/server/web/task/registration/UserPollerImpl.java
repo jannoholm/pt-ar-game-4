@@ -76,7 +76,7 @@ public class UserPollerImpl implements UserPoller {
             if (urlString.equalsIgnoreCase("disable")) {
                 return Collections.emptyList();
             }
-            URL url = new URL(urlString + "/" + latestPosition);
+            URL url = new URL(urlString + "&pos=" + latestPosition);
             logger.info("Poll user: " + urlString);
             con = (HttpURLConnection) url.openConnection();
             con.setDoOutput(false);
@@ -127,7 +127,8 @@ public class UserPollerImpl implements UserPoller {
             }
 
             // insert new user
-            databaseAccess.getUserDatabase().addUser(user.getName(), user.getEmail(), User.UserType.REGULAR, QrGenerator.generateQr());
+            String qrCode = user.getQrCode() != null && user.getQrCode().trim().length() > 6 ? user.getQrCode().trim() : QrGenerator.generateQr();
+            databaseAccess.getUserDatabase().addUser(user.getName(), user.getEmail(), User.UserType.REGULAR, qrCode);
             updatePosition(user);
         }
     }

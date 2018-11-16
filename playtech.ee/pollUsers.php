@@ -8,6 +8,12 @@ if (!(isset($_GET["secret"]) && $_GET["secret"] === "-P-HH/g)9\t};[H]p#V<[cWmAb(
 	die();
 }
 
+// position
+$position = 0;
+if (isset($_GET["pos"])) {
+	$position = $_GET["pos"];
+}
+
 // make sure the file exists
 if (!file_exists($people_file)) {
 	file_put_contents($people_file, "", LOCK_EX);
@@ -17,13 +23,18 @@ if (!file_exists($people_file)) {
 $fp = fopen($people_file, "r");
 if (flock($fp, LOCK_EX)) {
 	
-	// read file contents
-	if (filesize($people_file) > 0) {
-		$people_json = fread($fp,filesize($people_file));
-		$people_obj = json_decode($people_json);
-	} else {
-		$people_obj = array();
-	}
+	$line_nr=0;
+	$people_obj = array();
+	while (($line = fgets($fp)) !== false) {
+		$line_nr++;
+		if ($line_nr <= $position) {
+			continue;
+		}
+        // process the line read.
+		$user = json_decode($line);
+		$user->position=$line_nr;
+		array_push($people_obj, $user);
+    }
 
 	// flush and close
     fflush($fp);            // flush output before releasing the lock
@@ -32,6 +43,9 @@ if (flock($fp, LOCK_EX)) {
     echo "Couldn't get the lock!";
 }
 fclose($fp);
+
+// filter by position
+
 
 // write json response
 header('Content-Type: application/json');
