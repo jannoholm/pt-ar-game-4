@@ -28,4 +28,10 @@ if (flock($fp, LOCK_EX)) {
     echo "Couldn't get the lock!";
 }
 fclose($fp);
+
+// set cookie
+setcookie("towerAttack", $user->qrCode, time() + (86400 * 30), "/"); // 86400 = 1 day
+
+echo json_encode($user);	
+
 ?>

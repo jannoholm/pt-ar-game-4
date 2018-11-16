@@ -1,10 +1,20 @@
 <?php
 
 // file of registered people
-$people_file = 'users.txt';
+$users_file = 'users.txt';
+
+// secret file to not expose publicly
+$secret_file = 'secret.txt';
 
 // check if authorized thing is polling
-if (!(isset($_GET["secret"]) && $_GET["secret"] === "-P-HH/g)9\t};[H]p#V<[cWmAb(>@$+RsM4y#UCJ(")) {
+if (!isset($_GET["secret"])) {
+	die();
+} else if (file_exists($secret_file)) {
+	$secret = file_get_contents($secret_file);
+	if (!($_GET["secret"] === urldecode($secret))) {
+		die();
+	}
+} else if (!($_GET["secret"] === "-P-HH/g)9\t};[H]p#V<[cWmAb(>@$+RsM4y#UCJ(")) {
 	die();
 }
 
@@ -14,13 +24,13 @@ if (isset($_GET["pos"])) {
 	$position = $_GET["pos"];
 }
 
-// make sure the file exists
-if (!file_exists($people_file)) {
-	file_put_contents($people_file, "", LOCK_EX);
+// make sure the users file exists
+if (!file_exists($users_file)) {
+	file_put_contents($users_file, "", LOCK_EX);
 }
 
 // open file with exclusive lock
-$fp = fopen($people_file, "r");
+$fp = fopen($users_file, "r");
 if (flock($fp, LOCK_EX)) {
 	
 	$line_nr=0;

@@ -1,0 +1,182 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Soccar Leaderboard</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css" crossorigin="anonymous">
+
+    <style type="text/css">
+      body {
+        padding-top: 5rem;
+        /* color: #fff; */
+      }
+      .starter-template {
+        padding: 3rem 1.5rem;
+        text-align: center;
+      }
+      
+        .bg { 
+            /* The image used */
+            background-image: url("backgroundPT.jpg");
+        
+            /* Full height */
+            height: 100%; 
+        
+	
+            /* Center and scale the image nicely */
+			background-color: #09060F;
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+			background-position: center;
+			background-size: contain;
+            opacity: .8;
+        }
+
+    </style>
+
+  </head>
+
+  <body class="bg">
+    <form id="my_qr_form">
+		<div class="mb-2 mt-sc-2" style="text-align: center;">
+			<button id="personal_action" type="submit" class="btn btn-primary ">My QR Code</button>
+		</div>
+	</form>
+    <main role="main" class="container">
+      <div class="">
+        <table id="leaderboard_table" class="table table-striped table-bordered table-dark" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Player rating</th>
+                <th>Win %</th>
+                <th>Goals per game</th>
+                <th>Shot hits per game</th>
+                <th>Matches played</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Player rating</th>
+                <th>Win %</th>
+                <th>Goals per game</th>
+                <th>Shot hits per game</th>
+                <th>Matches played</th>
+            </tr>
+        </tfoot>
+        </table>
+      </div>
+    </main><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" ></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js" ></script>
+
+
+    <script>
+    
+		function getCookie(cname) {
+			var name = cname + "=";
+			var decodedCookie = decodeURIComponent(document.cookie);
+			var ca = decodedCookie.split(';');
+			for(var i = 0; i <ca.length; i++) {
+				var c = ca[i];
+				while (c.charAt(0) == ' ') {
+					c = c.substring(1);
+				}
+				if (c.indexOf(name) == 0) {
+					return c.substring(name.length, c.length);
+				}
+			}
+			return "";
+		}
+
+   	  var editor; // use a global for the submit and return data rendering in the examples    
+    
+      $(document).ready(function() {
+        
+        var leaderboard = $('#leaderboard_table').DataTable( {
+//          "ajax": '/leaderboard.json',
+          "ajax": 'getLeaderboard.php',
+          "rowId": 'id',
+          "pageLength": 100,
+          "paging":   false,
+          "info":     false,
+          "searching": false,
+          "order": [[ 2, "desc" ]],
+          "columnDefs": [ {
+              "searchable": false,
+              "orderable": false,
+              "targets": 1
+          } ],
+          "columns": [
+              { "data": "name" },
+              { "data": "position" },
+              { "data": "eloRating" },
+             { mRender: function(data, type, row){
+                  return Math.round(row.wins / row.matches * 10000) / 100 + " %" ;
+                }
+              },
+              { mRender: function(data, type, row){
+                  return Math.round(row.goals / row.matches * 100) / 100;
+                }
+              },
+              { mRender: function(data, type, row){
+                  return Math.round(row.bulletHits / row.matches * 100) / 100;
+                }
+              },
+              { "data": "matches" },
+            ],
+           });
+		   
+	   $( "#my_qr_form" ).submit(function( event ) {
+			// Stop form from submitting normally
+			event.preventDefault();
+			
+		    var cookie=getCookie("towerAttack");
+			if (cookie.length > 5) {
+				window.location.href = "showqr.html?qr=" + cookie;
+			} else {
+				window.location.href = "signup.html";
+			}          
+		  });
+
+          leaderboard.on( 'order.dt search.dt', function () {
+              leaderboard.column(1, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                  cell.innerHTML = i+1;
+              } );
+          } ).draw();      
+      
+          setInterval( function () {
+            leaderboard.ajax.reload( null, false ); // user paging is not reset on reload
+          }, 3000 );
+		  
+		  //document.getElementById("personal_action").value= "Hide Filter";
+		  //$('#personal_action').value="Test";
+
+      } );     
+      
+    </script>
+
+    
+  </body>
+</html>

@@ -150,13 +150,9 @@
             $.post( "player.php", {name: $('#add_name_field').val(), email: $('#add_email_field').val()})
               .done(function( data ) {
                 console.log( "Player added: " + data );
-                $('#add_name_field').val('');
-                $('#add_email_field').val('');
-                
-                $(".alert").show();
-                setTimeout(function(){
-                  $(".alert").hide('fade');
-                }, 2000);
+				var result = JSON.parse(data);
+				console.log( "QR should be: " + result.qrCode );
+                window.location.replace("showqr.html?qr=" + result.qrCode);
               });            
           });
         

@@ -56,6 +56,7 @@ public class LeaderboardPusherImpl implements LeaderboardPusher {
             con = (HttpURLConnection) url.openConnection();
             con.setDoOutput(true);
             OutputStream out = con.getOutputStream();
+            out.write("data=".getBytes());
             out.write(new ResponseWrapper(leaderboard).toBytes());
             out.close();
             int responseCode = con.getResponseCode();
