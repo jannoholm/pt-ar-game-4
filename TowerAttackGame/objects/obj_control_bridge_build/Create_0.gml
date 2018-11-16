@@ -4,4 +4,5 @@
 // Inherit the parent event
 event_inherited();
 
-team = obj_game.teamOne;
+bridgeControlType = BridgeControlType.BUILD;
+
