@@ -60,9 +60,9 @@
                 <th>Position</th>
                 <th>Player rating</th>
                 <th>Win %</th>
-                <th>Goals per game</th>
-                <th>Shot hits per game</th>
-                <th>Matches played</th>
+                <th>Tower health (avg)</th>
+                <th>Total score</th>
+                <th>Games played</th>
             </tr>
         </thead>
         <tfoot>
@@ -71,9 +71,9 @@
                 <th>Position</th>
                 <th>Player rating</th>
                 <th>Win %</th>
-                <th>Goals per game</th>
-                <th>Shot hits per game</th>
-                <th>Matches played</th>
+                <th>Tower health (avg)</th>
+                <th>Total score</th>
+                <th>Games played</th>
             </tr>
         </tfoot>
         </table>
@@ -137,13 +137,10 @@
                 }
               },
               { mRender: function(data, type, row){
-                  return Math.round(row.goals / row.matches * 100) / 100;
+                  return Math.round(row.towerHealth / row.matches * 100) / 100;
                 }
               },
-              { mRender: function(data, type, row){
-                  return Math.round(row.bulletHits / row.matches * 100) / 100;
-                }
-              },
+              { "data": "totalScore" },
               { "data": "matches" },
             ],
            });
