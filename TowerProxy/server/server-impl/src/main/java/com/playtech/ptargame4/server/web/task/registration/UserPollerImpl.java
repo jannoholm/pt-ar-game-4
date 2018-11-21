@@ -55,6 +55,7 @@ public class UserPollerImpl implements UserPoller {
                     logger.log(Level.INFO, "User poller failed.", e);
                 }
             }, 1000, 5023, TimeUnit.MILLISECONDS);
+            logger.info("User poller set up with 1s interval.");
         } else {
             throw new IllegalStateException("Already started callback handler.");
         }
@@ -77,13 +78,12 @@ public class UserPollerImpl implements UserPoller {
                 return Collections.emptyList();
             }
             URL url = new URL(urlString + "&pos=" + latestPosition);
-            logger.info("Poll user: " + urlString);
             con = (HttpURLConnection) url.openConnection();
             con.setDoOutput(false);
             int responseCode = con.getResponseCode();
             if ( responseCode == 200 ) {
                 List<RegisteredUser> result = readJson(new BufferedInputStream(con.getInputStream()));
-                logger.info("Result code: " + responseCode + ", data=" + result);
+                logger.fine("User poll result: " + responseCode + ", data=" + result);
                 return result;
             } else {
                 throw new IOException( "Invalid response code from server: " + responseCode );

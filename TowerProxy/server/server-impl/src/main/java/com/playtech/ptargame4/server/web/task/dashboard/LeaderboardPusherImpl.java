@@ -40,6 +40,7 @@ public class LeaderboardPusherImpl implements LeaderboardPusher {
                     logger.log(Level.INFO, "Leaderboard pusher failed.", e);
                 }
             }, 1000, 10028, TimeUnit.MILLISECONDS);
+            logger.info("Leaderboard pusher set up with 10s interval.");
         } else {
             throw new IllegalStateException("Already started callback handler.");
         }
@@ -61,7 +62,7 @@ public class LeaderboardPusherImpl implements LeaderboardPusher {
             out.close();
             int responseCode = con.getResponseCode();
             if ( responseCode == 200 ) {
-                logger.info("Leaderboard update pushed.");
+                logger.fine("Leaderboard update pushed.");
             } else {
                 throw new IOException( "Unable to push leaderboard: " + responseCode );
             }
