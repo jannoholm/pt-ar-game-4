@@ -60,6 +60,10 @@ class FieldCanvas (Frame):
     def motion(self, event):
         self.canvas.coords(self.selected_object.object, self.selected_object.calculate_new_loc(event.x, event.y))
 
+        data = json.dumps(self.get_normalized_coordinates(NORM_WIDTH, NORM_HEIGHT))
+        if self.send_messages:
+            self.sender.send(data)
+
     def get_object_coordinates(self):
         res = {}
         for rect in self.rectangles:
@@ -138,11 +142,16 @@ class TcpSender:
 
     def connect(self):
         self.log.info('Connecting to: %s:%s', self.ip, self.port)
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect((self.ip, self.port))
 
     def send(self, message):
         self.log.info('Sending: %s', message)
-        self.socket.send(message.encode('utf-8'))
+        try:
+            self.socket.send(message.encode('utf-8'))
+        except:
+            self.disconnect()
+            self.connect()
 
     def read(self):
         resp = self.socket.recv(self.buffer)

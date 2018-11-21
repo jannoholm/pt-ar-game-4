@@ -3,13 +3,19 @@ import collections
 import socket
 import json
 import requests
+import numpy as np
+import threading
+
+import traceback
 
 import logging
 
-MAX_MESSAGE_LENGTH = 1024
+MAX_MESSAGE_LENGTH = 8000
 PORT = 1337
 
-POST_URL = "http://localhost:8101/control/position"
+POST_URL = "http://10.67.94.251:8101/control/position"
+
+AVG_SAMPLES = 5
 
 
 class RemoteClient(asyncore.dispatcher):
@@ -39,14 +45,16 @@ class Server(asyncore.dispatcher):
 
     log = logging.getLogger('Host')
 
-    def __init__(self, address=('localhost', PORT)):
+    def __init__(self, address=('localhost', PORT), func=None):
+        self.log.info("Init async server")
         asyncore.dispatcher.__init__(self)
         self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
         self.bind(address)
-        self.listen(1)
+        self.listen(5)
         self.remote_clients = []
-
         self.current_state = {}
+        self.marker_buffer = {}
+        self.send_thread = None
 
     def handle_accept(self):
         socket, addr = self.accept()
@@ -57,7 +65,7 @@ class Server(asyncore.dispatcher):
         self.log.info('Received message: %s', self.read())
 
     def broadcast(self, message):
-        self.log.info('Broadcasting message: %s', message)
+        self.log.debug('Broadcasting message: %s', message)
         for remote_client in self.remote_clients:
             if len(message) > 0:
                 try:
@@ -66,15 +74,42 @@ class Server(asyncore.dispatcher):
                     self.log.debug('Current state: %s', self.current_state)
 
                     diff_resp = self.calculate_diff(loaded_response)
-                    self.log.info('Sending: %s', diff_resp)
 
-                    self.post_date(diff_resp)
-
+                    self.append_buffer(diff_resp)
                     self.current_state.update(loaded_response)
                 except:
+                    tb = traceback.format_exc()
+                    print(tb)
                     pass
             else:
                 self.remote_clients.remove(remote_client)
+
+    def send_average_and_clear(self):
+        avg = self.average_list(self.marker_buffer)
+        self.log.info("Autosending: %s", avg)
+        if avg:
+            self.clear_buffer()
+            self.post_date(avg)
+
+    @staticmethod
+    def average_list(samples):
+        res = {}
+        for key, value in samples.items():
+            res[key] = np.mean(np.array(value), axis=0).astype(int).tolist()
+        return res
+
+    def append_buffer(self, results):
+        for key, value in results.items():
+            new_list = self.marker_buffer.get(key, [])
+            if len(new_list) < AVG_SAMPLES:
+                new_list.append(value)
+            else:
+                new_list.insert(0, value)
+                new_list.pop()
+            self.marker_buffer[key] = new_list
+
+    def clear_buffer(self):
+        self.marker_buffer = {}
 
     def calculate_diff(self, messages):
         output = {}
@@ -116,8 +151,15 @@ class Server(asyncore.dispatcher):
         return out
         #return "qrCode={}&x={}&y={}".format(key, , )
 
+
 logging.basicConfig(level=logging.INFO)
 logging.info('Creating server')
 host = Server()
+
+def thread():
+    host.send_average_and_clear()
+    threading.Timer(0.2, thread).start()
+thread()
+
 logging.info('Looping')
 asyncore.loop()
