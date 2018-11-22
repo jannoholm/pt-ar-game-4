@@ -55,6 +55,8 @@ public class LeaderboardPusherImpl implements LeaderboardPusher {
             }
             URL url = new URL(urlString);
             con = (HttpURLConnection) url.openConnection();
+            con.setConnectTimeout(5000);
+            con.setReadTimeout(5000);
             con.setDoOutput(true);
             OutputStream out = con.getOutputStream();
             out.write("data=".getBytes());

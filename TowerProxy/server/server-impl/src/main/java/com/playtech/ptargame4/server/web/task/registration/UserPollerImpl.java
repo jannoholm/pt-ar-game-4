@@ -79,6 +79,8 @@ public class UserPollerImpl implements UserPoller {
             }
             URL url = new URL(urlString + "&pos=" + latestPosition);
             con = (HttpURLConnection) url.openConnection();
+            con.setConnectTimeout(5000);
+            con.setReadTimeout(5000);
             con.setDoOutput(false);
             int responseCode = con.getResponseCode();
             if ( responseCode == 200 ) {

@@ -8,6 +8,6 @@ if (file_exists($leaderboard_file)) {
 if (strlen($result) > 20) {
 	echo $result;
 } else {
-	echo "{\"data\":[{\"name\":\"empty\",\"position\":\"0\",\"eloRating\":\"0\",\"matches\":\"1\",\"wins\":\"0\",\"goals\":\"0\",\"bulletHits\":\"0\"}]}";
+	echo "{\"data\":[{\"name\":\"\",\"position\":\"\",\"eloRating\":\"\",\"matches\":\"1\",\"wins\":\"0\",\"towerHealth\":\"0\",\"enemyTowerHealth\":\"0\",\"totalScore\":\"0\"}]}";
 }
 ?>
