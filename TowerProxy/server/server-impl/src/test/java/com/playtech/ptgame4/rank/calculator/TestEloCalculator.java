@@ -52,7 +52,7 @@ public class TestEloCalculator {
 	// assertTrue(calculator.getTeamRating(team1) == 1000);
 	// }
 
-	@Test
+	/*@Test
 	public void TestCalculatorWinLose() {
 		calculator.calculatePlayerPoints(team1, team2);
 		assertTrue(calculator.getTeamRating(team1) == 1008);
@@ -88,7 +88,7 @@ public class TestEloCalculator {
 		assertTrue(calculator.getTeamRating(team1) > calculator.getTeamRating(team2));
 		assertTrue(calculator.getTeamRating(team1) + calculator.getTeamRating(team2) == 2000);
 
-	}
+	}*/
 
 	// @Test
 	// public void TestCalculatorDraw() {
