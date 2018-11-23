@@ -13,9 +13,9 @@ import logging
 MAX_MESSAGE_LENGTH = 8000
 PORT = 1337
 
-POST_URL = "http://10.67.94.251:8101/control/position"
+POST_URL = "http://10.67.94.159:8101/control/position"
 
-AVG_SAMPLES = 5
+AVG_SAMPLES = 10
 
 
 class RemoteClient(asyncore.dispatcher):
@@ -39,6 +39,9 @@ class RemoteClient(asyncore.dispatcher):
         if len(message) > MAX_MESSAGE_LENGTH:
             raise ValueError('Message too long')
         self.send(message)
+
+    def writable(self):
+        return False
 
 
 class Server(asyncore.dispatcher):
@@ -69,14 +72,21 @@ class Server(asyncore.dispatcher):
         for remote_client in self.remote_clients:
             if len(message) > 0:
                 try:
-                    loaded_response = json.loads(message.decode('utf-8'))
-                    self.log.debug('Received message : %s', loaded_response)
-                    self.log.debug('Current state: %s', self.current_state)
+                    split_char = '}'
+                    res = message.decode('utf-8')
+                    split_res = [e + split_char for e in res.split(split_char) if e]
 
-                    diff_resp = self.calculate_diff(loaded_response)
+                    for el in split_res:
+                        try:
+                            loaded_response = json.loads(el)
+                            self.log.debug('Received message : %s', loaded_response)
+                            self.log.debug('Current state: %s', self.current_state)
+                            diff_resp = self.calculate_diff(loaded_response)
 
-                    self.append_buffer(diff_resp)
-                    self.current_state.update(loaded_response)
+                            self.append_buffer(diff_resp)
+                            self.current_state.update(loaded_response)
+                        except:
+                            self.log.debug("Failed to parse element: %s", el)
                 except:
                     tb = traceback.format_exc()
                     print(tb)
@@ -88,8 +98,9 @@ class Server(asyncore.dispatcher):
         avg = self.average_list(self.marker_buffer)
         self.log.info("Autosending: %s", avg)
         if avg:
-            self.clear_buffer()
-            self.post_date(avg)
+            #self.clear_buffer()
+            #self.post_date(avg)
+            pass
 
     @staticmethod
     def average_list(samples):
@@ -152,14 +163,14 @@ class Server(asyncore.dispatcher):
         #return "qrCode={}&x={}&y={}".format(key, , )
 
 
-logging.basicConfig(level=logging.INFO)
-logging.info('Creating server')
-host = Server()
-
 def thread():
     host.send_average_and_clear()
     threading.Timer(0.2, thread).start()
-thread()
 
+
+logging.basicConfig(level=logging.INFO)
+logging.info('Creating server')
+host = Server()
+thread()
 logging.info('Looping')
 asyncore.loop()
