@@ -191,6 +191,14 @@
             }
         },
         {
+            "Key": "19841871-6b6b-48dc-a9c2-84294a9dbec7",
+            "Value": {
+                "id": "ed8170ce-e9f5-41bd-9371-29f1279fe852",
+                "resourcePath": "sprites\\spr_control_destroy_bu\\spr_control_destroy_bu.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "1a7a9a3d-2ea3-402e-af8c-61a15d3827a5",
             "Value": {
                 "id": "2522b7fe-bc84-4a30-bfd7-645a4480d7c1",
@@ -226,7 +234,7 @@
             "Key": "1b66aec1-a03f-47a6-8c4b-0b304c36d01a",
             "Value": {
                 "id": "33296cc6-c511-4130-a836-0f3fff42953b",
-                "resourcePath": "objects\\obj_control_tavern_team_two\\obj_control_tavern_team_two.yy",
+                "resourcePath": "objects\\obj_control_tavern_stop\\obj_control_tavern_stop.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -727,6 +735,14 @@
             }
         },
         {
+            "Key": "60e34bf7-6ce0-459e-8574-3dea7b682577",
+            "Value": {
+                "id": "d52ae0d6-2455-49cc-abab-601322e0bac1",
+                "resourcePath": "sprites\\spr_brewery\\spr_brewery.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "61e20c09-54f5-4392-9575-0a2562a4d7c7",
             "Value": {
                 "id": "00ccc28a-f6fa-4a7d-b115-5510a5cbb92d",
@@ -770,7 +786,7 @@
             "Key": "65c0d9d4-8f5d-4e93-a71c-e77456e7d18f",
             "Value": {
                 "id": "74445043-73cf-4ee0-98c8-c15ad37b555a",
-                "resourcePath": "objects\\obj_control_tavern_team_one\\obj_control_tavern_team_one.yy",
+                "resourcePath": "objects\\obj_control_tavern_start\\obj_control_tavern_start.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -1263,6 +1279,14 @@
             }
         },
         {
+            "Key": "aad3b0f5-06b4-48e7-9b95-49130fd36875",
+            "Value": {
+                "id": "897929bc-d799-4fd5-aa9b-d2dab7a827b5",
+                "resourcePath": "sprites\\spr_control_build_bu\\spr_control_build_bu.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "ab51dad9-4451-49c8-9aaa-b274f90215b2",
             "Value": {
                 "id": "3371f479-35e5-41b5-a326-a19343eab049",
@@ -1356,6 +1380,14 @@
                 "id": "6e38d616-5c87-49e0-ba6b-844f0b012a68",
                 "resourcePath": "views\\bb7d97de-c9f2-47bc-ba78-66ee0cd198f1.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "bdabeafc-b2c8-4132-899b-53fa5a2143e7",
+            "Value": {
+                "id": "8efd13a5-09a2-45db-9238-ca769aefb430",
+                "resourcePath": "sprites\\spr_control_brewery_start\\spr_control_brewery_start.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1692,6 +1724,14 @@
                 "id": "f08bf1a3-fcb0-4459-adeb-4c70bf0bcfba",
                 "resourcePath": "fonts\\fnt_game_result_data\\fnt_game_result_data.yy",
                 "resourceType": "GMFont"
+            }
+        },
+        {
+            "Key": "e5bf5ad7-6fa6-4211-8d8f-b04030fc8fd1",
+            "Value": {
+                "id": "7f723f0a-8a8b-4ddf-b486-57c666ccd777",
+                "resourcePath": "sprites\\spr_control_brewery_stop\\spr_control_brewery_stop.yy",
+                "resourceType": "GMSprite"
             }
         },
         {

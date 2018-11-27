@@ -16,4 +16,6 @@ if( currentPhase == LobbyPhase.WAITING_PLAYERS ){
 	} else {
 		draw_text_transformed( room_width*0.80, 50, "Current player: " + playerTwoTop.playerName, 0.75, 0.75, 0 );
 	}
+
+	draw_set_font( -1 );
 }
