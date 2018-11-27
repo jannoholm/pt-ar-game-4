@@ -7,9 +7,9 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/qrcode.js"></script>
 </head>
-<body>
+<body onresize="makeRefresh()">
 
-<div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
+<div id="qrcode" style="width:100%; height:100%; margin-top:15px;"></div>
 
 <script type="text/javascript">
 var qrcode = new QRCode(document.getElementById("qrcode"), {
@@ -63,5 +63,10 @@ $("#text").
 			makeCode();
 		}
 	});
+
+function makeRefresh() {
+    window.location.replace("showqr.html?qr=" + getJsonFromUrl()["qr"]);
+}
 </script>
+
 </body>

@@ -167,8 +167,12 @@
             leaderboard.ajax.reload( null, false ); // user paging is not reset on reload
           }, 3000 );
 		  
-		  //document.getElementById("personal_action").value= "Hide Filter";
-		  //$('#personal_action').value="Test";
+		  var cookie=getCookie("towerAttack");
+		  if (cookie.length > 5) {
+			  document.getElementById("personal_action").innerHTML="Show My QR";
+		  } else {
+			  document.getElementById("personal_action").innerHTML="Register to Play";
+		  }
 
       } );     
       
