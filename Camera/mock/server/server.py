@@ -13,9 +13,12 @@ import logging
 MAX_MESSAGE_LENGTH = 8000
 PORT = 1337
 
-POST_URL = "http://10.67.94.159:8101/control/position"
+POSITION_POST_URL = "http://10.67.94.159:8101/control/position"
+QR_POST_URL = "http://10.67.94.159:8101/control/user"
 
 AVG_SAMPLES = 10
+
+id_side_map = {1: "1", 2: "1", 3: "2", 4: "2"}
 
 
 class RemoteClient(asyncore.dispatcher):
@@ -79,6 +82,12 @@ class Server(asyncore.dispatcher):
                     for el in split_res:
                         try:
                             loaded_response = json.loads(el)
+
+                            if "qr_data" in loaded_response:
+                                self.log.debug("QR CODE RECIEVED: %s", loaded_response)
+                                self.post_qr(loaded_response["qr_data"], id_side_map[loaded_response["camera_id"]])
+                                continue
+
                             self.log.debug('Received message : %s', loaded_response)
                             self.log.debug('Current state: %s', self.current_state)
                             diff_resp = self.calculate_diff(loaded_response)
@@ -137,15 +146,17 @@ class Server(asyncore.dispatcher):
         return output
 
     def post_date(self, data_map):
-        print()
-        data = {}
-        data["data"] = data_map
-
         for key, value in data_map.items():
             data_dump = self.data_to_url_encoded(key, value)
             self.log.info('POST DATA: %s', data_dump)
-            r = requests.post(url=POST_URL, data=data_dump)
+            r = requests.post(url=POSITION_POST_URL, data=data_dump)
             self.log.info('Response: %s', r.text)
+
+    def post_qr(self, qr_data, side):
+        data = {"qrCode": qr_data, "position": side}
+        self.log.info('POST DATA: %s', data)
+        r = requests.post(url=QR_POST_URL, data=data)
+        self.log.info('Response: %s', r.text)
 
     def data_to_json(self, key, data):
         out_data = {}
@@ -168,7 +179,7 @@ def thread():
     threading.Timer(0.2, thread).start()
 
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 logging.info('Creating server')
 host = Server()
 thread()

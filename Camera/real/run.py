@@ -32,19 +32,14 @@ def get_string(id, dst):
 
 parser = argparse.ArgumentParser(description='Run token detection via webcam')
 parser.add_argument('-c', '--camera', help='Camera index to use, usually starting from zero', required=True, type=int)
-parser.add_argument('-a', '--angle', help='Angle in degrees from top TV edge to camera mid axis', required=True,
-                    type=double)
-parser.add_argument('-x', '--boardX',
-                    help='Camera X location in mm compared to zero point of TV top left corner, top side is X axis going right',
-                    required=True, type=double)
-parser.add_argument('-y', '--boardY',
-                    help='Camera Y location in mm compared to zero point of TV top left corner, left side is Y axis going down',
-                    required=True, type=double)
+
 args = parser.parse_args()
 
 physical_c_angle = 0
 physical_c_x = 0
 physical_c_y = 0
+
+max_height = 20
 
 cam_id = args.camera
 
@@ -165,7 +160,6 @@ class Configuration:
         return self.config.get(group, field)
 
     def set_param(self, group, field, value):
-        print("log", value)
         self.config.set(group, field, value)
         with open(self.filename, 'w') as configfile:
             self.config.write(configfile)
@@ -241,6 +235,11 @@ qr_sample_rate = 10
 allowed_id = [0]
 
 while True:
+
+    physical_c_angle = np.radians(cv2.getTrackbarPos('ANGLE', 'frame'))
+    physical_c_x = cv2.getTrackbarPos('X', 'frame')
+    physical_c_y = cv2.getTrackbarPos('Y', 'frame')
+
     time.sleep(0.1)
     ret, frame = cap.read()
 
@@ -248,7 +247,9 @@ while True:
 
     if qr_count > qr_sample_rate:
         decode_data = decode(gray, symbols=[ZBarSymbol.QRCODE])
-        print(decode_data)
+        if decode_data:
+            qr_data = decode_data[0][0].decode("UTF-8")
+            sender.send(json.dumps({"qr_data": qr_data, "camera_id": cam_id}))
         qr_count = 0
 
     qr_count = qr_count + 1
@@ -268,15 +269,16 @@ while True:
 
             marker_corners = corners[corner]
             rvec, tvec, _ = aruco.estimatePoseSingleMarkers(marker_corners, 0.05, mtx, dist)
+
             if marker_id in sent_markers:
                 continue
+                
             dist_vec = tvec[0][0] * 0.562 * 1000
 
-            physical_c_angle = np.radians(cv2.getTrackbarPos('ANGLE', 'frame'))
-            physical_c_x = cv2.getTrackbarPos('X', 'frame') - 200
-            physical_c_y = cv2.getTrackbarPos('Y', 'frame') - 200
+            if dist_vec[1] > max_height:
+                continue
 
-            coordinates = remap_points(dist_vec[0], dist_vec[2], physical_c_x, physical_c_y, calibration[0],
+            coordinates = remap_points(dist_vec[0], dist_vec[2], physical_c_x - 200, physical_c_y - 200, calibration[0],
                                        calibration[1], physical_c_angle)
             # 1440 x 800 mm is the monitor, normalize to 10k
             sender.send(json.dumps(
@@ -292,7 +294,7 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-conf.set_param("PARAMS", "angle", int(physical_c_angle))
+conf.set_param("PARAMS", "angle", int(np.degrees(physical_c_angle)))
 conf.set_param("PARAMS", "x", int(physical_c_x))
 conf.set_param("PARAMS", "y", int(physical_c_y))
 
