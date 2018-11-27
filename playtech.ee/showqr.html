@@ -13,8 +13,8 @@
 
 <script type="text/javascript">
 var qrcode = new QRCode(document.getElementById("qrcode"), {
-	width : 400,
-	height : 400
+	width : Math.min(window.innerWidth-40, window.innerHeight-40),
+	height : Math.min(window.innerWidth-40, window.innerHeight-40)
 });
 
 function getJsonFromUrl(hashBased) {
