@@ -527,6 +527,14 @@
             }
         },
         {
+            "Key": "463883e7-3487-4f8a-888b-2467892a2f87",
+            "Value": {
+                "id": "40b07f37-1d0c-4421-8d4c-c197cce6af47",
+                "resourcePath": "sprites\\spr_control_shield_blue\\spr_control_shield_blue.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "4738cc58-a4e5-4970-ad6c-ee1a2062f6b4",
             "Value": {
                 "id": "be43d709-7fca-46b5-b6e7-50fd4e54dc66",
@@ -540,6 +548,14 @@
                 "id": "f04c80f1-5ec4-4f14-9f5b-f9baa4ba6ef9",
                 "resourcePath": "views\\491e9178-4601-452e-bd58-67fc0cd54c41.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "4a6e8437-5075-4d35-982f-6c9dddbefa96",
+            "Value": {
+                "id": "31dc5012-9666-4d91-83a1-c1ccfff4b638",
+                "resourcePath": "sprites\\spr_control_shield_red\\spr_control_shield_red.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1215,6 +1231,14 @@
             }
         },
         {
+            "Key": "9fb8895b-3248-40a1-bc08-06b209dba3f5",
+            "Value": {
+                "id": "070d59e2-e3ad-408c-a313-5b73999f02c6",
+                "resourcePath": "objects\\obj_control_shield_red\\obj_control_shield_red.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "a2d719eb-fd01-428a-abe0-c352abd42b63",
             "Value": {
                 "id": "231abd17-b2a4-4dd3-92b5-8b3a407bbf7d",
@@ -1724,6 +1748,14 @@
                 "id": "aea8cdc6-106e-4562-b346-d2c7010362f2",
                 "resourcePath": "sprites\\spr_tavern_background\\spr_tavern_background.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "e4d2c2b6-185d-409f-8869-c456ad57c49f",
+            "Value": {
+                "id": "37d37666-818a-4888-809a-40181be84c10",
+                "resourcePath": "objects\\obj_control_shield_blue\\obj_control_shield_blue.yy",
+                "resourceType": "GMObject"
             }
         },
         {
