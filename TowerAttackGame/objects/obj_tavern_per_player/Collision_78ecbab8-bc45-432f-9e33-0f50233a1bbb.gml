@@ -1,6 +1,6 @@
 /// @description Grab soldier to tavern
 
-if ( activated && other.tavernCrossed == false && other.team == activatedByTeam ) {
+if ( protected && other.tavernCrossed == false && other.team == activatedByTeam ) {
 	other.currentPhase = SoldierPhase.GO_TO_TAVERN;
 }
 

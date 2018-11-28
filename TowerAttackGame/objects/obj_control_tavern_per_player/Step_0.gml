@@ -12,11 +12,7 @@ if( obj_game.currentPhase != GamePhase.GAME && obj_game.currentPhase != GamePhas
 if( !targetTavern.protected && colliding && chargingTeam.actionPoints > 10 ) {
 	// Shield is down, start counting
 	
-	if( targetTavern.activatedByTeam == chargingTeam ){
-		// Tavern already activated by charging team, do nothing
-	} else {
-		chargeUp++;	
-	}
+	chargeUp++;
 	
 	if( chargeUp > 2 * room_speed ) {
 		show_debug_message( "CHARGE COMPLETE!" );
