@@ -46,7 +46,9 @@ physical_c_y = 0
 
 cam_id = args.camera
 
-log_file = "camera_log_" + str(cam_id)
+log_file = "camera_log_" + str(cam_id) + ".log"
+open(log_file, 'a').close()
+
 log_formatter = logging.Formatter('%(asctime)s %(levelname)s %(funcName)s(%(lineno)d) %(message)s')
 handler = RotatingFileHandler(log_file, mode='a', maxBytes=20*1024*1024, 
                                  backupCount=2, encoding=None, delay=0)

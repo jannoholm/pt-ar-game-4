@@ -7,3 +7,4 @@ TowerProxy/**/.classpath
 TowerProxy/**/.project
 TowerProxy/**/.settings
 TowerProxy/**/game.db
+Camera/real/*.log
