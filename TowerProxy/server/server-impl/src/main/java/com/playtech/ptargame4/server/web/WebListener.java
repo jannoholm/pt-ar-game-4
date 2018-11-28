@@ -144,7 +144,13 @@ public final class WebListener {
             String path = uri.getPath();
 
             if (logger.isLoggable(Level.INFO)) {
-                logger.info(String.format("HttpUtilityServer Serving uri: %s, from %s", httpExchange.getRequestURI(), httpExchange.getRemoteAddress()));
+                switch(httpExchange.getHttpContext().getPath()){
+                    case CTX_CONTROL_POSITION:
+                        logger.finer(String.format("HttpUtilityServer Serving uri: %s, from %s", httpExchange.getRequestURI(), httpExchange.getRemoteAddress()));
+                        break;
+                    default:
+                        logger.info(String.format("HttpUtilityServer Serving uri: %s, from %s", httpExchange.getRequestURI(), httpExchange.getRemoteAddress()));
+                }
             }
 
             switch(httpExchange.getHttpContext().getPath()){
@@ -811,8 +817,8 @@ public final class WebListener {
         while ( (pos = in.read(buffer)) != -1 ) {
             messageBody.write(buffer, 0, pos);
         }
-        if (logger.isLoggable(Level.INFO)) {
-            logger.info(String.format("HttpUtilityServer post parameters: %s", new String(messageBody.toByteArray(), ENCODING)));
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine(String.format("HttpUtilityServer post parameters: %s", new String(messageBody.toByteArray(), ENCODING)));
         }
         return messageBody.toByteArray();
     }
@@ -838,8 +844,8 @@ public final class WebListener {
                 throw new SystemException("Unable to decode: " + value, e);
             }
         }
-        if (logger.isLoggable(Level.INFO)) {
-            logger.info(String.format("HttpUtilityServer uri parameters: %s", queryParameters));
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine(String.format("HttpUtilityServer uri parameters: %s", queryParameters));
         }
         return queryParameters;
     }

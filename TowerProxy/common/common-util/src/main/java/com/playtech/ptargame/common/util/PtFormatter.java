@@ -37,6 +37,7 @@ public class PtFormatter extends Formatter {
             }
         }
         str.append( " [" ).append( Thread.currentThread().getName() ).append( "]" );
+        //str.append( "::" ).append( record.getLoggerName() );
         str.append( "\n" );
         if ( record.getThrown() != null ) {
             printStackTrace( str, record.getThrown(), formatLevel( record.getLevel() ) + " " + formatDate( record.getMillis() ) + " ", " [" + Thread.currentThread().getName() + "]" );
