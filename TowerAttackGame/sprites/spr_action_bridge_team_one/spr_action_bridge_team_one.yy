@@ -47,7 +47,7 @@
     ],
     "gridX": 0,
     "gridY": 0,
-    "height": 363,
+    "height": 200,
     "layers": [
         {
             "id": "3effeb92-dc4c-4139-b2b8-c78e1a6b79d4",
@@ -68,11 +68,11 @@
             "blendMode": 0,
             "isLocked": false,
             "name": "Layer 1",
-            "opacity": 100,
+            "opacity": 25,
             "visible": true
         }
     ],
-    "origin": 9,
+    "origin": 0,
     "originLocked": false,
     "playbackSpeed": 23,
     "playbackSpeedType": 0,
@@ -82,7 +82,7 @@
     "swfPrecision": 2.525,
     "textureGroupId": "1225f6b0-ac20-43bd-a82e-be73fa0b6f4f",
     "type": 0,
-    "width": 362,
-    "xorig": 145,
-    "yorig": 145
+    "width": 200,
+    "xorig": 0,
+    "yorig": 0
 }

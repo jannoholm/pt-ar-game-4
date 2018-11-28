@@ -1,24 +1,34 @@
 {
-    "id": "3749178b-c6e3-48a7-8a39-829f0e2fd0a4",
+    "id": "8be65ce0-3170-4b51-88e6-3b03e636891b",
     "modelName": "GMObject",
     "mvc": "1.0",
-    "name": "obj_lobby_player",
+    "name": "obj_control_tavern_team_one",
     "eventList": [
         {
-            "id": "f1bd4287-fed9-4c24-917f-e2f53c0f017e",
+            "id": "e0b39cd4-8e39-4f74-a198-c4bb208dc3e8",
+            "modelName": "GMEvent",
+            "mvc": "1.0",
+            "IsDnD": false,
+            "collisionObjectId": "00000000-0000-0000-0000-000000000000",
+            "enumb": 7,
+            "eventtype": 6,
+            "m_owner": "8be65ce0-3170-4b51-88e6-3b03e636891b"
+        },
+        {
+            "id": "67073c45-5db8-4153-bff0-dc58559cb8df",
             "modelName": "GMEvent",
             "mvc": "1.0",
             "IsDnD": false,
             "collisionObjectId": "00000000-0000-0000-0000-000000000000",
             "enumb": 0,
             "eventtype": 0,
-            "m_owner": "3749178b-c6e3-48a7-8a39-829f0e2fd0a4"
+            "m_owner": "8be65ce0-3170-4b51-88e6-3b03e636891b"
         }
     ],
     "maskSpriteId": "00000000-0000-0000-0000-000000000000",
     "overriddenProperties": null,
-    "parentObjectId": "00000000-0000-0000-0000-000000000000",
-    "persistent": true,
+    "parentObjectId": "80c7d501-97ab-4261-8efc-ebbb52bf8d70",
+    "persistent": false,
     "physicsAngularDamping": 0.1,
     "physicsDensity": 0.5,
     "physicsFriction": 0.2,
@@ -33,6 +43,6 @@
     "physicsStartAwake": true,
     "properties": null,
     "solid": false,
-    "spriteId": "00000000-0000-0000-0000-000000000000",
+    "spriteId": "9ccde5b6-fce6-4fc4-b034-29247b758d40",
     "visible": true
 }

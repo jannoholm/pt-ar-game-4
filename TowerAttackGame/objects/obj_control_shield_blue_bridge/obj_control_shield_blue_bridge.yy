@@ -1,24 +1,24 @@
 {
-    "id": "3749178b-c6e3-48a7-8a39-829f0e2fd0a4",
+    "id": "e4d2c2b6-185d-409f-8869-c456ad57c49f",
     "modelName": "GMObject",
     "mvc": "1.0",
-    "name": "obj_lobby_player",
+    "name": "obj_control_shield_blue_bridge",
     "eventList": [
         {
-            "id": "f1bd4287-fed9-4c24-917f-e2f53c0f017e",
+            "id": "d85c9477-50df-460a-96ee-5a2f50952421",
             "modelName": "GMEvent",
             "mvc": "1.0",
             "IsDnD": false,
             "collisionObjectId": "00000000-0000-0000-0000-000000000000",
             "enumb": 0,
             "eventtype": 0,
-            "m_owner": "3749178b-c6e3-48a7-8a39-829f0e2fd0a4"
+            "m_owner": "e4d2c2b6-185d-409f-8869-c456ad57c49f"
         }
     ],
     "maskSpriteId": "00000000-0000-0000-0000-000000000000",
     "overriddenProperties": null,
-    "parentObjectId": "00000000-0000-0000-0000-000000000000",
-    "persistent": true,
+    "parentObjectId": "b0107813-f2c2-4617-9637-d579331ab932",
+    "persistent": false,
     "physicsAngularDamping": 0.1,
     "physicsDensity": 0.5,
     "physicsFriction": 0.2,
@@ -33,6 +33,6 @@
     "physicsStartAwake": true,
     "properties": null,
     "solid": false,
-    "spriteId": "00000000-0000-0000-0000-000000000000",
+    "spriteId": "463883e7-3487-4f8a-888b-2467892a2f87",
     "visible": true
 }

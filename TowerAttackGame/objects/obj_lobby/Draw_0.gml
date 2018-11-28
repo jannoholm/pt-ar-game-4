@@ -2,7 +2,7 @@
 
 draw_set_halign( fa_center );
 
-if( currentPhase == LobbyPhase.WAITING_PLAYERS ){
+if( currentPhase == LobbyPhase.WAITING_PLAYERS || currentPhase == LobbyPhase.COMPLETE ){
 
 	draw_set_font( fnt_basic_font );
 	if( playerOneTop == noone ){

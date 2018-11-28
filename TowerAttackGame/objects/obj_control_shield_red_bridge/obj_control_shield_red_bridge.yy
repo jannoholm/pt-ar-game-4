@@ -1,24 +1,24 @@
 {
-    "id": "3749178b-c6e3-48a7-8a39-829f0e2fd0a4",
+    "id": "9fb8895b-3248-40a1-bc08-06b209dba3f5",
     "modelName": "GMObject",
     "mvc": "1.0",
-    "name": "obj_lobby_player",
+    "name": "obj_control_shield_red_bridge",
     "eventList": [
         {
-            "id": "f1bd4287-fed9-4c24-917f-e2f53c0f017e",
+            "id": "161a492f-136b-46ef-970a-e9c4862f4d54",
             "modelName": "GMEvent",
             "mvc": "1.0",
             "IsDnD": false,
             "collisionObjectId": "00000000-0000-0000-0000-000000000000",
             "enumb": 0,
             "eventtype": 0,
-            "m_owner": "3749178b-c6e3-48a7-8a39-829f0e2fd0a4"
+            "m_owner": "9fb8895b-3248-40a1-bc08-06b209dba3f5"
         }
     ],
     "maskSpriteId": "00000000-0000-0000-0000-000000000000",
     "overriddenProperties": null,
-    "parentObjectId": "00000000-0000-0000-0000-000000000000",
-    "persistent": true,
+    "parentObjectId": "b0107813-f2c2-4617-9637-d579331ab932",
+    "persistent": false,
     "physicsAngularDamping": 0.1,
     "physicsDensity": 0.5,
     "physicsFriction": 0.2,
@@ -33,6 +33,6 @@
     "physicsStartAwake": true,
     "properties": null,
     "solid": false,
-    "spriteId": "00000000-0000-0000-0000-000000000000",
+    "spriteId": "4a6e8437-5075-4d35-982f-6c9dddbefa96",
     "visible": true
 }
