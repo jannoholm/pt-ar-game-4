@@ -90,6 +90,9 @@ if( currentPhase == MainPhase.INIT ){
 	
 } else if( currentPhase == MainPhase.DEMO ){
 	draw_set_font( fnt_basic_font );
-	draw_text( room_width/2, room_height*0.22, "WAITING PLAYERS" );
+	//draw_text( room_width/2, room_height*0.22, "WAITING PLAYERS" );
+	draw_text( room_width/2, room_height*0.21, "WAITING FOR PLAYERS" );
+	draw_text_transformed( room_width*0.5, room_height*0.25, "Register @ tower.playtech.ee", 0.75, 0.75, 0 );
 	draw_set_font( -1 );
 }
+

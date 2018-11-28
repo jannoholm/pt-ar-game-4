@@ -12,7 +12,9 @@
         "82f61d91-35bc-4e2f-a2da-02335733f110",
         "6817f467-df8d-4475-9fa1-caf49b16312e",
         "65c0d9d4-8f5d-4e93-a71c-e77456e7d18f",
-        "1b66aec1-a03f-47a6-8c4b-0b304c36d01a"
+        "1b66aec1-a03f-47a6-8c4b-0b304c36d01a",
+        "e4d2c2b6-185d-409f-8869-c456ad57c49f",
+        "9fb8895b-3248-40a1-bc08-06b209dba3f5"
     ],
     "filterType": "GMObject",
     "folderName": "control_areas",

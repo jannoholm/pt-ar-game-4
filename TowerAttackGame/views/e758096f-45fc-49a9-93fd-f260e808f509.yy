@@ -12,7 +12,9 @@
         "1d97e422-5a24-4a6d-b0ea-7106fc2af143",
         "ffc26e0a-3f75-4cb6-a6e9-b6952dd7b9cb",
         "bdabeafc-b2c8-4132-899b-53fa5a2143e7",
-        "e5bf5ad7-6fa6-4211-8d8f-b04030fc8fd1"
+        "e5bf5ad7-6fa6-4211-8d8f-b04030fc8fd1",
+        "463883e7-3487-4f8a-888b-2467892a2f87",
+        "4a6e8437-5075-4d35-982f-6c9dddbefa96"
     ],
     "filterType": "GMSprite",
     "folderName": "control_areas",

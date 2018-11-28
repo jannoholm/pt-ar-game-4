@@ -1,4 +1,4 @@
-/// @description Init lobby
+/// @description Init game
 
 enum GamePhase {
 	INIT, // Create game elements
@@ -35,6 +35,7 @@ teamTwoTower = instance_create_layer( 3720, 950, "lyr_elements", obj_tower_team_
 instructionIconShrink = true;
 instructionIconSize = 1; // Add a little wobble effect
 
+// Top
 with( instance_create_layer( 60, 670, "lyr_elements", obj_spawn_team_one) ) {
 	path = path_top;
 	pathDirection = 1;
@@ -47,40 +48,42 @@ with( instance_create_layer( 3770, 645, "lyr_elements", obj_spawn_team_two ) ) {
 	pathStartPosition = 0.95;
 	team = other.teamTwo;
 }
+// Middle
 with( instance_create_layer( 370, 930, "lyr_elements", obj_spawn_team_one ) ) {
-	path = path_middle_high;
-	pathDirection = 1;
-	pathStartPosition = 0.05;
-	team = other.teamOne;
-}
-with( instance_create_layer( 3440, 1180, "lyr_elements", obj_spawn_team_two ) ) {
-	// Note: cooridnates are swapped on right side since the paths cross in the middle
-	path = path_middle_high;
-	pathDirection = -1;
-	pathStartPosition = 0.95;
-	team = other.teamTwo;
-}
-with( instance_create_layer( 420, 1190, "lyr_elements", obj_spawn_team_one ) ) {
-	path = path_middle_low;
+	path = path_middle_spawn_soldier;
 	pathDirection = 1;
 	pathStartPosition = 0.05;
 	team = other.teamOne;
 }
 with( instance_create_layer( 3500, 927, "lyr_elements", obj_spawn_team_two ) ) {
-	// Note: cooridnates are swapped on right side since the paths cross in the middle
-	path = path_middle_low;
+	path = path_middle_spawn_orc;
 	pathDirection = -1;
 	pathStartPosition = 0.95;
 	team = other.teamTwo;
 }
-with( instance_create_layer( 55, 1150, "lyr_elements", obj_spawn_team_one ) ) {
-	path = path_bottom_from_left;
+// Bottom inner
+with( instance_create_layer( 215, 1220, "lyr_elements", obj_spawn_team_one ) ) {
+	path = path_bottom_inner;
 	pathDirection = 1;
 	pathStartPosition = 0.05;
 	team = other.teamOne;
 }
-with( instance_create_layer( 3665, 1140, "lyr_elements", obj_spawn_team_two ) ) {
-	path = path_bottom_from_right;
+with( instance_create_layer( 3660, 1200, "lyr_elements", obj_spawn_team_two ) ) {
+	path = path_bottom_inner;
+	pathDirection = -1;
+	pathStartPosition = 0.95;
+	team = other.teamTwo;
+}
+// Bottom outer
+with( instance_create_layer( 60, 1200, "lyr_elements", obj_spawn_team_one ) ) {
+	path = path_bottom_outer;
+	pathDirection = 1;
+	pathStartPosition = 0.05;
+	team = other.teamOne;
+}
+with( instance_create_layer( 3808, 1155, "lyr_elements", obj_spawn_team_two ) ) {
+	// Note: cooridnates are swapped on right side since the paths cross in the middle
+	path = path_bottom_outer;
 	pathDirection = -1;
 	pathStartPosition = 0.95;
 	team = other.teamTwo;
