@@ -2,7 +2,7 @@
     "id": "1a7a9a3d-2ea3-402e-af8c-61a15d3827a5",
     "modelName": "GMPath",
     "mvc": "1.0",
-    "name": "path_middle_high",
+    "name": "path_middle_spawn_soldier",
     "closed": false,
     "hsnap": 0,
     "kind": 1,

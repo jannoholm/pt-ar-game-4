@@ -2,7 +2,7 @@
     "id": "f204f427-bcca-4b45-bd7e-fd7b3fc30b70",
     "modelName": "GMPath",
     "mvc": "1.0",
-    "name": "path_bottom_from_right",
+    "name": "path_bottom_inner",
     "closed": false,
     "hsnap": 0,
     "kind": 1,

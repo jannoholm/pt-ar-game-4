@@ -202,7 +202,7 @@
             "Key": "1a7a9a3d-2ea3-402e-af8c-61a15d3827a5",
             "Value": {
                 "id": "2522b7fe-bc84-4a30-bfd7-645a4480d7c1",
-                "resourcePath": "paths\\path_middle_high\\path_middle_high.yy",
+                "resourcePath": "paths\\path_middle_spawn_soldier\\path_middle_spawn_soldier.yy",
                 "resourceType": "GMPath"
             }
         },
@@ -714,7 +714,7 @@
             "Key": "5f2808e9-d11b-4bc2-a786-f388d537980a",
             "Value": {
                 "id": "e0f08b3c-83b5-41fb-91da-82e4d7708b1b",
-                "resourcePath": "paths\\path_bottom_from_left\\path_bottom_from_left.yy",
+                "resourcePath": "paths\\path_bottom_outer\\path_bottom_outer.yy",
                 "resourceType": "GMPath"
             }
         },
@@ -1154,7 +1154,7 @@
             "Key": "9b91b3bb-16b5-4549-8883-cb70250117b2",
             "Value": {
                 "id": "de2ffb7c-f407-4a4d-ac3b-4e8566091e9f",
-                "resourcePath": "paths\\path_middle_low\\path_middle_low.yy",
+                "resourcePath": "paths\\path_middle_spawn_orc\\path_middle_spawn_orc.yy",
                 "resourceType": "GMPath"
             }
         },
@@ -1850,7 +1850,7 @@
             "Key": "f204f427-bcca-4b45-bd7e-fd7b3fc30b70",
             "Value": {
                 "id": "d0e96b11-8340-40b5-bba9-3d9753727137",
-                "resourcePath": "paths\\path_bottom_from_right\\path_bottom_from_right.yy",
+                "resourcePath": "paths\\path_bottom_inner\\path_bottom_inner.yy",
                 "resourceType": "GMPath"
             }
         },
