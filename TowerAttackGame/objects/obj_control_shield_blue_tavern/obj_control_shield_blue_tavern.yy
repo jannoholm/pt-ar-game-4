@@ -1,10 +1,19 @@
 {
-    "id": "e4d2c2b6-185d-409f-8869-c456ad57c49f",
+    "id": "247fe384-377a-4ffe-b8cc-cdc9bb2e7afd",
     "modelName": "GMObject",
     "mvc": "1.0",
-    "name": "obj_control_shield_blue",
+    "name": "obj_control_shield_blue_tavern",
     "eventList": [
-        
+        {
+            "id": "9857fa5c-db13-4b4f-be13-ef748260f706",
+            "modelName": "GMEvent",
+            "mvc": "1.0",
+            "IsDnD": false,
+            "collisionObjectId": "00000000-0000-0000-0000-000000000000",
+            "enumb": 0,
+            "eventtype": 0,
+            "m_owner": "247fe384-377a-4ffe-b8cc-cdc9bb2e7afd"
+        }
     ],
     "maskSpriteId": "00000000-0000-0000-0000-000000000000",
     "overriddenProperties": null,

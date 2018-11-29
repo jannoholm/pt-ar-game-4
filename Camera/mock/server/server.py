@@ -10,15 +10,15 @@ import traceback
 
 import logging
 
-MAX_MESSAGE_LENGTH = 8000
+MAX_MESSAGE_LENGTH = 1000
 PORT = 1337
 
-POSITION_POST_URL = "http://10.67.94.159:8101/control/position"
-QR_POST_URL = "http://10.67.94.159:8101/control/user"
+POSITION_POST_URL = "http://localhost:8101/control/position"
+QR_POST_URL = "http://localhost:8101/control/user"
 
-AVG_SAMPLES = 10
+AVG_SAMPLES = 5
 
-id_side_map = {1: "1", 2: "1", 3: "2", 4: "2"}
+id_side_map = {0: "2", 1: "0", 2: "2", 3: "0", 4: "2"}
 
 
 class RemoteClient(asyncore.dispatcher):
@@ -107,8 +107,8 @@ class Server(asyncore.dispatcher):
         avg = self.average_list(self.marker_buffer)
         self.log.info("Autosending: %s", avg)
         if avg:
-            #self.clear_buffer()
-            #self.post_date(avg)
+            self.clear_buffer()
+            self.post_date(avg)
             pass
 
     @staticmethod
@@ -175,11 +175,14 @@ class Server(asyncore.dispatcher):
 
 
 def thread():
-    host.send_average_and_clear()
-    threading.Timer(0.2, thread).start()
+    try:
+        host.send_average_and_clear()
+    except:
+        pass
+    threading.Timer(0.1, thread).start()
 
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 logging.info('Creating server')
 host = Server()
 thread()

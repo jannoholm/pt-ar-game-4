@@ -4,15 +4,15 @@ dragObject = noone;
 xRelative = 0;
 yRelative = 0;
 
-with( instance_create_layer( room_width*0.15, 100, "lyr_action_tokens", obj_action_bridge_team_one ) ) {
-	team = obj_game.teamOne;
-}
+//with( instance_create_layer( room_width*0.15, 100, "lyr_action_tokens", obj_action_bridge_team_one ) ) {
+//	team = obj_game.teamOne;
+//}
 with( instance_create_layer( room_width*0.20, 100, "lyr_action_tokens", obj_action_bridge_team_one ) ) {
 	team = obj_game.teamOne;
 }
-with( instance_create_layer( room_width*0.80, 100, "lyr_action_tokens", obj_action_bridge_team_two ) ) {
-	team = obj_game.teamTwo;
-}
+//with( instance_create_layer( room_width*0.80, 100, "lyr_action_tokens", obj_action_bridge_team_two ) ) {
+//	team = obj_game.teamTwo;
+//}
 with( instance_create_layer( room_width*0.85, 100, "lyr_action_tokens", obj_action_bridge_team_two ) ) {
 	team = obj_game.teamTwo;
 }

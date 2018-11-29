@@ -263,6 +263,14 @@
             }
         },
         {
+            "Key": "1f4607f9-a508-4d7d-ae8b-078e66eb9b4f",
+            "Value": {
+                "id": "2214dbf2-ff38-41a1-b0c0-2faead079712",
+                "resourcePath": "objects\\obj_control_tavern_team_two\\obj_control_tavern_team_two.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "22aca635-10f2-4e51-b8a3-703ad62a7096",
             "Value": {
                 "id": "12ad8ef7-0e5e-47e8-8fe9-60151f2d485b",
@@ -295,6 +303,14 @@
             }
         },
         {
+            "Key": "247fe384-377a-4ffe-b8cc-cdc9bb2e7afd",
+            "Value": {
+                "id": "f4cdb6c5-1ad5-4e9c-af24-22c42318e309",
+                "resourcePath": "objects\\obj_control_shield_blue_tavern\\obj_control_shield_blue_tavern.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "25b2ea2c-ec9d-4615-ae4f-194bccabc2ac",
             "Value": {
                 "id": "c5e0682d-1f4c-42b2-a2ec-5aaa0a7534c4",
@@ -315,6 +331,22 @@
             "Value": {
                 "id": "d76d2dd5-089c-4417-ad14-e5a7bf150e9d",
                 "resourcePath": "objects\\obj_bridge_bottom_red_4\\obj_bridge_bottom_red_4.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "281fdb8a-5ea5-44e4-be93-56297a9de00c",
+            "Value": {
+                "id": "c6ecaa99-6e43-4b6f-a4a9-70a83f22d3a3",
+                "resourcePath": "objects\\obj_tavern_per_player\\obj_tavern_per_player.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "28df9112-8345-422c-bd30-a07e6af4e806",
+            "Value": {
+                "id": "bd7674a5-1175-4c38-8f7b-8d395ae2f443",
+                "resourcePath": "objects\\obj_control_shield_red_tavern\\obj_control_shield_red_tavern.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -1031,6 +1063,14 @@
             }
         },
         {
+            "Key": "80c7d501-97ab-4261-8efc-ebbb52bf8d70",
+            "Value": {
+                "id": "82d7d55f-ea72-4902-8298-49e78c1dec4c",
+                "resourcePath": "objects\\obj_control_tavern_per_player\\obj_control_tavern_per_player.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "82f61d91-35bc-4e2f-a2da-02335733f110",
             "Value": {
                 "id": "47c4460d-8da6-4f08-9adc-6e405a0be4c3",
@@ -1100,6 +1140,14 @@
                 "id": "f7459973-5207-4203-a114-60b2f114895b",
                 "resourcePath": "sprites\\spr_flag_team_one\\spr_flag_team_one.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "8be65ce0-3170-4b51-88e6-3b03e636891b",
+            "Value": {
+                "id": "e9a67a66-f55a-4f6c-83e8-f834021e13bd",
+                "resourcePath": "objects\\obj_control_tavern_team_one\\obj_control_tavern_team_one.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -1234,7 +1282,7 @@
             "Key": "9fb8895b-3248-40a1-bc08-06b209dba3f5",
             "Value": {
                 "id": "070d59e2-e3ad-408c-a313-5b73999f02c6",
-                "resourcePath": "objects\\obj_control_shield_red\\obj_control_shield_red.yy",
+                "resourcePath": "objects\\obj_control_shield_red_bridge\\obj_control_shield_red_bridge.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -1362,7 +1410,7 @@
             "Key": "b0107813-f2c2-4617-9637-d579331ab932",
             "Value": {
                 "id": "d4575430-ca2e-4bc8-95d6-b74431c201dc",
-                "resourcePath": "objects\\obj_bridge_shield_bar\\obj_bridge_shield_bar.yy",
+                "resourcePath": "objects\\obj_control_shield_bar\\obj_control_shield_bar.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -1754,7 +1802,7 @@
             "Key": "e4d2c2b6-185d-409f-8869-c456ad57c49f",
             "Value": {
                 "id": "37d37666-818a-4888-809a-40181be84c10",
-                "resourcePath": "objects\\obj_control_shield_blue\\obj_control_shield_blue.yy",
+                "resourcePath": "objects\\obj_control_shield_blue_bridge\\obj_control_shield_blue_bridge.yy",
                 "resourceType": "GMObject"
             }
         },

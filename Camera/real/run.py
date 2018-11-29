@@ -4,6 +4,7 @@ import numpy as np
 
 import socket
 import logging
+from logging.handlers import RotatingFileHandler
 
 import glob
 import json
@@ -17,6 +18,10 @@ from builtins import int
 from numpy import double
 
 from pyzbar.pyzbar import ZBarSymbol, decode
+
+
+debug = False
+
 
 
 def to_tuple(a):
@@ -39,9 +44,23 @@ physical_c_angle = 0
 physical_c_x = 0
 physical_c_y = 0
 
-max_height = 20
-
 cam_id = args.camera
+
+log_file = "camera_log_" + str(cam_id) + ".log"
+open(log_file, 'a').close()
+
+log_formatter = logging.Formatter('%(asctime)s %(levelname)s %(funcName)s(%(lineno)d) %(message)s')
+handler = RotatingFileHandler(log_file, mode='a', maxBytes=20*1024*1024, 
+                                 backupCount=2, encoding=None, delay=0)
+handler.setFormatter(log_formatter)
+handler.setLevel(logging.INFO)
+
+log = logging.getLogger('root')
+log.setLevel(logging.INFO)
+
+log.addHandler(handler)
+
+frame_name = 'frame' + str(cam_id)
 
 TCP_IP = "localhost"
 TCP_PORT = 1337
@@ -56,7 +75,7 @@ path = ""
 aruco_dict = aruco.getPredefinedDictionary(aruco.DICT_6X6_1000)
 
 ##cm
-markel_side = 3.75
+markel_side = 2.5
 
 marker_separation = 0.5
 
@@ -104,19 +123,20 @@ def remap_points(cam_x, cam_y, physical_camera_x, physical_camera_y, calibration
     # y = Sin(a) * r
     board_y = physical_camera_y + np.sin(board_angle) * distance_camera
 
-    print("distance_camera: ", round(distance_camera), "camera_angle: ", round(np.degrees(camera_angle)),
+    log.debug("distance_camera: ", round(distance_camera), "camera_angle: ", round(np.degrees(camera_angle)),
           "board_angle: ", round(np.degrees(board_angle)), "board_x: ", round(board_x), "board_y", round(board_y))
 
     return (board_x, board_y)
 
 
 class TcpSender:
-    def __init__(self, ip, port, buffer):
+    def __init__(self, ip, port, buffer, handler):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.ip = ip
         self.port = port
         self.buffer = buffer
         self.log = logging.getLogger('TcpSender')
+        self.log.addHandler(handler)
 
     def is_connected(self):
         self.socket.recv()
@@ -148,8 +168,9 @@ class TcpSender:
 
 
 class Configuration:
-    def __init__(self, camera_id):
+    def __init__(self, camera_id, handler):
         self.log = logging.getLogger('Configuration')
+        self.log.addHandler(handler)
         self.log.info("Loading configuration")
         self.filename = str(camera_id) + "_configuration.cfg"
         self.create_file()
@@ -174,11 +195,10 @@ class Configuration:
             file.close()
 
 
-logging.basicConfig(level=logging.INFO)
 
 while True:
     try:
-        sender = TcpSender(TCP_IP, TCP_PORT, BUFFER_SIZE)
+        sender = TcpSender(TCP_IP, TCP_PORT, BUFFER_SIZE, handler)
         break
     except:
         pass
@@ -201,13 +221,13 @@ for fname in images:
     counter.append(len(ids))
 
 counter = np.array(counter)
-print("Calibrating camera .... Please wait...")
+log.info("Calibrating camera .... Please wait...")
 # mat = np.zeros((3,3), float)
 ret, mtx, dist, rvecs, tvecs = aruco.calibrateCameraAruco(corners_list, id_list, counter, board, img_gray.shape, None,
                                                           None)
-print("Calibrating camera complete")
+log.info("Calibrating camera complete")
 
-aruco_dict = aruco.Dictionary_get(aruco.DICT_ARUCO_ORIGINAL)
+aruco_dict = aruco.Dictionary_get(aruco.DICT_4X4_50)
 
 nrOfLoops = 0
 calibration = (1, 0)
@@ -217,30 +237,30 @@ def nothing(x):
     pass
 
 
-conf = Configuration(cam_id)
+conf = Configuration(cam_id, handler)
 conf.set_param('CAMERA', 'ID', int(cam_id))
 
-cv2.namedWindow('frame')
-cv2.createTrackbar('ANGLE', 'frame', 0, 360, nothing)
-cv2.createTrackbar('X', 'frame', 0, 1900, nothing)
-cv2.createTrackbar('Y', 'frame', 0, 1200, nothing)
+cv2.namedWindow(frame_name)
+cv2.createTrackbar('ANGLE', frame_name, 0, 360, nothing)
+cv2.createTrackbar('X', frame_name, 0, 1900, nothing)
+cv2.createTrackbar('Y', frame_name, 0, 1200, nothing)
 
-cv2.setTrackbarPos('ANGLE', 'frame', int(conf.get_param('PARAMS', 'ANGLE')))
-cv2.setTrackbarPos('X', 'frame', int(conf.get_param('PARAMS', 'X')))
-cv2.setTrackbarPos('Y', 'frame', int(conf.get_param('PARAMS', 'Y')))
+cv2.setTrackbarPos('ANGLE', frame_name, int(conf.get_param('PARAMS', 'ANGLE')))
+cv2.setTrackbarPos('X', frame_name, int(conf.get_param('PARAMS', 'X')))
+cv2.setTrackbarPos('Y', frame_name, int(conf.get_param('PARAMS', 'Y')))
 
 qr_count = 0
 qr_sample_rate = 10
 
-allowed_id = [0]
+allowed_id = [0, 4]
 
 while True:
 
-    physical_c_angle = np.radians(cv2.getTrackbarPos('ANGLE', 'frame'))
-    physical_c_x = cv2.getTrackbarPos('X', 'frame')
-    physical_c_y = cv2.getTrackbarPos('Y', 'frame')
+    physical_c_angle = np.radians(cv2.getTrackbarPos('ANGLE', frame_name))
+    physical_c_x = cv2.getTrackbarPos('X', frame_name)
+    physical_c_y = cv2.getTrackbarPos('Y', frame_name)
 
-    time.sleep(0.1)
+    time.sleep(0.05)
     ret, frame = cap.read()
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -255,44 +275,47 @@ while True:
     qr_count = qr_count + 1
 
     parameters = aruco.DetectorParameters_create()
-    corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict, parameters=parameters)
+    #print(parameters)
 
     font = cv2.FONT_HERSHEY_SIMPLEX  # font for displaying text (below)
 
-    if np.all(ids != None):
-        sent_markers = []
-        for corner in range(0, len(corners)):
-            marker_id = ids[corner]
+    corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict, parameters=parameters)
+    rvec, tvec, _ = aruco.estimatePoseSingleMarkers(corners, markel_side, mtx, dist)
+ 
+    if rvec is not None:
+        for i in range(len(rvec)):
+            if ids[i] in allowed_id:
+ 
+                if debug:
+                    frame = cv2.aruco.drawAxis(frame, mtx, dist, rvec[i], tvec[i], 0.1)
+                    frame = cv2.aruco.drawDetectedMarkers(frame, corners, ids)
+ 
+                marker_id = ids[i]
+ 
+                marker_x = tvec[i][0][0] * 10
+                marker_y = tvec[i][0][2] * 10
+                marker_z = tvec[i][0][1] * 10
 
-            if marker_id not in allowed_id:
-                continue
+                if marker_z > 0:
+                    continue
+                if marker_z < -100:
+                    continue
+ 
+                coordinates = remap_points(marker_x,
+                                           marker_y,
+                                           physical_c_x - 200,
+                                           physical_c_y - 200,
+                                           calibration[0],
+                                           calibration[1], physical_c_angle)
+ 
+                sender.send(json.dumps(
+                    {str(marker_id[0]): (int(coordinates[0] / 1440 * 10000), int(coordinates[1] / 800 * 10000))}))
 
-            marker_corners = corners[corner]
-            rvec, tvec, _ = aruco.estimatePoseSingleMarkers(marker_corners, 0.05, mtx, dist)
+    if debug:
+        cv2.imshow(frame_name, frame)
 
-            if marker_id in sent_markers:
-                continue
-                
-            dist_vec = tvec[0][0] * 0.562 * 1000
-
-            if dist_vec[1] > max_height:
-                continue
-
-            coordinates = remap_points(dist_vec[0], dist_vec[2], physical_c_x - 200, physical_c_y - 200, calibration[0],
-                                       calibration[1], physical_c_angle)
-            # 1440 x 800 mm is the monitor, normalize to 10k
-            sender.send(json.dumps(
-                {str(marker_id[0]): (int(coordinates[0] / 1440 * 10000), int(coordinates[1] / 800 * 10000))}))
-            # sender.send(json.dumps({str(marker_id[0]): (int(coordinates[0]), int(coordinates[1]))}))
-
-            nrOfLoops += 1
-
-            sent_markers.append(marker_id)
-
-    cv2.imshow('frame', frame)
-
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
 conf.set_param("PARAMS", "angle", int(np.degrees(physical_c_angle)))
 conf.set_param("PARAMS", "x", int(physical_c_x))
