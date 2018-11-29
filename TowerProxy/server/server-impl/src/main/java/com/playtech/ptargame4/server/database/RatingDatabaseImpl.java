@@ -187,9 +187,7 @@ public class RatingDatabaseImpl implements RatingDatabase {
         synchronized (this) {
             ArrayList<EloRating> leaderboard = new ArrayList<>();
             for (EloRating rating : ratingMap.values()) {
-                if (rating.getMatches() > 2) {
-                    leaderboard.add(rating);
-                }
+                leaderboard.add(rating);
             }
             Collections.sort(leaderboard, comparator);
             return leaderboard;
