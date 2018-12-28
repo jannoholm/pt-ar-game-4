@@ -11,7 +11,8 @@ if (!isset($_GET["secret"])) {
 	die();
 } else if (file_exists($secret_file)) {
 	$secret = file_get_contents($secret_file);
-	if (!($_GET["secret"] === urldecode($secret))) {
+	if (!($_GET["secret"] === urldecode(trim($secret)))) {
+		http_response_code (401);
 		die();
 	}
 } else if (!($_GET["secret"] === "-P-HH/g)9\t};[H]p#V<[cWmAb(>@$+RsM4y#UCJ(")) {
