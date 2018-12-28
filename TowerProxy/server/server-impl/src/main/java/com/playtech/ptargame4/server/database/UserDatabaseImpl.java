@@ -156,8 +156,9 @@ public class UserDatabaseImpl implements UserDatabase {
 
     public User addUser(String name, String email, User.UserType userType, String qrCode) {
         if (StringUtil.isNull(name)) throw new NullPointerException("Name cannot be null.");
+        if (StringUtil.isNull(email)) throw new NullPointerException("Email cannot be null.");
         if (StringUtil.isNull(qrCode)) throw new NullPointerException("qrCode cannot be null.");
-        User user = new User(idGenerator.incrementAndGet(), name.toUpperCase().trim(), email, false, userType, qrCode);
+        User user = new User(idGenerator.incrementAndGet(), name.toUpperCase().trim(), email.toUpperCase().trim(), false, userType, qrCode);
         synchronized (this) {
             pendingWrites.add(user);
             userMap.put(user.getId(), user);

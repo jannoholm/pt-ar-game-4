@@ -434,9 +434,10 @@ public final class WebListener {
 
             // validate
             if (StringUtil.isNull(name)) throw new NullPointerException("Name cannot be null.");
+            if (StringUtil.isNull(email)) throw new NullPointerException("Email cannot be null.");
             for (User u : databaseAccess.getUserDatabase().getUsers()) {
                 if (u.isHidden()) continue;
-                if (name.equals(u.getName()) && (email == null && u.getEmail() == null || email != null && email.equals(u.getEmail()))) {
+                if (email.equalsIgnoreCase(u.getEmail())) {
                     throw new HTTPException(HttpURLConnection.HTTP_CONFLICT);
                 }
             }
