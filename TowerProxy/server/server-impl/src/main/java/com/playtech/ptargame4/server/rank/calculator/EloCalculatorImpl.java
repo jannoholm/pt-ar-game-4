@@ -121,22 +121,24 @@ public class EloCalculatorImpl implements ScoreCalculator {
 		double sum = contribMap.values().stream().reduce(0.0, Double::sum);
 		double diff = 0.0;
 
-		if (sum != 1.0) {
+		if (sum != 1.0) { // TODO: use epsilon
 			diff = 1.0 - sum;
 			diff = diff / team.size();
 		}
 
 		for (PlayerScore player : team) {
+			// adjusted contribution. for example 0.35 and 0.25 adjusted to 0.55 and 0.45.
 			double contribution = contribMap.get(player.getUserId()) + diff;
 
-			contribution = eloDiff < 0 ? 1.0 - contribution : contribution;
+			// in case of loss, elo change should be bigger for the one with less contribution.
+			contribution = eloDiff < 0 && team.size() > 1 ? 1.0 - contribution : contribution;
 
-			player.setUserScore(calculatePlayerScore(player.getScoreMap()));
-
-			int addedScore = (int) (eloDiff < 0 ? Math.round(contribution * Math.abs(eloDiff)) * -1
-					: Math.round(contribution * eloDiff));
-
+			// Do the elo diff
+			int addedScore = (int)(Math.signum(eloDiff) * Math.round(contribution * Math.abs(eloDiff)));
 			player.updateElo(addedScore);
+
+			// additionally calculate game score for player
+			player.setUserScore(calculatePlayerScore(player.getScoreMap()));
 		}
 	}
 
