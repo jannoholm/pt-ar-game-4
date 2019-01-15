@@ -9,4 +9,4 @@ tavernControlType = noone;
 targetTavern = instance_nearest( x, y, obj_tavern_permanent );
 chargingTeam = noone;
 chargeUp = 0;
-colliding = false;
+colliding = 0;

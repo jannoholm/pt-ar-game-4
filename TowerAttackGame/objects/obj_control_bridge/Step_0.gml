@@ -4,12 +4,12 @@
 if( obj_game.currentPhase != GamePhase.GAME && obj_game.currentPhase != GamePhase.DEMO ){
 	// No actions if game is not in progress
 	chargeUp = 0;
-	colliding = false;
+	colliding = 0;
 	return;	
 }
 
 // #TODO: Take into account the points to be recieved during charge
-if( !targetBridge.protected && colliding && chargingTeam.actionPoints > 10 ) {
+if( !targetBridge.protected && colliding > 0 && chargingTeam.actionPoints > 10 ) {
 	// Shield is down start counting and bridge is up
 	if( bridgeControlType == BridgeControlType.DESTROY && targetBridge.durability <= 0 ){
 		// No charge up, bridge is destroyed, don't destory it again
@@ -32,5 +32,5 @@ if( !targetBridge.protected && colliding && chargingTeam.actionPoints > 10 ) {
 }
 
 
-// Clear the collision mark for the next frame
-colliding = false;
+// Cooldown the collision - allow small "twitching" of the avatar
+colliding--;

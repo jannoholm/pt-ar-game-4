@@ -4,12 +4,12 @@
 if( obj_game.currentPhase != GamePhase.GAME && obj_game.currentPhase != GamePhase.DEMO ){
 	// No actions if game is not in progress
 	chargeUp = 0;
-	colliding = false;
+	colliding = 0;
 	return;	
 }
 
 // #TODO: Take into account the points to be recieved during charge
-if( !targetTavern.protected && colliding && chargingTeam.actionPoints > 10 ) {
+if( !targetTavern.protected && colliding > 0 && chargingTeam.actionPoints > 10 ) {
 	// Shield is down, start counting
 	
 	chargeUp++;
@@ -30,4 +30,4 @@ if( !targetTavern.protected && colliding && chargingTeam.actionPoints > 10 ) {
 }
 
 // Clear the collision mark for the next frame
-colliding = false;
+colliding--;

@@ -83,12 +83,13 @@ switch( currentPhase ){
 		}
 		
 		currentPhase = GamePhase.DEMO;
-	
-		break;
-	case GamePhase.DEMO:
+		
 		with( obj_bridge ){
 			durability = 100;
 		}
+	
+		break;
+	case GamePhase.DEMO:
 	
 		break;
 }

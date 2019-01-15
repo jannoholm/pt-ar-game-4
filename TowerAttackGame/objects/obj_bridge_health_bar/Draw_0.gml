@@ -1,5 +1,5 @@
 /// @description Hide when not active
 
-if( targetBridge.durability > 0 && obj_game.currentPhase == GamePhase.GAME ){
+if( targetBridge.durability > 0 ){
 	draw_self();
 }

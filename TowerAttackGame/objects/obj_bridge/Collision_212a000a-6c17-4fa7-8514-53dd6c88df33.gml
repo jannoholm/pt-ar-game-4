@@ -2,7 +2,7 @@
 
 if( obj_game.currentPhase != GamePhase.GAME ){
 	// Demo mode
-	return;
+	// return; // Enable if demo mode soldiers should not affect bridges
 }
 
 if ( durability > 0 ) {
