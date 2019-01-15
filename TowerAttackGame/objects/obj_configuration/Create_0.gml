@@ -1,4 +1,7 @@
 /// @description default values
+
+global.debug = true;
+
 ip_address = "localhost"; 
 port = 8100;
 standAloneMode = 0;
