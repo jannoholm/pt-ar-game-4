@@ -10,4 +10,4 @@ bridgeControlType = noone;
 targetBridge = instance_nearest(x, y, obj_bridge);
 chargingTeam = noone;
 chargeUp = 0;
-colliding = false;
+colliding = 0;

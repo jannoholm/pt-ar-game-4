@@ -327,6 +327,14 @@
             }
         },
         {
+            "Key": "26753740-507c-4acd-be46-79550b48e31c",
+            "Value": {
+                "id": "2d067523-9301-4a78-870e-a4d12df60206",
+                "resourcePath": "sprites\\spr_padlock_blank\\spr_padlock_blank.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "26861559-05cb-47be-864a-83a1bf9b62df",
             "Value": {
                 "id": "fb55883c-6de7-4c56-a2d3-7e9195bc97d2",

@@ -2,7 +2,7 @@
 
 if( obj_game.currentPhase != GamePhase.GAME ){
 	// Demo mode
-	return;
+	// return; // Enable if demo mode soldiers should not affect bridges
 }
 
 if ( durability > 0 ) {
@@ -19,6 +19,10 @@ if ( durability > 0 ) {
 		if( durability == 0 ){
 			// Bridge broken by natural causes, reset activation if any
 			activatedByTeam = noone;
+			
+			if( obj_game.currentPhase == GamePhase.DEMO ){
+				alarm[1] = room_speed * 30; // Auto-fix bridges in demo mode every minute
+			}
 		}
 		
 		if( activatedByTeam != noone && activatedByTeam == other.team ){
