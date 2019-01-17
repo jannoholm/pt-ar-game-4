@@ -527,6 +527,14 @@
             }
         },
         {
+            "Key": "41560827-b797-4424-b281-8e4cf653e78c",
+            "Value": {
+                "id": "48d19691-9e44-4baa-bb07-8d6c9ff3fe38",
+                "resourcePath": "objects\\obj_show_qr_code_right\\obj_show_qr_code_right.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "438f5727-390e-4e3e-8d39-27ac5f236033",
             "Value": {
                 "id": "4dcd7da2-0c85-46c4-8f5d-a34413aeef76",
@@ -1418,7 +1426,7 @@
             "Key": "acec68a9-8ede-4416-b72f-8836c8c63c27",
             "Value": {
                 "id": "ffc7acf4-a63f-42d3-a104-e6876f562ca0",
-                "resourcePath": "objects\\obj_show_qr_code\\obj_show_qr_code.yy",
+                "resourcePath": "objects\\obj_show_qr_code_left\\obj_show_qr_code_left.yy",
                 "resourceType": "GMObject"
             }
         },
