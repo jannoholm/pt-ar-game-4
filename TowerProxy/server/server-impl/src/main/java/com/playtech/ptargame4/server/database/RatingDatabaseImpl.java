@@ -198,7 +198,7 @@ public class RatingDatabaseImpl implements RatingDatabase {
 
         @Override
         public int compare(EloRating o1, EloRating o2) {
-            return o1.getEloRating() - o2.getEloRating();
+            return o2.getEloRating() - o1.getEloRating();
         }
     }
 
