@@ -3,7 +3,7 @@
 <head>
 <title>TowerAttack QR Code</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/qrcode.js"></script>
 </head>
@@ -13,8 +13,8 @@
 
 <script type="text/javascript">
 var qrcode = new QRCode(document.getElementById("qrcode"), {
-	width : Math.min(window.innerWidth-40, window.innerHeight-40),
-	height : Math.min(window.innerWidth-40, window.innerHeight-40)
+	width : Math.min(window.innerWidth-100, window.innerHeight-100),
+	height : Math.min(window.innerWidth-100, window.innerHeight-100)
 });
 
 function getJsonFromUrl(hashBased) {
