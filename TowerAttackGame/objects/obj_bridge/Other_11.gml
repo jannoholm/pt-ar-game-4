@@ -11,3 +11,7 @@ durability = 0;
 fillUp = 0;
 
 audio_play_sound( snd_bridge_destroyed, 10, false );
+
+if( obj_game.currentPhase == GamePhase.DEMO ){
+	alarm[1] = room_speed * 30; // Auto-fix bridges in demo mode every minute
+}
