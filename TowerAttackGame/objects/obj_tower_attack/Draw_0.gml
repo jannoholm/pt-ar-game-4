@@ -8,13 +8,13 @@ if( currentPhase == MainPhase.INIT ){
 	
 	draw_set_font( fnt_basic_font );
 	if( lastGameScore.winnerTeam == WinnerTeam.ONE ){
-		draw_text( room_width/2, room_height*0.21, lastGameScore.teamOne.playerName + " WINS" );
+		draw_text( room_width/2, room_height*0.23, lastGameScore.teamOne.playerName + " WINS" );
 	} else if( lastGameScore.winnerTeam == WinnerTeam.TWO ) {
-		draw_text( room_width/2, room_height*0.21, lastGameScore.teamTwo.playerName + " WINS" );
+		draw_text( room_width/2, room_height*0.23, lastGameScore.teamTwo.playerName + " WINS" );
 	} else {
-		draw_text( room_width/2, room_height*0.21, "IT'S A DRAW" );
+		draw_text( room_width/2, room_height*0.23, "IT'S A DRAW" );
 	}
-	draw_text( room_width/2, room_height*0.25, "(" + string( lastGameScore.teamOneTowerHealth ) + " - " + string( lastGameScore.teamTwoTowerHealth ) + ")" );
+
 	draw_set_font( -1 );
 	
 	draw_set_font( fnt_game_result_data );

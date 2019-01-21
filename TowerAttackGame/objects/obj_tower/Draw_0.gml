@@ -2,7 +2,7 @@
 // You can write your code in this editor
 
 draw_self();
-if( obj_game.currentPhase == GamePhase.GAME ){
+if( obj_game.currentPhase == GamePhase.GAME || obj_tower_attack.currentPhase == MainPhase.GAME_RESULT ){
 	draw_set_halign( fa_center );
 	draw_set_font( fnt_basic_font );
 	draw_text_transformed( x, y - 230, string( towerHealth ), 0.5, 0.5, 0 );
