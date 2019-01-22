@@ -167,14 +167,6 @@
             }
         },
         {
-            "Key": "177be3b4-48af-40a7-af56-cb8d873dd440",
-            "Value": {
-                "id": "f9845b87-9391-404a-87cb-4ea5716623be",
-                "resourcePath": "sprites\\spr_background\\spr_background.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
             "Key": "181bdfe6-45fd-4feb-94ff-bb2f515dec57",
             "Value": {
                 "id": "0d5c1abb-b395-4ffd-9633-cc428fdefd9d",
@@ -476,14 +468,6 @@
                 "id": "b4938a8d-c6f7-42bb-8fb2-bcb218f50e1a",
                 "resourcePath": "objects\\obj_bridge_top_red\\obj_bridge_top_red.yy",
                 "resourceType": "GMObject"
-            }
-        },
-        {
-            "Key": "3c347e76-4517-431e-88d2-1b76cb022d23",
-            "Value": {
-                "id": "e1041916-7178-4718-9c00-32efaebc4779",
-                "resourcePath": "sprites\\spr_qrcode\\spr_qrcode.yy",
-                "resourceType": "GMSprite"
             }
         },
         {
@@ -836,6 +820,14 @@
                 "id": "b3adeb81-3fb3-4528-8678-dc92ef72bf70",
                 "resourcePath": "views\\62a0209f-ede2-4017-8cee-e0a45b805799.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "62bfb1b6-2b62-4ee7-a1e2-b9fd33a5a42d",
+            "Value": {
+                "id": "95d22115-18a6-4b70-a1d4-cd64f9d7d10d",
+                "resourcePath": "sprites\\spr_background_with_footprints\\spr_background_with_footprints.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1331,14 +1323,6 @@
             "Value": {
                 "id": "75426d3f-550d-41e0-9748-9779eb648b3e",
                 "resourcePath": "objects\\obj_tower_team_two\\obj_tower_team_two.yy",
-                "resourceType": "GMObject"
-            }
-        },
-        {
-            "Key": "a46ebfc0-71ad-4696-b7b8-4312537faedc",
-            "Value": {
-                "id": "12596ed3-87b1-4b9c-9f8a-6186b4524139",
-                "resourcePath": "objects\\obj_qrcode\\obj_qrcode.yy",
                 "resourceType": "GMObject"
             }
         },
