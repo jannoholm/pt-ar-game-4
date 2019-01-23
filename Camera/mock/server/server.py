@@ -104,7 +104,8 @@ class Server(asyncore.dispatcher):
                 self.remote_clients.remove(remote_client)
 
     def send_average_and_clear(self):
-        avg = self.average_list(self.marker_buffer)
+        avg = {'4': [0, 0], '0': [0, 0]}
+        avg = {**avg, **self.average_list(self.marker_buffer)}
         self.log.info("Autosending: %s", avg)
         if avg:
             self.clear_buffer()

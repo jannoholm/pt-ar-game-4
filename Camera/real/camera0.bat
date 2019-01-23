@@ -1,1 +1,1 @@
-python run.py -c 0
+python run.py -c 0 -y true

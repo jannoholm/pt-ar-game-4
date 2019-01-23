@@ -20,7 +20,7 @@ from numpy import double
 from pyzbar.pyzbar import ZBarSymbol, decode
 
 
-debug = False
+debug = True
 
 
 
@@ -34,9 +34,17 @@ def to_tuple(a):
 def get_string(id, dst):
     return "ID: {}({}m)".format(id, round(dst, 2))
 
+def str2bool(v):
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
 
 parser = argparse.ArgumentParser(description='Run token detection via webcam')
 parser.add_argument('-c', '--camera', help='Camera index to use, usually starting from zero', required=True, type=int)
+parser.add_argument('-y', '--flipxy',type=str2bool)
 
 args = parser.parse_args()
 
@@ -44,7 +52,12 @@ physical_c_angle = 0
 physical_c_x = 0
 physical_c_y = 0
 
+z_min = 0
+z_max = 0
+
 cam_id = args.camera
+flip_xy = args.flipxy
+
 
 log_file = "camera_log_" + str(cam_id) + ".log"
 open(log_file, 'a').close()
@@ -75,7 +88,7 @@ path = ""
 aruco_dict = aruco.getPredefinedDictionary(aruco.DICT_6X6_1000)
 
 ##cm
-markel_side = 2.5
+markel_side = 2.35
 
 marker_separation = 0.5
 
@@ -244,10 +257,15 @@ cv2.namedWindow(frame_name)
 cv2.createTrackbar('ANGLE', frame_name, 0, 360, nothing)
 cv2.createTrackbar('X', frame_name, 0, 1900, nothing)
 cv2.createTrackbar('Y', frame_name, 0, 1200, nothing)
+cv2.createTrackbar('ZMIN', frame_name, 0, 200, nothing)
+cv2.createTrackbar('ZMAX', frame_name, 0, 200, nothing)
 
 cv2.setTrackbarPos('ANGLE', frame_name, int(conf.get_param('PARAMS', 'ANGLE')))
 cv2.setTrackbarPos('X', frame_name, int(conf.get_param('PARAMS', 'X')))
 cv2.setTrackbarPos('Y', frame_name, int(conf.get_param('PARAMS', 'Y')))
+cv2.setTrackbarPos('ZMIN', frame_name, int(conf.get_param('PARAMS', 'ZMIN')))
+cv2.setTrackbarPos('ZMAX', frame_name, int(conf.get_param('PARAMS', 'ZMAX')))
+
 
 qr_count = 0
 qr_sample_rate = 10
@@ -260,8 +278,13 @@ while True:
     physical_c_x = cv2.getTrackbarPos('X', frame_name)
     physical_c_y = cv2.getTrackbarPos('Y', frame_name)
 
+    z_min = cv2.getTrackbarPos('ZMIN', frame_name)
+    z_max = cv2.getTrackbarPos('ZMAX', frame_name)
+
     time.sleep(0.05)
     ret, frame = cap.read()
+    if flip_xy:
+        frame = cv2.flip( frame, -1 )
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
@@ -296,10 +319,13 @@ while True:
                 marker_y = tvec[i][0][2] * 10
                 marker_z = tvec[i][0][1] * 10
 
-                if marker_z > 0:
+                if marker_z > -z_min + 20:
                     continue
-                if marker_z < -100:
+                if marker_z < -z_max:
                     continue
+                cv2.putText(frame,"SENDING. Z = " + str(int(-marker_z)), (100, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,255))
+                
+                #print(marker_z)
  
                 coordinates = remap_points(marker_x,
                                            marker_y,
@@ -320,6 +346,8 @@ while True:
 conf.set_param("PARAMS", "angle", int(np.degrees(physical_c_angle)))
 conf.set_param("PARAMS", "x", int(physical_c_x))
 conf.set_param("PARAMS", "y", int(physical_c_y))
+conf.set_param("PARAMS", "zmin", int(z_min))
+conf.set_param("PARAMS", "zmax", int(z_max))
 
 sender.disconnect()
 cap.release()
