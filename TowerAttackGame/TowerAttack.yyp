@@ -767,6 +767,14 @@
             }
         },
         {
+            "Key": "5be9cad6-ac95-41bd-9232-53a91483ec10",
+            "Value": {
+                "id": "52d7b529-38df-481e-babc-def541d59407",
+                "resourcePath": "sounds\\snd_bulding_bridge\\snd_bulding_bridge.yy",
+                "resourceType": "GMSound"
+            }
+        },
+        {
             "Key": "5cd2aa91-e736-46b2-afb1-97a364406e85",
             "Value": {
                 "id": "5b3fbd90-072e-4ee3-96ce-2e615ae1ce91",
@@ -1620,6 +1628,14 @@
                 "id": "29b24b04-b994-4d72-a37a-68e79b4deebe",
                 "resourcePath": "objects\\obj_score_team\\obj_score_team.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "cb0dc482-9b28-420e-a665-fe9030bc0b41",
+            "Value": {
+                "id": "e9f2e1c1-390c-47e5-9c61-4164ca6c1e8c",
+                "resourcePath": "sounds\\snd_water_drop\\snd_water_drop.yy",
+                "resourceType": "GMSound"
             }
         },
         {
