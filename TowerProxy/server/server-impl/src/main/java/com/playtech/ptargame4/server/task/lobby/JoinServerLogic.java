@@ -49,7 +49,7 @@ public class JoinServerLogic extends AbstractLogic {
         if (users.size() == 0) {
             // register user
             User.UserType userType = request.getClientType() == JoinServerRequest.ClientType.BOT ? User.UserType.BOT : User.UserType.REGULAR;
-            user = getLogicResources().getDatabaseAccess().getUserDatabase().addUser(request.getName(), request.getEmail(), userType, QrGenerator.generateQr());
+            user = getLogicResources().getDatabaseAccess().getUserDatabase().addUser(request.getName(), request.getEmail(), userType, QrGenerator.generateQr(), request.getInformation());
         } else {
             // user first user
             user = users.iterator().next();

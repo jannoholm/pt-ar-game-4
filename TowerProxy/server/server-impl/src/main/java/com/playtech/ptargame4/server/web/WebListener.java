@@ -429,6 +429,7 @@ public final class WebListener {
 
             String name = params.get("name");
             String email = params.get("email");
+            String information = params.get("interests");
             if (name != null) name = name.trim().toUpperCase();
             if (email != null) email = email.trim();
 
@@ -442,7 +443,7 @@ public final class WebListener {
                 }
             }
 
-            User user = databaseAccess.getUserDatabase().addUser(name, email, User.UserType.REGULAR, QrGenerator.generateQr());
+            User user = databaseAccess.getUserDatabase().addUser(name, email, User.UserType.REGULAR, QrGenerator.generateQr(), information);
             writeResponse(httpExchange, HttpURLConnection.HTTP_OK, new UserWrapper(user));
         } catch (HTTPException e) {
             logger.log(Level.INFO, "Error processing request", e);
@@ -485,7 +486,8 @@ public final class WebListener {
                     email == null ? user.getEmail() : email,
                     user.isHidden(),
                     internal == null ? user.getUserType() : User.UserType.getUserType(Integer.valueOf(internal)),
-                    user.getQrCode()
+                    user.getQrCode(),
+                    user.getInformation()
             );
 
             // update
@@ -511,7 +513,7 @@ public final class WebListener {
             if (user == null || user.isHidden()) throw new HTTPException(HttpURLConnection.HTTP_NOT_FOUND);
 
             // update hidden
-            user = new User(user.getId(), user.getName(), user.getEmail(), true, user.getUserType(), QrGenerator.generateQr());
+            user = new User(user.getId(), user.getName(), user.getEmail(), true, user.getUserType(), QrGenerator.generateQr(), user.getInformation());
 
             // update
             databaseAccess.getUserDatabase().updateUser(user);
@@ -718,12 +720,12 @@ public final class WebListener {
             } catch (NumberFormatException e) {}
         }
         if (position < 1) {
-            users.add(new RegisteredUser(1, "test1", "test1@gmail.com"));
+            users.add(new RegisteredUser(1, "test1", "test1@gmail.com", null));
         } else if (position < 2) {
-            users.add(new RegisteredUser(1, "test1", "test1@gmail.com"));
-            users.add(new RegisteredUser(2, "test2", "test2@gmail.com"));
+            users.add(new RegisteredUser(1, "test1", "test1@gmail.com", null));
+            users.add(new RegisteredUser(2, "test2", "test2@gmail.com", null));
         } else if (position < 3) {
-            users.add(new RegisteredUser(3, "test3", "test3@gmail.com"));
+            users.add(new RegisteredUser(3, "test3", "test3@gmail.com", null));
         }
         writeResponse(httpExchange, HttpURLConnection.HTTP_OK, users);
     }

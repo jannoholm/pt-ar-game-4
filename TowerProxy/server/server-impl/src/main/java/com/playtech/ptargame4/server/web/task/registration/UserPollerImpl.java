@@ -130,7 +130,7 @@ public class UserPollerImpl implements UserPoller {
 
             // insert new user
             String qrCode = user.getQrCode() != null && user.getQrCode().trim().length() > 6 ? user.getQrCode().trim() : QrGenerator.generateQr();
-            databaseAccess.getUserDatabase().addUser(user.getName(), user.getEmail(), User.UserType.REGULAR, qrCode);
+            databaseAccess.getUserDatabase().addUser(user.getName(), user.getEmail(), User.UserType.REGULAR, qrCode, user.getInformation());
             updatePosition(user);
         }
     }
