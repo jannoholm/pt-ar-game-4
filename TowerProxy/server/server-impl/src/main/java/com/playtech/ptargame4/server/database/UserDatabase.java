@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public interface UserDatabase {
 
-    User addUser(String name, String email, User.UserType userType, String qrCode);
+    User addUser(String name, String email, User.UserType userType, String qrCode, String information);
 
     User getUser(int id);
 

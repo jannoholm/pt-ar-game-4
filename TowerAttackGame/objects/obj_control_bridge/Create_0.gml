@@ -11,3 +11,5 @@ targetBridge = instance_nearest(x, y, obj_bridge);
 chargingTeam = noone;
 chargeUp = 0;
 colliding = 0;
+
+buildSoundIndex = noone;

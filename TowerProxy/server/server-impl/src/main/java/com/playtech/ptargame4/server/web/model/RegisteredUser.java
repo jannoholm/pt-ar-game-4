@@ -5,14 +5,16 @@ public class RegisteredUser {
     private String name;
     private String email;
     private String qrCode;
+    private String information;
 
     public RegisteredUser() {
     }
 
-    public RegisteredUser(int position, String name, String email) {
+    public RegisteredUser(int position, String name, String email, String information) {
         this.position = position;
         this.name = name;
         this.email = email;
+        this.information = information;
     }
 
     public String getName() {
@@ -47,13 +49,22 @@ public class RegisteredUser {
         this.qrCode = qrCode;
     }
 
-    @Override
+    public String getInformation() {
+		return information;
+	}
+
+	public void setInformation(String information) {
+		this.information = information;
+	}
+
+	@Override
     public String toString() {
         return "RegisteredUser{" +
                 "position=" + position +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", qrCode='" + qrCode + '\'' +
+                ", information='" + information + '\'' +
                 '}';
     }
 }

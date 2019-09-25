@@ -5,6 +5,10 @@ if( obj_game.currentPhase != GamePhase.GAME && obj_game.currentPhase != GamePhas
 	// No actions if game is not in progress
 	chargeUp = 0;
 	colliding = 0;
+	if( buildSoundIndex != noone ){
+		audio_stop_sound( buildSoundIndex );
+	}
+	buildSoundIndex = noone;
 	return;	
 }
 
@@ -14,6 +18,10 @@ if( !targetBridge.protected && colliding > 0 && chargingTeam.actionPoints > 10 )
 	if( bridgeControlType == BridgeControlType.DESTROY && targetBridge.durability <= 0 ){
 		// No charge up, bridge is destroyed, don't destory it again
 	} else {
+		if( buildSoundIndex == noone ){
+			buildSoundIndex = audio_play_sound( snd_bulding_bridge, 3, false );
+			audio_sound_gain( buildSoundIndex, 0.5, 0 );
+		}
 		chargeUp++;	
 	}	
 	
@@ -21,6 +29,10 @@ if( !targetBridge.protected && colliding > 0 && chargingTeam.actionPoints > 10 )
 		show_debug_message( "CHARGE COMPLETE!" );
 		chargingTeam.actionPoints -= 10;
 		chargeUp = 0;
+		if( buildSoundIndex != noone ){
+			audio_stop_sound( buildSoundIndex );
+		}
+		buildSoundIndex = noone;
 		with( targetBridge ) {
 			activatedByTeam = other.chargingTeam;
 			event_user( other.bridgeControlType );
@@ -29,6 +41,10 @@ if( !targetBridge.protected && colliding > 0 && chargingTeam.actionPoints > 10 )
 } else {
 	// If bridge went under protection by another team action
 	chargeUp = 0;
+	if( buildSoundIndex != noone ){
+		audio_stop_sound( buildSoundIndex );
+	}
+	buildSoundIndex = noone;
 }
 
 

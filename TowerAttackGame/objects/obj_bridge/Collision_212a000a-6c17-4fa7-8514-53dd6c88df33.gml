@@ -49,5 +49,7 @@ if ( durability > 0 ) {
 
 	// Destory the colliding soldior
 	// #TODO: Play animation
-	instance_destroy(other);
+	instance_destroy( other );
+	var dropAudioIndex = audio_play_sound( snd_water_drop, 1, false );
+	audio_sound_gain( dropAudioIndex, 0.3, 0 );
 }

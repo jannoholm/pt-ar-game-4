@@ -10,6 +10,7 @@ if (!file_exists($people_file)) {
 $result_user=new class{};
 $result_user->name = trim(strtoupper($_POST["name"]));
 $result_user->email = trim(strtoupper($_POST["email"]));
+$result_user->information = trim($_POST["interests"]);
 $result_user->qrCode = "";
 
 // open file with exclusive lock
@@ -42,6 +43,7 @@ if (strlen($result_user->qrCode) == 0) {
 		$user = new class{};
 		$user->name = $result_user->name;
 		$user->email = $result_user->email;
+		$user->information = $result_user->information;
 		$result_user->qrCode=base64_encode(mt_rand(10000000,19999999));
 		$user->qrCode = $result_user->qrCode;
 		

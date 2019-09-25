@@ -69,6 +69,15 @@
 			font-size: 2rem;
 		}
 		
+		@media (max-width: 575px) {
+			#recieve_offers_field {
+				margin-left: calc(50% - 15px) !important;
+			}
+			#choice_cointainer {
+				white-space: initial !important;
+			}
+		}
+		
     </style>
 
   </head>
@@ -84,13 +93,16 @@
         </div>        
         <form class="form-inline pull-left" style="padding-left: 1rem" id="add_player_form">
 		
-			<table style="width:100%">
+			<table style="">
 				<tr>
 					<td>
 						<label class="sr-only" for="add_name_field">Nickname</label>
-						<input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="add_name_field" placeholder="Enter nickname" required>
+						<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+							<input type="text" class="form-control" id="add_name_field" placeholder="Enter nickname" required>
+						</div>
 					</td>
 				</tr>
+				
 				<tr>
 					<td>
 						<label class="sr-only" for="add_email_field">Email</label>
@@ -99,6 +111,76 @@
 						</div>
 					</td>
 				</tr>
+				
+				
+				
+				<tr>
+					<td>
+						<div class="form-control mb-2 mr-sm-2 mb-sm-0">
+							<label>
+								I wish to receive information about open positions
+								<input style="min-width: 30px; width: 30px; height: 30px; margin-left: 10px;" type="checkbox" class="form-control" id="recieve_offers_field" align="middle">
+							</label>
+							
+							<div id="choice_cointainer" style="display: none; white-space: nowrap">
+								<hr />
+								<table style="width:min-content; margin-left: auto; margin-right: auto;" >
+									<tr>
+										<td>
+											Development
+										</td>
+										<td>
+											<input style="min-width: 30px; width: 30px; height: 30px; margin-left: 10px;" type="checkbox" class="form-control" id="dev">
+										</td>
+									</tr>
+									<tr>
+										<td>
+											Project Management
+										</td>
+										<td>
+											<input style="min-width: 30px; width: 30px; height: 30px; margin-left: 10px;" type="checkbox" class="form-control" id="p_manage">
+										</td>
+									</tr>
+									<tr>
+										<td>
+											Analysis
+										</td>
+										<td>
+											<input style="min-width: 30px; width: 30px; height: 30px; margin-left: 10px;" type="checkbox" class="form-control" id="ana">
+										</td>
+									</tr>
+									<tr>
+										<td>
+											DevOps
+										</td>
+										<td>
+											<input style="min-width: 30px; width: 30px; height: 30px; margin-left: 10px;" type="checkbox" class="form-control" id="devops">
+										</td>
+									</tr>
+									<tr>
+										<td>
+											QA
+										</td>
+										<td>
+											<input style="min-width: 30px; width: 30px; height: 30px; margin-left: 10px;" type="checkbox" class="form-control" id="qa">
+										</td>
+									</tr>
+									<tr>
+										<td>
+											Admin or HR
+										</td>
+										<td>
+											<input style="min-width: 30px; width: 30px; height: 30px; margin-left: 10px;" type="checkbox" class="form-control" id="hr">
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</td>
+				</tr>
+				
+				
+				
 				<tr>
 					<td>
 						<div class="mb-2 mr-sm-2">
@@ -106,18 +188,15 @@
 						</div>
 					</td>
 				</tr>
+				
 				<tr>
 					<td>
-						<div class="mb-2 mr-sm-2" style="color: lightgray; text-align:  left; max-width: 385px;">
+						<div class="mb-2 mr-sm-2" style="color: lightgray; text-align:  left; max-width: 385px; background-color: #0000007d; border-radius: 4px; padding: 5px;">
 							Your information will be stored only for the duration of the contest. Once the contest has concluded, all data will be deleted. You may not enter any personal data, if you so desire.
 						</div>
 					</td>
 				</tr>
 			</table>
-          
-        
-          
-          
         </form>
       </div>
     </main><!-- /.container -->
@@ -139,15 +218,44 @@
       var editor; // use a global for the submit and return data rendering in the examples    
     
       $(document).ready(function() {
-
+	  
+		$('#recieve_offers_field').change(
+			function(){
+				const block = $("#choice_cointainer");
+				if ($(this).is(':checked')) {
+					block.show(500);
+				} else {
+					block.hide(500);
+				}
+		})
+		
+		function getInterests() {
+			const consent = $('#recieve_offers_field').is(":checked");
+			if (consent) {
+				const dataJson = {
+					consent: consent,
+					development: $('#dev').is(":checked"),
+					projectManagement: $('#p_manage').is(":checked"),
+					Analysis: $('#ana').is(":checked"),
+					devObs: $('#devops').is(":checked"),
+					qa: $('#qa').is(":checked"),
+					adminHr: $('#hr').is(":checked")
+				}
+				return JSON.stringify(dataJson);
+			}
+			return undefined;
+		}
+		
           $( "#add_player_form" ).submit(function( event ) {
             // Stop form from submitting normally
             event.preventDefault();
+			
+			
            
             // Get some values from elements on the page:
             var $form = $( this );
             console.log( "Adding player: " + $form.serialize());
-            $.post( "player.php", {name: $('#add_name_field').val(), email: $('#add_email_field').val()})
+            $.post( "player.php", {name: $('#add_name_field').val(), email: $('#add_email_field').val(), interests: getInterests()})
               .done(function( data ) {
                 console.log( "Player added: " + data );
 				var result = JSON.parse(data);
