@@ -20,7 +20,6 @@ public class JoinServerRequest extends AbstractRequest {
 
     private String name;
     private String email;
-    private String information;
     private ClientType clientType = ClientType.GAME_CLIENT;
 
     public JoinServerRequest(MessageHeader header) {
@@ -33,7 +32,6 @@ public class JoinServerRequest extends AbstractRequest {
         this.name = StringUtil.readUTF8String(messageData);
         this.email = StringUtil.readUTF8String(messageData);
         this.clientType = ClientType.values()[messageData.get()];
-        this.information = StringUtil.readUTF8String(messageData);
     }
 
     @Override
@@ -42,7 +40,6 @@ public class JoinServerRequest extends AbstractRequest {
         StringUtil.writeUTF8String(name, messageData);
         StringUtil.writeUTF8String(email, messageData);
         messageData.put((byte) clientType.ordinal());
-        StringUtil.writeUTF8String(information, messageData);
     }
 
     protected void toStringImpl(StringBuilder s) {
@@ -50,7 +47,6 @@ public class JoinServerRequest extends AbstractRequest {
         s.append(", name=").append(getName());
         s.append(", email=").append(getEmail());
         s.append(", type=").append(getClientType());
-        s.append(", information=").append(getInformation());
     }
 
     public String getName() {
@@ -76,13 +72,5 @@ public class JoinServerRequest extends AbstractRequest {
     public void setClientType(ClientType clientType) {
         this.clientType = clientType;
     }
-
-	public String getInformation() {
-		return information;
-	}
-
-	public void setInformation(String information) {
-		this.information = information;
-	}
 
 }
